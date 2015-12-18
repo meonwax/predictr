@@ -1,0 +1,13 @@
+# Eclipse
+.project
+.classpath
+.settings/
+
+# Build
+target/
+
+# Legacy code
+2014/
+
+# Others
+TODO.md

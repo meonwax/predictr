@@ -1,0 +1,11 @@
+logging.level.org.hibernate.SQL: debug
+
+predictr:
+    title: Predictr
+    version: 0.0.1
+    adminEmail: admin@example.com
+    registrationEnabled: true
+    points:
+        result: 5
+        tendency: 2  
+        tendencySpread: 3  

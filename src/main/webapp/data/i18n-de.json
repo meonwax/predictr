@@ -1,0 +1,93 @@
+{
+    "global": {
+        "serverTime": "Serverzeit",
+        "version": "Version",
+        "language": "Sprache"
+    },
+    "navigation": {
+        "home": "Home",
+        "bets": "Tipps",
+        "ladder": "Rangliste",
+        "questions": "Spezialfragen",
+        "rules": "Regeln",
+        "shoutbox": "Shoutbox",
+        "admin": "Admin"
+    },
+    "group": {
+        "a": "Gruppe A",
+        "b": "Gruppe B",
+        "c": "Gruppe C",
+        "d": "Gruppe D",
+        "e": "Gruppe E",
+        "f": "Gruppe F",
+        "8": "Achtelfinale",
+        "4": "Viertelfinale",
+        "2": "Halbfinale",
+        "1": "Finale"
+    },
+    "team": {
+        "alb": "Albanien",
+        "fra": "Frankreich",
+        "rou": "Rumänien",
+        "sui": "Schweiz",
+        "eng": "England",
+        "rus": "Russland",
+        "svk": "Slowakei",
+        "wal": "Wales",
+        "ger": "Deutschland",
+        "nir": "Nordirland",
+        "pol": "Polen",
+        "ukr": "Ukraine",
+        "cro": "Kroatien",
+        "cze": "Tschechien",
+        "esp": "Spanien",
+        "tur": "Türkei",
+        "bel": "Belgien",
+        "ita": "Italien",
+        "irl": "Republik Irland",
+        "swe": "Schweden",
+        "aut": "Österreich",
+        "hun": "Ungarn",
+        "isl": "Island",
+        "por": "Portugal"
+    },
+    "home": {
+        "hello": "Hallo {{userName}}!",
+        "welcome": "Willkommen zum {{appName}}.",
+        "important": "Wichtig",
+        "readTheRules": "Bitte lies Dir die Regeln durch.",
+        "dontForget": "Vergiss nicht, die Spezialfragen vor Turnierbeginn zu beantworten.",
+        "runningGames": "Aktuelle Spiele",
+        "upcomingGames": "Nächste Spiele",
+        "shouts": "Shouts",
+        "since": "seit"
+    },
+    "bets": {
+        "title": "Spielplan / Tipps",
+        "date": "Datum, Zeit",
+        "venue": "Spielort",
+        "teamHome": "Team A",
+        "teamAway": "Team B",
+        "result": "Ergebnis",
+        "bet": "Tipp",
+        "points": "Punkte",
+        "waitForResult": "Bitte warten bis das Ergebnis eingetragen wurde.",
+        "otherBets": "Wie haben die Anderen getippt?",
+        "save": "Tipps speichern"
+    },
+    "ladder": {
+        "title": "Rangliste",
+        "overall": "Gesamt",
+        "jackpot": "Jackpot",
+        "jackpotDescription": "Im Jackpot befinden sich <strong>{{jackpot}} €</strong>, die bei Turnierende komplett an den Sieger ausgezahlt werden."
+    },
+    "questions": {
+        "title": "Spezialfragen",
+        "question": "Frage",
+        "deadline": "Deadline",
+        "userAnswer": "Deine Antwort",
+        "correctAnswer": "Richtige Antwort",
+        "pointsPossible": "Punkte möglich",
+        "pointsEarned": "Punkte erreicht"
+    }
+}

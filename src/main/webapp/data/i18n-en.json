@@ -1,0 +1,93 @@
+{
+    "global": {
+        "serverTime": "Server time",
+        "version": "Version",
+        "language": "Language"
+    },
+    "navigation": {
+        "home": "Home",
+        "bets": "Bets",
+        "ladder": "Ladder",
+        "questions": "Questions",
+        "rules": "Rules",
+        "shoutbox": "Shoutbox",
+        "admin": "Admin"
+    },
+    "group": {
+        "a": "Group A",
+        "b": "Group B",
+        "c": "Group C",
+        "d": "Group D",
+        "e": "Group E",
+        "f": "Group F",
+        "8": "Round of 16",
+        "4": "Quarter-finals",
+        "2": "Semi-finals",
+        "1": "Final"
+    },
+    "team": {
+        "alb": "Albania",
+        "fra": "France",
+        "rou": "Romania",
+        "sui": "Switzerland",
+        "eng": "England",
+        "rus": "Russia",
+        "svk": "Slovakia",
+        "wal": "Wales",
+        "ger": "Germany",
+        "nir": "Northern Ireland",
+        "pol": "Poland",
+        "ukr": "Ukraine",
+        "cro": "Croatia",
+        "cze": "Czech Republic",
+        "esp": "Spain",
+        "tur": "Turkey",
+        "bel": "Belgium",
+        "ita": "Italy",
+        "irl": "Republic of Ireland",
+        "swe": "Sweden",
+        "aut": "Austria",
+        "hun": "Hungary",
+        "isl": "Iceland",
+        "por": "Portugal"
+    },
+    "home": {
+        "hello": "Hello {{userName}}!",
+        "welcome": "Welcome to {{appName}}.",
+        "important": "Important",
+        "readTheRules": "Please read the rules.",
+        "dontForget": "Do not forget to answer the questions before start of tournament.",
+        "runningGames": "Running games",
+        "upcomingGames": "Upcoming games",
+        "shouts": "Shouts",
+        "since": "since"
+    },
+    "bets": {
+        "title": "Games & bets",
+        "date": "Date, time",
+        "venue": "Venue",
+        "teamHome": "Team A",
+        "teamAway": "Team B",
+        "result": "Result",
+        "bet": "Bet",
+        "points": "Points",
+        "waitForResult": "Please wait until the result data has been entered",
+        "otherBets": "Show the bets of the other users",
+        "save": "Save bets"
+    },
+    "ladder": {
+        "title": "Ladder",
+        "overall": "Overall",
+        "jackpot": "Jackpot",
+        "jackpotDescription": "The jackpot is <strong>{{jackpot}} €</strong> and will be disbursed to the winner at the end of the tournament."
+    },
+    "questions": {
+        "title": "Special questions",
+        "question": "Question",
+        "deadline": "Deadline",
+        "userAnswer": "Your answer",
+        "correctAnswer": "Correct answer",
+        "pointsPossible": "Points possible",
+        "pointsEarned": "Points earned"
+    }
+}

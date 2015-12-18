@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html ng-app="predictrApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>{{serverInfo.title}}</title>
+  <link rel="icon" href="img/icon.png">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <a href="https://github.com/meonwax/predictr" class="hidden-xs">
+    <img style="position: absolute; top: 0; right: 0; border: 0;" src="img/forkme.png" alt="Fork me on GitHub">
+  </a>
+
+  <div class="header">
+    <div class="container">
+      <h1 ng-cloak>{{serverInfo.title}}</h1>
+
+      <!-- Tabbed navbar for normal screens -->
+      <ul class="nav nav-tabs hidden-xs" role="tablist">
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'home'}"><a href="#/"><i class="fa fa-home"></i> <span translate="navigation.home"></span></a></li>
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'bets'}"><a href="#/bets"><i class="fa fa-table"></i> <span translate="navigation.bets"></span></a></li>
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'ladder'}"><a href="#/ladder"><i class="fa fa-list-ol"></i> <span translate="navigation.ladder"></span></a></li>
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'questions'}"><a href="#/questions"><i class="fa fa-question"></i> <span translate="navigation.questions"></span></a></li>
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'rules'}"><a href="#/rules"><i class="fa fa-book"></i> <span translate="navigation.rules"></span></a></li>
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'shoutbox'}"><a href="#/shoutbox"><i class="fa fa-comment-o"></i> <span translate="navigation.shoutbox"></span></a></li>
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'admin'}"><a href="#/admin"><i class="fa fa-cogs"></i> <span translate="navigation.admin"></span></a></li>
+      </ul>
+
+      <!-- Stacked pills navbar for small screens -->
+      <ul class="nav nav-pills nav-stacked visible-xs">
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'home'}"><a ng-href="#/"><i class="fa fa-home fa-fw"></i> <span translate="navigation.home"></span></a></li>
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'bets'}"><a href="#/bets"><i class="fa fa-table fa-fw"></i> <span translate="navigation.bets"></span></a></li>
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'ladder'}"><a href="#/ladder"><i class="fa fa-list-ol fa-fw"></i> <span translate="navigation.ladder"></span></a></li>
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'questions'}"><a href="#/questions"><i class="fa fa-question fa-fw"></i> <span translate="navigation.questions"></span></a></li>
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'rules'}"><a href="#/rules"><i class="fa fa-book fa-fw"></i> <span translate="navigation.rules"></span></a></li>
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'shoutbox'}"><a href="#/shoutbox"><i class="fa fa-comment-o fa-fw"></i> <span translate="navigation.shoutbox"></span></a></li>
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'admin'}"><a href="#/admin"><i class="fa fa-cogs fa-fw"></i> <span translate="navigation.admin"></span></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12" ng-view></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer" ng-cloak>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10">
+          <i class="fa fa-clock-o fa-fw"></i> <span translate="global.serverTime"></span>: <strong>{{serverInfo.time | myDate}}</strong><br>
+          <i class="fa fa-code-fork fa-fw"></i> <span translate="global.version"></span>: <strong>{{serverInfo.version}}</strong><br>
+        </div>
+        <div class="col-md-2 text-right">
+          <i class="fa fa-language"></i> <span translate="global.language"></span>: <a href="" ng-click="changeLanguage('de')">de</a> | <a href="" ng-click="changeLanguage('en')">en</a>
+        </div>
+      </div>
+      <div class="row copyright">
+        <div class="col-md-12">
+          <i class="fa fa-copyright fa-fw"></i> Sebastian Wolf 2010 - 2015
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vendor scripts -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.0/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.0/angular-cookies.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.0/angular-route.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.0/angular-resource.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.8.1/angular-translate.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate-storage-cookie/2.8.1/angular-translate-storage-cookie.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate-loader-static-files/2.8.1/angular-translate-loader-static-files.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+  <!-- Application scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/directives.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/services/account.service.js"></script>
+  <script src="js/services/game.service.js"></script>
+  <script src="js/services/group.service.js"></script>
+  <script src="js/services/ladder.service.js"></script>
+  <script src="js/services/question.service.js"></script>
+  <script src="js/services/shout.service.js"></script>
+  <script src="js/services/server-info.service.js"></script>
+</body>
+</html>
