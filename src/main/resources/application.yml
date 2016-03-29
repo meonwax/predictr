@@ -1,4 +1,6 @@
-logging.level.org.hibernate.SQL: debug
+spring.jpa.show_sql: true
+
+server.port: 8081
 
 predictr:
     title: Predictr
@@ -7,5 +9,5 @@ predictr:
     registrationEnabled: true
     points:
         result: 5
-        tendency: 2  
-        tendencySpread: 3  
+        tendency: 2
+        tendencySpread: 3
