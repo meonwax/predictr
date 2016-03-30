@@ -20,7 +20,7 @@ public class LadderService {
     private UserRepository userRepository;
 
     @Autowired
-    private CalculationService calucateService;
+    private CalculationService calculateService;
 
     public List<Rank> getLadder(boolean jackpotOnly) {
         SortedContainer<Integer, User> sortedUsers = getSortedUsers(jackpotOnly);
@@ -31,7 +31,7 @@ public class LadderService {
         List<User> users = jackpotOnly ? userRepository.findByWagerGreaterThan(BigDecimal.ZERO) : userRepository.findAll();
         SortedContainer<Integer, User> sortedUsers = new SortedContainer<>();
         for (User user : users) {
-            sortedUsers.put(calucateService.getPoints(user), user);
+            sortedUsers.put(calculateService.getPoints(user), user);
         }
         return sortedUsers;
     }
