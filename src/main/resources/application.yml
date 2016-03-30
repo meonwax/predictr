@@ -3,6 +3,7 @@ spring.jpa.show_sql: true
 server.port: 8081
 
 predictr:
+    author: John Doe
     title: Predictr
     version: 0.0.1
     adminEmail: admin@example.com

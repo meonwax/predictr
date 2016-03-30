@@ -17,6 +17,9 @@ public class ServerInfo implements Serializable {
     @Value("${predictr.title}")
     private String title;
 
+    @Value("${predictr.author}")
+    private String author;
+
     @Value("${predictr.adminEmail}")
     private String adminEmail;
 
@@ -42,6 +45,10 @@ public class ServerInfo implements Serializable {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 
     public String getAdminEmail() {
