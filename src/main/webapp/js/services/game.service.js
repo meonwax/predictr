@@ -15,7 +15,7 @@ angular.module('predictrApp')
         });
       },
       upcomingGames: function() {
-        return $resource('/api/games/upcoming', {}, {
+        return $resource('api/games/upcoming', {}, {
           'get': {
             method: 'GET',
             isArray: true,
@@ -26,7 +26,7 @@ angular.module('predictrApp')
         });
       },
       runningGames: function() {
-        return $resource('/api/games/running', {}, {
+        return $resource('api/games/running', {}, {
           'get': {
             method: 'GET',
             isArray: true,
