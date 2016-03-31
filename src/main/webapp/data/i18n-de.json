@@ -89,5 +89,8 @@
         "correctAnswer": "Richtige Antwort",
         "pointsPossible": "Punkte möglich",
         "pointsEarned": "Punkte erreicht"
+    },
+    "rules": {
+        "title": "Regeln"
     }
 }

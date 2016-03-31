@@ -17,8 +17,8 @@ public class ServerInfo implements Serializable {
     @Value("${predictr.title}")
     private String title;
 
-    @Value("${predictr.author}")
-    private String author;
+    @Value("${predictr.owner}")
+    private String owner;
 
     @Value("${predictr.adminEmail}")
     private String adminEmail;
@@ -47,8 +47,8 @@ public class ServerInfo implements Serializable {
         return title;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getOwner() {
+        return owner;
     }
 
     public String getAdminEmail() {

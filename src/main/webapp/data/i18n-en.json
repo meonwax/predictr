@@ -89,5 +89,8 @@
         "correctAnswer": "Correct answer",
         "pointsPossible": "Points possible",
         "pointsEarned": "Points earned"
+    },
+    "rules": {
+        "title": "Rules"
     }
 }
