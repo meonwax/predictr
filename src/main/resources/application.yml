@@ -1,6 +1,8 @@
 spring.jpa.show_sql: true
 
-server.port: 8081
+server:
+    port: 8081
+    error.whitelabel.enabled: false
 
 predictr:
     owner: John Doe
