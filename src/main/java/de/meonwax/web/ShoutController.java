@@ -5,9 +5,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.meonwax.domain.Shout;
@@ -23,7 +25,8 @@ public class ShoutController {
     private ShoutRepository shoutRepository;
 
     @RequestMapping(value = "/shouts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Shout> getAll() {
-        return shoutRepository.findAll();
+    public List<Shout> getAll(@RequestParam(value = "limit", required = false, defaultValue = "100") Integer limit) {
+        // TODO: sort by date desc
+        return shoutRepository.findAll(new PageRequest(0, limit)).getContent();
     }
 }

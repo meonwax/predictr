@@ -126,7 +126,16 @@ INSERT INTO `shout` (`date`, `user_id`, `message`) VALUES
   ('2015-07-14 09:33:06', 1, 'Orci sagittis eu volutpat odio facilisis mauris sit amet :)'),
   ('2015-07-14 01:22:40', 3, 'Dolor sed viverra ipsum.'),
   ('2015-06-17 22:35:59', 2, 'Blandit volutpat maecenas volutpat blandit aliquam etiam erat'),
-  ('2015-05-26 22:28:52', 4, 'Vitae suscipit tellus mauris a diam maecenas sed enim');
+  ('2015-05-26 22:28:52', 4, 'Vitae suscipit tellus mauris a diam maecenas sed enim'),
+  ('2014-07-15 22:19:15', 2, 'Nulla aliquet porttitor lacus luctus'),
+  ('2014-07-15 14:34:46', 4, 'Semper feugiat nibh sed pulvinar proin gravida hendrerit lectus'),
+  ('2014-07-15 12:19:10', 3, 'Fermentum odio eu feugiat pretium nibh ipsum consequat'),
+  ('2014-07-15 12:18:44', 3, 'Convallis a cras semper'),
+  ('2014-07-14 17:40:52', 3, 'Yes'),
+  ('2014-07-14 09:33:06', 1, 'Orci sagittis eu volutpat odio facilisis mauris sit amet :)'),
+  ('2014-07-14 01:22:40', 3, 'Dolor sed viverra ipsum.'),
+  ('2014-06-17 22:35:59', 2, 'Blandit volutpat maecenas volutpat blandit aliquam etiam erat'),
+  ('2014-05-26 22:28:52', 4, 'Vitae suscipit tellus mauris a diam maecenas sed enim');
 
 INSERT INTO `question` (`question`, `deadline`, `points`) VALUES
   ('Which team will win the championship?', '2016-06-10 19:00:00', 7),

@@ -18,4 +18,9 @@ angular.module('predictrApp')
       var diffHours = Math.floor(diffMinutes / 60);
       return diffHours + ':' + ('0' + (diffMinutes - diffHours * 60)).slice(-2);
     };
+  })
+  .filter('shoutTime', function($filter) {
+    return function(timestamp) {
+      return $filter('date')(timestamp * 1000, 'yy-MM-dd HH:mm');
+    };
   });

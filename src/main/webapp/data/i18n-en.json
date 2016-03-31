@@ -92,5 +92,10 @@
     },
     "rules": {
         "title": "Rules"
+    },
+    "shoutbox": {
+        "title": "Shoutbox",
+        "message": "Message…",
+        "sendMessage": "Send"
     }
 }

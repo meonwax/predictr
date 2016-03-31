@@ -1,0 +1,36 @@
+<h2 translate="shoutbox.title"></h2>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+
+      <div class="panel-heading">
+
+        <form class="form-horizontal" role="form" onsubmit="return true;">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="{{'shoutbox.message' | translate}}" autocomplete="off" autofocus="autofocus">
+            <span class="input-group-btn">
+              <button type="submit" data-loading-text="<i class='fa fa-spinner fa-spin'></i> {{'shoutbox.sendMessage' | translate}}" class="btn btn-default">
+                <i class="fa fa-send-o"></i>
+                <span class="hidden-xs" translate="shoutbox.sendMessage"></span>
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+
+      <div class="list-group" ng-if="shouts.length > 0">
+        <div class="list-group-item" ng-repeat="shout in shouts">
+          <h4 class="list-group-item-heading">
+            {{shout.user.name}}
+            <small>{{shout.date | shoutTime}}</small>
+          </h4>
+          <p class="list-group-item-text">
+            {{shout.message}}
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
