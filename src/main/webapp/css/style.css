@@ -77,3 +77,8 @@ body {
   border-color: #d26911 #e5e5e5 transparent;
   border-width: 3px 1px 1px;
 }
+
+/* Ladda */
+.ladda-spinner > div > div > div {
+  background: #000 !important;
+}

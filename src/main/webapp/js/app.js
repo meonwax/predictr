@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies', 'ngResource'])
+angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies', 'ngResource', 'angular-ladda'])
   .run(function($rootScope, $route, $translate, ServerInfo, Account) {
     // Initialize root scope
     $rootScope.$route = $route;
