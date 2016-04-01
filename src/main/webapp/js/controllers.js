@@ -27,7 +27,7 @@ angular.module('predictrApp')
   })
   .controller('RulesCtrl', function($rootScope, $scope, $http, $translate, $sce, $interpolate) {
     var currentLanguage = $translate.use();
-    $http.get('data/rules-' + currentLanguage + '.md').then(function(response) {
+    $http.get('values/rules-' + currentLanguage + '.md').then(function(response) {
       var html = marked(response.data);
       $scope.content = $sce.trustAsHtml($interpolate(html)($rootScope.serverInfo));
     });

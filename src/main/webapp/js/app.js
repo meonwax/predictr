@@ -14,7 +14,7 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
     // I18n
     $translateProvider
       .useStaticFilesLoader({
-        prefix: 'data/i18n-',
+        prefix: 'values/strings-',
         suffix: '.json'
       })
       .preferredLanguage('de')
