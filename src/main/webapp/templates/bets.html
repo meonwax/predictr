@@ -79,7 +79,7 @@
             <!-- <?php if (intval($game['timestamp']) > $now): ?> -->
             <!-- Only display input field if game will start in the future -->
             <span ng-if="true">
-              <input class="form-control" type="text" name="{{game.id}}" value="{{game.bet}}" maxlength="4" onkeyup="validateBet(this)">
+              <input class="form-control" type="text" name="{{game.id}}" value="{{game.bet}}" placeholder="-:-" maxlength="4" onkeyup="validateBet(this)">
             </span>
             <span ng-if="false">
               <!-- Display non editable bets if game has already been started -->
