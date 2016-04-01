@@ -15,6 +15,15 @@ public class Shout implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public Shout() {
+    }
+
+    public Shout(ZonedDateTime date, String message, User user) {
+        this.date = date;
+        this.message = message;
+        this.user = user;
+    }
+
     @Id
     @GeneratedValue
     private Long id;

@@ -8,7 +8,7 @@ angular.module('predictrApp')
   })
   .controller('BetsCtrl', function($scope, $location, $anchorScroll, $timeout, Game, Group) {
     $scope.groups = Group.query();
-    if($location.hash()) {
+    if ($location.hash()) {
       $scope.highlightedGameId = $location.hash();
       $timeout(function() {
         $anchorScroll();
@@ -33,7 +33,18 @@ angular.module('predictrApp')
     });
   })
   .controller('ShoutboxCtrl', function($scope, Shout) {
-    $scope.shouts = Shout.query({limit: 15});
+    var query = function() {
+      $scope.message = '';
+      $scope.shouts = Shout.query({limit: 15});
+      $scope.focusInput = true;
+    };
+    $scope.send = function() {
+      $scope.focusInput = false;
+      Shout.save({message: $scope.message}, function() {
+        query();
+      });
+    };
+    query();
   })
   .controller('AdminCtrl', function($scope) {
   });

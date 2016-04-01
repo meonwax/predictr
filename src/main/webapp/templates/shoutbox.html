@@ -5,10 +5,9 @@
     <div class="panel panel-default">
 
       <div class="panel-heading">
-
-        <form class="form-horizontal" role="form" onsubmit="return true;">
+        <form class="form-horizontal" role="form" ng-submit="send()">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="{{'shoutbox.message' | translate}}" autocomplete="off" autofocus="autofocus">
+            <input type="text" ng-model="message" class="form-control" placeholder="{{'shoutbox.message' | translate}}" autocomplete="off" focus-me="{{focusInput}}">
             <span class="input-group-btn">
               <button type="submit" data-loading-text="<i class='fa fa-spinner fa-spin'></i> {{'shoutbox.sendMessage' | translate}}" class="btn btn-default">
                 <i class="fa fa-send-o"></i>

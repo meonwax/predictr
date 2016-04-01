@@ -10,13 +10,10 @@ import de.meonwax.domain.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    List<User> findByWagerGreaterThan(BigDecimal wager);
-
-
-//    SELECT SUM(`wager`) as `jackpot` FROM `users`
+    public List<User> findByWagerGreaterThan(BigDecimal wager);
 
     @Query(value = "SELECT SUM(wager) FROM user", nativeQuery = true)
     public BigDecimal getJackpot();
 
-//    User findOneByEmailIgnoringCase(String email);
+    public User findOneByEmailIgnoringCase(String email);
 }
