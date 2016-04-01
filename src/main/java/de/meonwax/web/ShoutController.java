@@ -26,7 +26,6 @@ public class ShoutController {
 
     @RequestMapping(value = "/shouts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Shout> getAll(@RequestParam(value = "limit", required = false, defaultValue = "100") Integer limit) {
-        // TODO: sort by date desc
-        return shoutRepository.findAll(new PageRequest(0, limit)).getContent();
+        return shoutRepository.findAllByOrderByDateDesc(new PageRequest(0, limit)).getContent();
     }
 }
