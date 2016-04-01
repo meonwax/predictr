@@ -97,5 +97,8 @@
         "title": "Shoutbox",
         "message": "Nachricht…",
         "sendMessage": "Senden"
+    },
+    "admin": {
+        "title": "Administration"
     }
 }
