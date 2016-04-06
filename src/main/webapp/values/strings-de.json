@@ -73,7 +73,9 @@
         "points": "Punkte",
         "waitForResult": "Bitte warten bis das Ergebnis eingetragen wurde.",
         "otherBets": "Wie haben die Anderen getippt?",
-        "save": "Tipps speichern"
+        "save": "Tipps speichern",
+        "saveOk": "Tipps wurden gespeichert.",
+        "saveError": "Fehler beim Speichern der Tipps:"
     },
     "ladder": {
         "title": "Rangliste",

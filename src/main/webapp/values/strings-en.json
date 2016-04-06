@@ -73,7 +73,9 @@
         "points": "Points",
         "waitForResult": "Please wait until the result data has been entered",
         "otherBets": "Show the bets of the other users",
-        "save": "Save bets"
+        "save": "Save bets",
+        "saveOk": "Bets saved.",
+        "saveError": "Error saving bets:"
     },
     "ladder": {
         "title": "Ladder",

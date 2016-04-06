@@ -6,8 +6,27 @@ angular.module('predictrApp')
     $scope.runningGames = Game.runningGames().get();
     $scope.shouts = Shout.query({limit: 5});
   })
-  .controller('BetsCtrl', function($scope, $location, $anchorScroll, $timeout, Game, Group) {
-    $scope.groups = Group.query();
+  .controller('BetsCtrl', function($scope, $location, $anchorScroll, $timeout, $translate, toastr, Group, Bet) {
+    var query = function() {
+      $scope.loading = false;
+      $scope.groups = Group.query();
+    };
+    $scope.send = function() {
+      $scope.loading = true;
+      Bet.save({},
+        function() {
+          toastr.success($translate.instant('bets.saveOk'));
+          query();
+        },
+        function(response) {
+          var errorMessage = $translate.instant('bets.saveError') + '<br>' + response.status + ': ' + response.statusText;
+          toastr.error(errorMessage);
+          $scope.loading = false;
+          //query();
+        }
+      );
+    };
+    query();
     if ($location.hash()) {
       $scope.highlightedGameId = $location.hash();
       $timeout(function() {

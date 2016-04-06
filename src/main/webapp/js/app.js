@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies', 'ngResource', 'angular-ladda'])
+angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies', 'ngResource', 'angular-ladda', 'ngAnimate', 'toastr'])
   .run(function($rootScope, $route, $translate, ServerInfo, Account) {
     // Initialize root scope
     $rootScope.$route = $route;
@@ -10,7 +10,8 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
       $translate.use(language);
     };
   })
-  .config(function($routeProvider, $translateProvider) {
+  .config(function($translateProvider, toastrConfig) {
+
     // I18n
     $translateProvider
       .useStaticFilesLoader({
@@ -20,4 +21,12 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
       .preferredLanguage('de')
       .useCookieStorage()
       .useSanitizeValueStrategy('escapeParameters');
+
+    //Toastr
+    angular.extend(toastrConfig, {
+      allowHtml: true,
+      timeOut: 3000,
+      preventOpenDuplicates: true,
+
+    });
   });
