@@ -143,8 +143,11 @@ INSERT INTO `question` (`question`, `deadline`, `points`) VALUES
   ('Who will be voted the player of the tournament?', '2016-06-10 19:00:00', 7),
   ('Which referee will be assigned for the final?', '2016-06-25 13:00:00', 5);
 
-INSERT INTO `bet` (`score_away`, `score_home`, `game_id`, `user_id`) VALUES
-  (1, 2, 1, 1),
-  (0, 1, 2, 1),
-  (3, 0, 3, 1),
-  (5, 5, 2, 2);
+INSERT INTO `bet` (`user_id`, `game_id`, `score_home`, `score_away` ) VALUES
+  (1, 1, 1, 2),
+  (1, 2, 0, 1),
+  (1, 3, 3, 0),
+  (2, 1, 0, 0),
+  (2, 2, 3, 2),
+  (2, 5, 1, 2),
+  (2, 14, 3, 1);
