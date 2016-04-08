@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.meonwax.dto.BetDto;
 import de.meonwax.repository.BetRepository;
-import de.meonwax.repository.UserRepository;
 
 @RestController
 @RequestMapping("api")
@@ -27,9 +26,6 @@ public class BetController {
     @Autowired
     private BetRepository betRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @RequestMapping(value = "/bets", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> bet(@Valid @RequestBody List<BetDto> betDtos) {
         if (betDtos.isEmpty()) {
@@ -37,7 +33,7 @@ public class BetController {
         }
         // TODO: Determine logged in user
         for (BetDto betDto : betDtos) {
-            log.info(betDto);
+            log.info(betDto.toString());
         }
         return ResponseEntity.noContent().build();
     }
