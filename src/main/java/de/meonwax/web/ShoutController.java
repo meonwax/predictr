@@ -38,7 +38,7 @@ public class ShoutController {
 
     @RequestMapping(value = "/shouts", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@Valid @RequestBody ShoutDto shoutDto) {
-        // TODO: Select logged in user
+        // TODO: Determine logged in user
         Shout shout = new Shout(ZonedDateTime.now(), shoutDto.getMessage(), userRepository.findOneByEmailIgnoringCase("sid@example.com"));
         shoutRepository.save(shout);
         return ResponseEntity.status(HttpStatus.CREATED).build();

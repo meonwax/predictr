@@ -68,7 +68,6 @@ public class User implements Serializable {
     private Set<Shout> shouts;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
     private Set<Bet> bets;
 
     public Long getId() {

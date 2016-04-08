@@ -23,4 +23,9 @@ angular.module('predictrApp')
     return function(timestamp) {
       return $filter('date')(timestamp * 1000, 'yy-MM-dd HH:mm');
     };
+  })
+  .filter('bet', function($filter) {
+    return function(bet) {
+      return bet ? bet.scoreHome + ':' + bet.scoreAway : null;
+    };
   });

@@ -22,14 +22,10 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-//    @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public List<User> getAll() {
-//        return userRepository.findAll();
-//    }
-
     @RequestMapping(value = "/account", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public User getAccount() {
-        return userRepository.findOne(1L);
+        // TODO: Determine logged in user
+        return userRepository.findOneByEmailIgnoringCase("sid@example.com");
     }
 
     @RequestMapping(value = "/users/jackpot", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -12,8 +12,8 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "groups")
 // Unfortunately 'group' is a reserved word in H2 database
+@Table(name = "groups")
 public class Group implements Serializable {
 
     private static final long serialVersionUID = 1L;

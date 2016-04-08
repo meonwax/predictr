@@ -2,12 +2,14 @@ package de.meonwax.domain;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,103 +20,115 @@ public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-	@GeneratedValue
-	private Long id;
+    @GeneratedValue
+    private Long id;
 
-	@NotNull
-	@Column(nullable = false)
-	private ZonedDateTime kickoffTime;
+    @NotNull
+    @Column(nullable = false)
+    private ZonedDateTime kickoffTime;
 
-	@NotNull
-	@ManyToOne(optional = false)
-	@JsonIgnore
-	private Group group;
+    @NotNull
+    @ManyToOne(optional = false)
+    @JsonIgnore
+    private Group group;
 
-	@NotNull
-	@ManyToOne(optional = false)
-	private Location location;
-
-    @ManyToOne
-	private Team teamHome;
+    @NotNull
+    @ManyToOne(optional = false)
+    private Location location;
 
     @ManyToOne
-	private Team teamAway;
+    private Team teamHome;
 
-	private Integer scoreHome;
+    @ManyToOne
+    private Team teamAway;
 
-	private Integer scoreAway;
+    private Integer scoreHome;
 
-	private String notes;
+    private Integer scoreAway;
 
-	public Long getId() {
-		return id;
-	}
+    private String notes;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @OneToMany(mappedBy = "game")
+    @JsonIgnore
+    private Set<Bet> bets;
 
-	public ZonedDateTime getKickoffTime() {
-		return kickoffTime;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setKickoffTime(ZonedDateTime kickoffTime) {
-		this.kickoffTime = kickoffTime;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Group getGroup() {
-		return group;
-	}
+    public ZonedDateTime getKickoffTime() {
+        return kickoffTime;
+    }
 
-	public void setGroup(Group group) {
-		this.group = group;
-	}
+    public void setKickoffTime(ZonedDateTime kickoffTime) {
+        this.kickoffTime = kickoffTime;
+    }
 
-	public Location getLocation() {
-		return location;
-	}
+    public Group getGroup() {
+        return group;
+    }
 
-	public void setLocation(Location location) {
-		this.location = location;
-	}
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 
-	public Team getTeamHome() {
-		return teamHome;
-	}
+    public Location getLocation() {
+        return location;
+    }
 
-	public void setTeamHome(Team teamHome) {
-		this.teamHome = teamHome;
-	}
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
-	public Team getTeamAway() {
-		return teamAway;
-	}
+    public Team getTeamHome() {
+        return teamHome;
+    }
 
-	public void setTeamAway(Team teamAway) {
-		this.teamAway = teamAway;
-	}
+    public void setTeamHome(Team teamHome) {
+        this.teamHome = teamHome;
+    }
 
-	public Integer getScoreHome() {
-		return scoreHome;
-	}
+    public Team getTeamAway() {
+        return teamAway;
+    }
 
-	public void setScoreHome(Integer scoreHome) {
-		this.scoreHome = scoreHome;
-	}
+    public void setTeamAway(Team teamAway) {
+        this.teamAway = teamAway;
+    }
 
-	public Integer getScoreAway() {
-		return scoreAway;
-	}
+    public Integer getScoreHome() {
+        return scoreHome;
+    }
 
-	public void setScoreAway(Integer scoreAway) {
-		this.scoreAway = scoreAway;
-	}
+    public void setScoreHome(Integer scoreHome) {
+        this.scoreHome = scoreHome;
+    }
 
-	public String getNotes() {
-		return notes;
-	}
+    public Integer getScoreAway() {
+        return scoreAway;
+    }
 
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
+    public void setScoreAway(Integer scoreAway) {
+        this.scoreAway = scoreAway;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public Set<Bet> getBets() {
+        return bets;
+    }
+
+    public void setBets(Set<Bet> bets) {
+        this.bets = bets;
+    }
 }
