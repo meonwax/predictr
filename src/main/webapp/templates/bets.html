@@ -2,7 +2,7 @@
 
 <!-- <form id="bets" role="form" class="form-inline" onsubmit="postData('ajax.php?page=post_bets', $(this).serialize(), true); return false;"> -->
 <!-- <input type="hidden" name="groupid" value="<?= $groupid ?>"> -->
-<form role="form" ng-submit="send(this)">
+<form role="form" ng-submit="send()">
 
   <div class="row" ng-repeat="group in groups">
     <div class="col-md-12">
@@ -83,7 +83,7 @@
                 <!-- <?php if (intval($game['timestamp']) > $now): ?> -->
                 <!-- Only display input field if game will start in the future -->
                 <span ng-if="true">
-                  <input class="form-control" type="text" name="{{game.id}}" value="{{bets[game.id] | bet}}" placeholder="-:-" maxlength="4" onkeyup="validateBet(this)">
+                  <input class="form-control" type="text" placeholder="-:-" maxlength="4" myBet ng-model="bets[game.id]">
                 </span>
                 <span ng-if="false">
                   <!-- Display non editable bets if game has already been started -->

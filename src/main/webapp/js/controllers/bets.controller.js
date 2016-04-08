@@ -2,6 +2,7 @@
 
 angular.module('predictrApp')
   .controller('BetsCtrl', function($scope, $location, $anchorScroll, $timeout, $translate, toastr, Account, Group, Bet) {
+
     var query = function() {
       $scope.loading = false;
       $scope.groups = Group.query();
@@ -13,9 +14,25 @@ angular.module('predictrApp')
         });
       });
     };
-    $scope.send = function(form) {
+
+    $scope.send = function() {
+
       $scope.loading = true;
-      Bet.save($scope.groups,
+
+      // Prepare bets object to save
+      var bets = [];
+      angular.forEach($scope.bets, function(bet) {
+        bets.push({
+          'scoreHome': bet.scoreHome,
+          'scoreAway': bet.scoreAway,
+          'game': {
+            'id': bet.game.id
+          }
+        });
+      });
+
+      // Actually save it
+      Bet.save(bets,
         function() {
           toastr.success($translate.instant('bets.saveOk'));
           query();
@@ -27,7 +44,9 @@ angular.module('predictrApp')
         }
       );
     };
+
     query();
+
     if ($location.hash()) {
       $scope.highlightedGameId = $location.hash();
       $timeout(function() {
