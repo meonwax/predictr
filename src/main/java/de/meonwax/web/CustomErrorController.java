@@ -1,5 +1,9 @@
 package de.meonwax.web;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.boot.autoconfigure.web.ErrorController;
@@ -13,6 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("error")
 public class CustomErrorController implements ErrorController {
 
+    private final static Map<HttpStatus, String> myMap;
+    static {
+        Map<HttpStatus, String> m = new HashMap<>();
+        m.put(HttpStatus.UNAUTHORIZED, "401.html");
+        m.put(HttpStatus.NOT_FOUND, "404.html");
+        m.put(HttpStatus.INTERNAL_SERVER_ERROR, "500.html");
+        myMap = Collections.unmodifiableMap(m);
+    }
+
     @Override
     public String getErrorPath() {
         return "error";
@@ -20,8 +33,11 @@ public class CustomErrorController implements ErrorController {
 
     @RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
     public String errorHtml(HttpServletRequest request) {
-        HttpStatus status = getStatus(request);
-        return status.equals(HttpStatus.NOT_FOUND) ? "404.html" : "500.html";
+        String template = myMap.get(getStatus(request));
+        if (template != null) {
+            return template;
+        }
+        return "500.html";
     }
 
     @RequestMapping
