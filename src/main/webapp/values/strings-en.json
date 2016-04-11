@@ -11,6 +11,7 @@
         "questions": "Questions",
         "rules": "Rules",
         "shoutbox": "Shoutbox",
+        "login": "Login",
         "admin": "Admin"
     },
     "group": {
@@ -99,6 +100,13 @@
         "title": "Shoutbox",
         "message": "Message…",
         "sendMessage": "Send"
+    },
+    "login": {
+        "title": "Login",
+        "email": "Email",
+        "password": "Password",
+        "rememberMe": "Stay signed in",
+        "signIn": "Sign in"
     },
     "admin": {
         "title": "Administration"

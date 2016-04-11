@@ -11,6 +11,7 @@
         "questions": "Spezialfragen",
         "rules": "Regeln",
         "shoutbox": "Shoutbox",
+        "login": "Login",
         "admin": "Admin"
     },
     "group": {
@@ -99,6 +100,13 @@
         "title": "Shoutbox",
         "message": "Nachricht…",
         "sendMessage": "Senden"
+    },
+    "login": {
+        "title": "Login",
+        "email": "E-Mail",
+        "password": "Passwort",
+        "rememberMe": "Angemeldet bleiben",
+        "signIn": "Anmelden"
     },
     "admin": {
         "title": "Administration"

@@ -23,5 +23,8 @@ angular.module('predictrApp')
       $scope.content = $sce.trustAsHtml($interpolate(html)($rootScope.serverInfo));
     });
   })
+  .controller('LoginCtrl', function($scope) {
+    $scope.error = false;
+  })
   .controller('AdminCtrl', function($scope) {
   });
