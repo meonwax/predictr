@@ -111,11 +111,12 @@ INSERT INTO `game` (`kickoff_time`, `group_id`, `location_id`, `team_home_id`, `
 --
 -- Dummy data for development
 --
-INSERT INTO `user` (`password`, `name`, `email`, `is_admin`, `wager`, `created_date`, `last_modified_date`) VALUES
-    ('aaa', 'Admin', 'admin@example.com', '1', 0, '2015-02-01', '2015-02-01'),
-    ('bbb', 'Sid Rowland', 'sid@example.com', '0', 5, '2015-02-01', '2015-02-01'),
-    ('ccc', 'Paula Marsh', 'paula@example.com', '0', 5, '2015-02-01', '2015-02-01'),
-    ('ddd', 'Johanna Silva', 'johanna@example.com', '0', 0, '2015-02-01', '2015-02-01');
+INSERT INTO `user` (`password`, `name`, `email`, `role`, `wager`, `created_date`, `last_modified_date`) VALUES
+    ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Admin', 'admin@example.com', 'ROLE_ADMIN', 0, '2015-02-01', '2015-02-01'),
+    ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Sid Rowland', 'sid@example.com', 'ROLE_USER', 5, '2015-02-01', '2015-02-01'),
+    ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Paula Marsh', 'paula@example.com', 'ROLE_USER', 5, '2015-02-01', '2015-02-01'),
+    ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Johanna Silva', 'johanna@example.com', 'ROLE_USER', 0, '2015-02-01', '2015-02-01');
+-- Password is always: 123vorbei
 
 INSERT INTO `shout` (`date`, `user_id`, `message`) VALUES
   ('2015-07-15 22:19:15', 2, 'Nulla aliquet porttitor lacus luctus'),

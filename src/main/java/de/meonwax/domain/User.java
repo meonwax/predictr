@@ -3,6 +3,8 @@ package de.meonwax.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -13,20 +15,25 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
+
+    public final static String ROLE_ADMIN = "ROLE_ADMIN";
+    public final static String ROLE_USER = "ROLE_USER";
 
     @Id
     @GeneratedValue
@@ -42,21 +49,21 @@ public class User implements Serializable {
 
     @NotNull
     @Email
-    @Size(max = 255)
-    @Column(length = 255, unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @NotNull
-    @Size(min = 5, max = 100)
-    @Column(length = 100)
+    @Column(nullable = false)
     @JsonIgnore
     private String password;
 
+    @NotNull
+    @Column(nullable = false)
     private String name;
 
     @NotNull
     @Column(nullable = false)
-    private Boolean isAdmin;
+    private String role;
 
     @NotNull
     @Min(value = 0)
@@ -102,6 +109,7 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -118,12 +126,12 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public Boolean getIsAdmin() {
-        return isAdmin;
+    public String getRole() {
+        return role;
     }
 
-    public void setIsAdmin(Boolean isAdmin) {
-        this.isAdmin = isAdmin;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public BigDecimal getWager() {
@@ -148,5 +156,43 @@ public class User implements Serializable {
 
     public void setBets(Set<Bet> bets) {
         this.bets = bets;
+    }
+
+    @Override
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(role));
+        return grantedAuthorities;
+    }
+
+    @Override
+    @JsonIgnore
+    public String getUsername() {
+        return getEmail();
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isEnabled() {
+        return true;
     }
 }
