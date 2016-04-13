@@ -51,11 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/",
                         "/index.html",
                         "/values/**",
-                        "/401.html",
-                        "/404.html",
-                        "/500.html",
-                        "/login.html",
-                        "/templates/login.html",
+                        "/templates/**",
 
                         // H2 console
                         "/console/**",
