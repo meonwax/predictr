@@ -1,14 +1,28 @@
 'use strict';
 
 angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies', 'ngResource', 'angular-ladda', 'ngAnimate', 'toastr'])
-  .run(function($rootScope, $route, $translate, ServerInfo, Account) {
+  .run(function($rootScope, $route, $translate, $location, ServerInfo, Account) {
+
     // Initialize root scope
     $rootScope.$route = $route;
     $rootScope.serverInfo = ServerInfo.get();
-    $rootScope.account = Account.get();
+    //$rootScope.account = Account.get();
+
     $rootScope.changeLanguage = function(language) {
       $translate.use(language);
     };
+
+    $rootScope.logout = function() {
+      $rootScope.authenticated = false;
+      $location.path('');
+    };
+
+    // Check authentication state on every route change
+    $rootScope.$on('$routeChangeSuccess', function() {
+      if (!$rootScope.authenticated) {
+        $location.path('');
+      }
+    });
   })
   .config(function($translateProvider, toastrConfig) {
 
@@ -27,6 +41,5 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
       allowHtml: true,
       timeOut: 3000,
       preventOpenDuplicates: true,
-
     });
   });

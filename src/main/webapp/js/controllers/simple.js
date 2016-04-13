@@ -1,11 +1,6 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('HomeCtrl', function($scope, Game, Shout) {
-    $scope.upcomingGames = Game.upcomingGames().get();
-    $scope.runningGames = Game.runningGames().get();
-    $scope.shouts = Shout.query({limit: 5});
-  })
   .controller('LadderCtrl', function($scope, $http, Ladder) {
     $scope.ladder = Ladder.ladder().all();
     $scope.ladderJackpot = Ladder.ladder().jackpotOnly();
@@ -22,9 +17,6 @@ angular.module('predictrApp')
       var html = marked(response.data);
       $scope.content = $sce.trustAsHtml($interpolate(html)($rootScope.serverInfo));
     });
-  })
-  .controller('LoginCtrl', function($scope) {
-    $scope.error = false;
   })
   .controller('AdminCtrl', function($scope) {
   });

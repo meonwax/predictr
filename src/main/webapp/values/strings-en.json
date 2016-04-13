@@ -11,7 +11,7 @@
         "questions": "Questions",
         "rules": "Rules",
         "shoutbox": "Shoutbox",
-        "login": "Login",
+        "logout": "Sign out",
         "admin": "Admin"
     },
     "group": {
@@ -61,7 +61,12 @@
         "runningGames": "Running games",
         "upcomingGames": "Upcoming games",
         "shouts": "Shouts",
-        "since": "since"
+        "since": "since",
+        "loginHere": "Please sign in here",
+        "email": "Email",
+        "password": "Password",
+        "rememberMe": "Stay signed in",
+        "signIn": "Sign in"
     },
     "bets": {
         "title": "Games & bets",
@@ -100,13 +105,6 @@
         "title": "Shoutbox",
         "message": "Message…",
         "sendMessage": "Send"
-    },
-    "login": {
-        "title": "Login",
-        "email": "Email",
-        "password": "Password",
-        "rememberMe": "Stay signed in",
-        "signIn": "Sign in"
     },
     "admin": {
         "title": "Administration"

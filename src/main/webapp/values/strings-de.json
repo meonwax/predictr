@@ -11,7 +11,7 @@
         "questions": "Spezialfragen",
         "rules": "Regeln",
         "shoutbox": "Shoutbox",
-        "login": "Login",
+        "logout": "Abmelden",
         "admin": "Admin"
     },
     "group": {
@@ -61,7 +61,12 @@
         "runningGames": "Aktuelle Spiele",
         "upcomingGames": "Nächste Spiele",
         "shouts": "Shouts",
-        "since": "seit"
+        "since": "seit",
+        "loginHere": "Bitte hier anmelden",
+        "email": "E-Mail",
+        "password": "Passwort",
+        "rememberMe": "Angemeldet bleiben",
+        "signIn": "Anmelden"
     },
     "bets": {
         "title": "Spielplan / Tipps",
@@ -100,13 +105,6 @@
         "title": "Shoutbox",
         "message": "Nachricht…",
         "sendMessage": "Senden"
-    },
-    "login": {
-        "title": "Login",
-        "email": "E-Mail",
-        "password": "Passwort",
-        "rememberMe": "Angemeldet bleiben",
-        "signIn": "Anmelden"
     },
     "admin": {
         "title": "Administration"
