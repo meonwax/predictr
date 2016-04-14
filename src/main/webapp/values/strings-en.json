@@ -55,18 +55,20 @@
     "home": {
         "hello": "Hello {{userName}}!",
         "welcome": "Welcome to {{appName}}.",
-        "important": "Important",
+        "important": "Important:",
         "readTheRules": "Please read the rules.",
         "dontForget": "Do not forget to answer the questions before start of tournament.",
         "runningGames": "Running games",
         "upcomingGames": "Upcoming games",
         "shouts": "Shouts",
         "since": "since",
-        "loginHere": "Please sign in here",
+        "loginHere": "Please sign in here:",
         "email": "Email",
         "password": "Password",
         "rememberMe": "Stay signed in",
-        "signIn": "Sign in"
+        "signIn": "Sign in",
+        "success": "You signed in successfully.",
+        "error": "Sign in failed. Please check your credentials."
     },
     "bets": {
         "title": "Games & bets",

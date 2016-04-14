@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('HomeCtrl', function($rootScope, $scope, $http, Game, Shout) {
+  .controller('HomeCtrl', function($rootScope, $scope, $http, Authentication, Game, Shout) {
 
     // TODO: Read flag from config
     $scope.importantMessage = true;
 
-    if ($rootScope.authenticated) {
+    if (Authentication.getToken()) {
       $scope.upcomingGames = Game.upcomingGames().get();
       $scope.runningGames = Game.runningGames().get();
       $scope.shouts = Shout.query({limit: 5});
@@ -14,21 +14,14 @@ angular.module('predictrApp')
 
     $scope.credentials = {};
 
-    // TODO: Replace $http with Account service
-    // TODO: Replace HTTP Basic Auth
     $scope.login = function() {
-      var headers = {authorization: 'Basic ' + btoa($scope.credentials.email + ':' + $scope.credentials.password)};
-      $http.get('api/users/account', {headers: headers})
-        .then(function(response) {
-          if (response.data.name) {
-            $rootScope.authenticated = true;
-          } else {
-            $rootScope.authenticated = false;
-            $scope.error = true;
-          }
-        }, function() {
-          $rootScope.authenticated = false;
+      Authentication.login($scope.credentials)
+        .then(function() {
+          $scope.success = true;
+          $scope.error = false;
+        }, function(error) {
+          $scope.success = false;
           $scope.error = true;
-        });
+        })
     };
   });

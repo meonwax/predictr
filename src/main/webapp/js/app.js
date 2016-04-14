@@ -1,30 +1,31 @@
 'use strict';
 
-angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies', 'ngResource', 'angular-ladda', 'ngAnimate', 'toastr'])
-  .run(function($rootScope, $route, $translate, $location, ServerInfo, Account) {
+angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies', 'ngResource', 'LocalStorageModule', 'angular-ladda', 'ngAnimate', 'toastr'])
+  .run(function($rootScope, $route, $translate, $location, ServerInfo, Authentication) {
 
     // Initialize root scope
     $rootScope.$route = $route;
     $rootScope.serverInfo = ServerInfo.get();
-    //$rootScope.account = Account.get();
 
     $rootScope.changeLanguage = function(language) {
       $translate.use(language);
     };
 
     $rootScope.logout = function() {
-      $rootScope.authenticated = false;
+      Authentication.logout();
       $location.path('');
-    };
+    }
 
-    // Check authentication state on every route change
     $rootScope.$on('$routeChangeSuccess', function() {
-      if (!$rootScope.authenticated) {
-        $location.path('');
-      }
+      console.log('routeChangeSuccess');
+    });
+
+    $rootScope.$on('$routeChangeError', function(event, current, previous, eventObj) {
+      console.log('routeChangeError');
+      $location.path('');
     });
   })
-  .config(function($translateProvider, toastrConfig) {
+  .config(function($translateProvider, localStorageServiceProvider, toastrConfig) {
 
     // I18n
     $translateProvider
@@ -35,6 +36,11 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
       .preferredLanguage('de')
       .useCookieStorage()
       .useSanitizeValueStrategy('escapeParameters');
+
+    // Local storage
+    localStorageServiceProvider
+      .setPrefix('predictr')
+      .setStorageType('sessionStorage');
 
     //Toastr
     angular.extend(toastrConfig, {

@@ -55,18 +55,20 @@
     "home": {
         "hello": "Hallo {{userName}}!",
         "welcome": "Willkommen zum {{appName}}.",
-        "important": "Wichtig",
+        "important": "Wichtig:",
         "readTheRules": "Bitte lies Dir die Regeln durch.",
         "dontForget": "Vergiss nicht, die Spezialfragen vor Turnierbeginn zu beantworten.",
         "runningGames": "Aktuelle Spiele",
         "upcomingGames": "Nächste Spiele",
         "shouts": "Shouts",
         "since": "seit",
-        "loginHere": "Bitte hier anmelden",
+        "loginHere": "Bitte hier anmelden:",
         "email": "E-Mail",
         "password": "Passwort",
         "rememberMe": "Angemeldet bleiben",
-        "signIn": "Anmelden"
+        "signIn": "Anmelden",
+        "success": "Du wurdest erfolgreich angemeldet.",
+        "error": "Anmeldung fehlgeschlagen. Bitte überprüfe Deine Zugangsdaten."
     },
     "bets": {
         "title": "Spielplan / Tipps",

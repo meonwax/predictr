@@ -3,17 +3,14 @@
 	<small translate="home.welcome" translate-values="{appName: serverInfo.title}"></small>
 </h2>
 
-<div class="row" ng-if="!isAuthenticated">
+<div class="row">
 	<div class="col-md-12">
-		<div class="panel panel-default" ng-class="{'panel-danger': error, 'panel-primary': !error}">
-			<!-- <div class="panel panel-default"> -->
+		<div class="panel panel-default" ng-class="{'panel-primary': !error && !success, 'panel-success': success, 'panel-danger': error}">
 
-			<div class="panel-heading" ng-show="error">
-				FEHLER FEHLER FEHLER
-			</div>
-
-			<div class="panel-heading" ng-show="!error">
-				<strong translate="home.loginHere"></strong>
+			<div class="panel-heading">
+				<strong translate="home.loginHere" ng-show="!error && !success"></strong>
+				<strong translate="home.success" ng-show="success"></strong>
+				<strong translate="home.error" ng-show="error"></strong>
 			</div>
 
 			<div class="panel-body">
