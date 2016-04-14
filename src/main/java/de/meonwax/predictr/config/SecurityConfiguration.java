@@ -1,7 +1,5 @@
 package de.meonwax.predictr.config;
 
-import javax.servlet.ServletContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -13,9 +11,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.csrf.CsrfFilter;
 
-import de.meonwax.predictr.filter.CsrfHeaderFilter;
+import de.meonwax.predictr.security.RestAuthenticationEntryPoint;
+import de.meonwax.predictr.security.RestAuthenticationFailureHandler;
+import de.meonwax.predictr.security.RestAuthenticationSuccessHandler;
+import de.meonwax.predictr.security.RestLogoutSuccessHandler;
 import de.meonwax.predictr.service.UserService;
 
 @Configuration
@@ -24,10 +24,19 @@ import de.meonwax.predictr.service.UserService;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private ServletContext servletContext;
+    private UserService userService;
 
     @Autowired
-    private UserService userService;
+    private RestAuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    private RestAuthenticationSuccessHandler authenticationSuccessHandler;
+
+    @Autowired
+    private RestAuthenticationFailureHandler authenticationFailureHandler;
+
+    @Autowired
+    private RestLogoutSuccessHandler logoutSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,29 +50,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .httpBasic()
+        http.authorizeRequests().antMatchers("/api/**").authenticated()
+                .and().csrf().disable()
+                //.and().addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
 
-                .and()
-                .authorizeRequests()
-                .antMatchers(
-                        // Public available resources
-                        "/",
-                        "/index.html",
-                        "/values/**",
-                        "/templates/**",
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
 
-                        // H2 console
-                        "/console/**",
+                //.and().headers().frameOptions().disable()
 
-                        // Public available API endpoints
-                        "/api/info",
-                        "/api/users/register")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                .and().formLogin()
+                .loginPage("/api/users/login")
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
+                .usernameParameter("email")
 
-                .and()
-                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+                .and().logout()
+                .logoutUrl("/api/users/logout")
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .clearAuthentication(false)
+                .deleteCookies("JSESSIONID");
     }
 }

@@ -32,12 +32,15 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        log.info("Querying user with email " + email + " from database.");
-        User user = userRepository.findOneByEmailIgnoringCase(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User with email address " + email + " not found.");
+        if (email.length() > 0) {
+            log.info("Querying user with email " + email + " from database");
+            User user = userRepository.findOneByEmailIgnoringCase(email);
+            if (user != null) {
+                return user;
+            }
+            throw new UsernameNotFoundException("User with email address " + email + " not found");
         }
-        return user;
+        throw new UsernameNotFoundException("No email address given for user query");
     }
 
     public List<User> getAllUsers() {
@@ -55,16 +58,13 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean registerUser(UserDto userDto) {
-
         User user = new User();
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
         // Defaults for new users
         user.setRole(User.ROLE_USER);
         user.setWager(BigDecimal.valueOf(0));
-
         try {
             userRepository.save(user);
             return true;
