@@ -18,7 +18,7 @@ angular.module('predictrApp')
       }
     };
   })
-  .directive('mybet', function() {
+  .directive('myBet', function() {
     return {
       restrict: 'A',
       require: 'ngModel',
@@ -42,6 +42,7 @@ angular.module('predictrApp')
               return bet;
             }
           }
+          return '';
         }
         ngModel.$parsers.push(parser);
       }

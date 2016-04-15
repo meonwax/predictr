@@ -12,32 +12,36 @@ a {
 }
 
 .nowrap {
-	white-space: nowrap;
+  white-space: nowrap;
 }
 .bold {
-	font-weight: bold;
+  font-weight: bold;
 }
 .table tbody > tr > td.vert-align {
-	vertical-align: middle;
+  vertical-align: middle;
 }
 
 /*
- * Input fields
- */
+* Input fields
+*/
+.ng-invalid {
+  border-color: #a94442;
+  outline-color: #a94442;
+}
 #bets input {
-	width: 4em;
-	text-align: center;
+  width: 4em;
+  text-align: center;
 }
 /*
 @media (max-width: 991px) {
-	#special input {
-		width: 12em;
-	}
+  #special input {
+    width: 12em;
+  }
 }
 @media (max-width: 767px) {
-	#special input {
-		width: 10em;
-	}
+  #special input {
+    width: 10em;
+  }
 }
 */
 
