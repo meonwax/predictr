@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,10 +38,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/account", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getAccount() {
-        return userService.getCurrentUser()
-                .map(user -> ResponseEntity.ok().body(user))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null));
+    public ResponseEntity<User> getAccount(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok().body(userService.getUser(user.getEmail()));
     }
 
     @RequestMapping(value = "/users/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

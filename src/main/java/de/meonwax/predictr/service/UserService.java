@@ -2,13 +2,10 @@ package de.meonwax.predictr.service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -43,18 +40,12 @@ public class UserService implements UserDetailsService {
         throw new UsernameNotFoundException("No email address given for user query");
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public User getUser(String email) {
+        return userRepository.findOneByEmailIgnoringCase(email);
     }
 
-    public Optional<User> getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
-            String email = springSecurityUser.getUsername();
-            return Optional.ofNullable(userRepository.findOneByEmailIgnoringCase(email));
-        }
-        return Optional.empty();
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     public boolean registerUser(UserDto userDto) {

@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.meonwax.predictr.domain.Shout;
+import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.ShoutDto;
 import de.meonwax.predictr.repository.ShoutRepository;
 import de.meonwax.predictr.repository.UserRepository;
@@ -37,9 +39,8 @@ public class ShoutController {
     }
 
     @RequestMapping(value = "/shouts", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> create(@Valid @RequestBody ShoutDto shoutDto) {
-        // TODO: Determine logged in user
-        Shout shout = new Shout(ZonedDateTime.now(), shoutDto.getMessage(), userRepository.findOneByEmailIgnoringCase("sid@example.com"));
+    public ResponseEntity<Void> create(@Valid @RequestBody ShoutDto shoutDto, @AuthenticationPrincipal User user) {
+        Shout shout = new Shout(ZonedDateTime.now(), shoutDto.getMessage(), user);
         shoutRepository.save(shout);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
