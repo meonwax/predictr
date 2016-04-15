@@ -20,6 +20,6 @@ public class GroupController {
 
     @RequestMapping(value = "/groups", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Group> getAll() {
-        return groupRepository.findAll();
+        return groupRepository.findAllByOrderByPriority();
     }
 }

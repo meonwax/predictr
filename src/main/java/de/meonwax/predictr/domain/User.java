@@ -41,10 +41,12 @@ public class User implements Serializable, UserDetails {
 
     @CreatedDate
     @NotNull
+    @Column(nullable = false)
     private ZonedDateTime createdDate = ZonedDateTime.now();
 
     @LastModifiedDate
     @NotNull
+    @Column(nullable = false)
     private ZonedDateTime lastModifiedDate = ZonedDateTime.now();
 
     @NotNull

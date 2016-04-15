@@ -1,7 +1,17 @@
 --
 -- Euro 2016 data
 --
-INSERT INTO `groups` (`id`) VALUES ('a'), ('b'), ('c'), ('d'), ('e'), ('f'), ('8'), ('4'), ('2'), ('1');
+INSERT INTO `groups` (`id`, `priority`) VALUES
+	('a', 0),
+	('b', 1),
+	('c', 2),
+	('d', 3),
+	('e', 4),
+	('f', 5),
+	('8', 6),
+	('4', 7),
+	('2', 8),
+	('1', 9);
 
 INSERT INTO `team` (`id`, `group_id`) VALUES
   ('alb', 'a'),

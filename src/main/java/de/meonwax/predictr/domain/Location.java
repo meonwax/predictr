@@ -9,7 +9,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "locations") // Unfortunately 'location' is a reserved word in H2 database
+// Unfortunately 'location' is a reserved word in H2 database
+@Table(name = "locations")
 public class Location implements Serializable {
 
     private static final long serialVersionUID = 1L;
