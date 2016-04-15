@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import de.meonwax.predictr.util.Utils;
+
 @Entity
 public class Game implements Serializable {
 
@@ -130,5 +132,10 @@ public class Game implements Serializable {
 
     public void setBets(Set<Bet> bets) {
         this.bets = bets;
+    }
+
+    @Override
+    public String toString() {
+        return Utils.jsonSerialize(this, true);
     }
 }

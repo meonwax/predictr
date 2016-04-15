@@ -3,6 +3,7 @@ package de.meonwax.predictr.dto;
 import javax.validation.constraints.NotNull;
 
 import de.meonwax.predictr.domain.Game;
+import de.meonwax.predictr.util.Utils;
 
 public class BetDto {
 
@@ -41,6 +42,6 @@ public class BetDto {
 
     @Override
     public String toString() {
-        return "BetDto [game=" + game + ", scoreHome=" + scoreHome + ", scoreAway=" + scoreAway + "]";
+        return Utils.jsonSerialize(this, true);
     }
 }
