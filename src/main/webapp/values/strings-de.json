@@ -52,6 +52,15 @@
         "isl": "Island",
         "por": "Portugal"
     },
+    "login": {
+        "title": "Login",
+        "loginHere": "Bitte hier anmelden:",
+        "email": "E-Mail",
+        "password": "Passwort",
+        "rememberMe": "Angemeldet bleiben",
+        "signIn": "Anmelden",
+        "error": "Anmeldung fehlgeschlagen. Bitte überprüfe Deine Zugangsdaten."
+    },
     "home": {
         "hello": "Hallo {{userName}}!",
         "welcome": "Willkommen zum {{appName}}.",
@@ -61,14 +70,7 @@
         "runningGames": "Aktuelle Spiele",
         "upcomingGames": "Nächste Spiele",
         "shouts": "Shouts",
-        "since": "seit",
-        "loginHere": "Bitte hier anmelden:",
-        "email": "E-Mail",
-        "password": "Passwort",
-        "rememberMe": "Angemeldet bleiben",
-        "signIn": "Anmelden",
-        "success": "Du wurdest erfolgreich angemeldet.",
-        "error": "Anmeldung fehlgeschlagen. Bitte überprüfe Deine Zugangsdaten."
+        "since": "seit"
     },
     "bets": {
         "title": "Spielplan / Tipps",

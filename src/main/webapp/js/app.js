@@ -13,8 +13,10 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
 
     $rootScope.logout = function() {
       Authentication.logout();
-      $location.path('');
+      $location.path('login');
     }
+
+    $rootScope.Auth = Authentication;
 
     $rootScope.$on('$routeChangeSuccess', function() {
       console.log('routeChangeSuccess');
@@ -22,7 +24,8 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
 
     $rootScope.$on('$routeChangeError', function(event, current, previous, eventObj) {
       console.log('routeChangeError');
-      $location.path('');
+      // Redirect to login page
+      $location.path('login');
     });
   })
   .config(function($translateProvider, localStorageServiceProvider, toastrConfig) {

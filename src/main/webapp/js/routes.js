@@ -10,10 +10,16 @@ angular.module('predictrApp')
       }
     };
     $routeProvider
+      .when('/login', {
+        templateUrl: 'templates/login.html',
+        controller: 'LoginCtrl',
+        activeTab: 'login'
+      })
       .when('/', {
         templateUrl: 'templates/home.html',
         controller: 'HomeCtrl',
-        activeTab: 'home'
+        activeTab: 'home',
+        resolve: {auth: checkAuthentication}
       })
       .when('/bets', {
         templateUrl: 'templates/bets.html',

@@ -52,6 +52,15 @@
         "isl": "Iceland",
         "por": "Portugal"
     },
+    "login": {
+        "title": "Login",
+        "loginHere": "Please sign in here:",
+        "email": "Email",
+        "password": "Password",
+        "rememberMe": "Stay signed in",
+        "signIn": "Sign in",
+        "error": "Sign in failed. Please check your credentials."
+    },
     "home": {
         "hello": "Hello {{userName}}!",
         "welcome": "Welcome to {{appName}}.",
@@ -61,14 +70,7 @@
         "runningGames": "Running games",
         "upcomingGames": "Upcoming games",
         "shouts": "Shouts",
-        "since": "since",
-        "loginHere": "Please sign in here:",
-        "email": "Email",
-        "password": "Password",
-        "rememberMe": "Stay signed in",
-        "signIn": "Sign in",
-        "success": "You signed in successfully.",
-        "error": "Sign in failed. Please check your credentials."
+        "since": "since"
     },
     "bets": {
         "title": "Games & bets",

@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ladda-bootstrap/0.9.4/ladda-themeless.min.css">
-  <link rel="stylesheet" href="https://cdn.rawgit.com/Foxandxss/angular-toastr/1.7.0/dist/angular-toastr.min.css" />
+  <link rel="stylesheet" href="https://cdn.rawgit.com/Foxandxss/angular-toastr/1.7.0/dist/angular-toastr.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -24,27 +24,27 @@
       <h1 ng-cloak>{{serverInfo.title}}</h1>
 
       <!-- Tabbed navbar for normal screens -->
-      <ul class="nav nav-tabs hidden-xs" role="tablist">
+      <ul class="nav nav-tabs hidden-xs" role="tablist" ng-if="Auth.getToken()">
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'home'}"><a href="#/"><i class="fa fa-home"></i> <span translate="navigation.home"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'bets'}"><a href="#/bets"><i class="fa fa-table"></i> <span translate="navigation.bets"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'ladder'}"><a href="#/ladder"><i class="fa fa-list-ol"></i> <span translate="navigation.ladder"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'questions'}"><a href="#/questions"><i class="fa fa-question"></i> <span translate="navigation.questions"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'rules'}"><a href="#/rules"><i class="fa fa-book"></i> <span translate="navigation.rules"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'shoutbox'}"><a href="#/shoutbox"><i class="fa fa-comment-o"></i> <span translate="navigation.shoutbox"></span></a></li>
-        <li role="presentation"><a ng-click="logout()"><i class="fa fa-sign-out"></i> <span translate="navigation.logout"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'admin'}"><a href="#/admin"><i class="fa fa-cogs"></i> <span translate="navigation.admin"></span></a></li>
+        <li role="presentation"><a ng-click="logout()" class="text-danger"><i class="fa fa-sign-out"></i> <span translate="navigation.logout"></span></a></li>
       </ul>
 
       <!-- Stacked pills navbar for small screens -->
-      <ul class="nav nav-pills nav-stacked visible-xs">
+      <ul class="nav nav-pills nav-stacked visible-xs" ng-if="Auth.getToken()">
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'home'}"><a ng-href="#/"><i class="fa fa-home fa-fw"></i> <span translate="navigation.home"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'bets'}"><a href="#/bets"><i class="fa fa-table fa-fw"></i> <span translate="navigation.bets"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'ladder'}"><a href="#/ladder"><i class="fa fa-list-ol fa-fw"></i> <span translate="navigation.ladder"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'questions'}"><a href="#/questions"><i class="fa fa-question fa-fw"></i> <span translate="navigation.questions"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'rules'}"><a href="#/rules"><i class="fa fa-book fa-fw"></i> <span translate="navigation.rules"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'shoutbox'}"><a href="#/shoutbox"><i class="fa fa-comment-o fa-fw"></i> <span translate="navigation.shoutbox"></span></a></li>
-        <li role="presentation"><a ng-click="logout()"><i class="fa fa-sign-out fa-fw"></i> <span translate="navigation.logout"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'admin'}"><a href="#/admin"><i class="fa fa-cogs fa-fw"></i> <span translate="navigation.admin"></span></a></li>
+        <li role="presentation"><a ng-click="logout()" class="text-danger"><i class="fa fa-sign-out fa-fw"></i> <span translate="navigation.logout"></span></a></li>
       </ul>
     </div>
   </div>
@@ -100,6 +100,7 @@
   <script src="js/directives.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/controllers/simple.js"></script>
+  <script src="js/controllers/login.controller.js"></script>
   <script src="js/controllers/home.controller.js"></script>
   <script src="js/controllers/bets.controller.js"></script>
   <script src="js/controllers/shoutbox.controller.js"></script>
