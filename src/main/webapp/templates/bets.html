@@ -37,7 +37,7 @@
           </thead>
 
           <tbody>
-            <tr ng-repeat="game in group.games" id="{{game.id}}" ng-class="{info: highlightedGameId == game.id}">
+            <tr ng-repeat="game in group.games" ng-class="{info: highlightedGameId == game.id}">
 
               <td class="hidden-xs vert-align">{{game.id}}</td>
               <td class="hidden-xs vert-align">{{game.kickoffTime | myDate}}</td>

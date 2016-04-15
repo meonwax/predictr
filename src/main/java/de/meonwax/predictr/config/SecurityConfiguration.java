@@ -63,7 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
 
-                //.and().headers().frameOptions().disable()
+                .and().headers().frameOptions().disable()
 
                 .and().formLogin()
                 .loginPage("/api/users/login")

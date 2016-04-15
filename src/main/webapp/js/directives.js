@@ -38,6 +38,7 @@ angular.module('predictrApp')
               var bet = {};
               bet.scoreHome = arr[0];
               bet.scoreAway = arr[1];
+              bet.game = scope.$parent.game;
               return bet;
             }
           }

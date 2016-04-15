@@ -35,12 +35,12 @@ angular.module('predictrApp')
       Bet.save(bets,
         function() {
           toastr.success($translate.instant('bets.saveOk'));
-          query();
+          $scope.loading = false;
         },
         function(response) {
           var errorMessage = $translate.instant('bets.saveError') + '<br>' + response.status + ': ' + response.statusText;
           toastr.error(errorMessage);
-          $scope.loading = false;
+          query();
         }
       );
     };
