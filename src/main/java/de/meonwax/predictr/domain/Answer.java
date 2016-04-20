@@ -26,6 +26,7 @@ public class Answer implements Serializable {
 
     @NotNull
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Question question;
 
     private String answer;

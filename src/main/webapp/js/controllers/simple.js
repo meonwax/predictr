@@ -8,9 +8,6 @@ angular.module('predictrApp')
       $scope.jackpot = response.data;
     });
   })
-  .controller('QuestionsCtrl', function($scope, Question) {
-    $scope.questions = Question.query();
-  })
   .controller('RulesCtrl', function($rootScope, $scope, $http, $translate, $sce, $interpolate) {
     var currentLanguage = $translate.use();
     $http.get('values/rules-' + currentLanguage + '.md').then(function(response) {

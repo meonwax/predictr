@@ -162,3 +162,9 @@ INSERT INTO `bet` (`user_id`, `game_id`, `score_home`, `score_away` ) VALUES
   (2, 2, 3, 2),
   (2, 5, 1, 2),
   (2, 14, 3, 1);
+
+INSERT INTO `answer` (`user_id`, `question_id`, `answer` ) VALUES
+  (1, 1, 'Germany'),
+  (1, 4, 'Jonas Eriksson'),
+  (3, 1, 'England'),
+  (3, 4, 'Felix Brych');

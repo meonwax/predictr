@@ -79,6 +79,10 @@ public class User implements Serializable, UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Bet> bets;
 
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<Answer> answers;
+
     public Long getId() {
         return id;
     }
@@ -158,6 +162,14 @@ public class User implements Serializable, UserDetails {
 
     public void setBets(Set<Bet> bets) {
         this.bets = bets;
+    }
+
+    public Set<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(Set<Answer> answers) {
+        this.answers = answers;
     }
 
     @Override
