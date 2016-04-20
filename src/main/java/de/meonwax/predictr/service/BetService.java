@@ -35,5 +35,4 @@ public class BetService {
         }
         betRepository.save(bets);
     }
-
 }

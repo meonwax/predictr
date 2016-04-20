@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import de.meonwax.predictr.domain.User;
 
-public class Rank implements Serializable {
+public class RankDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -14,7 +14,7 @@ public class Rank implements Serializable {
 
     private Integer position;
 
-    public Rank(User user, Integer points, Integer position) {
+    public RankDto(User user, Integer points, Integer position) {
         this.user = user;
         this.points = points;
         this.position = position;

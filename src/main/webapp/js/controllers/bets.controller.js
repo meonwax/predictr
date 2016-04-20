@@ -19,7 +19,7 @@ angular.module('predictrApp')
 
       $scope.loading = true;
 
-      // Prepare bets object to save
+      // Prepare DTO array to save
       var bets = [];
       angular.forEach($scope.bets, function(bet) {
         bets.push({

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.meonwax.predictr.domain.User;
-import de.meonwax.predictr.dto.Rank;
+import de.meonwax.predictr.dto.RankDto;
 import de.meonwax.predictr.repository.UserRepository;
 import de.meonwax.predictr.util.SortedContainer;
 
@@ -22,7 +22,7 @@ public class LadderService {
     @Autowired
     private CalculationService calculateService;
 
-    public List<Rank> getLadder(boolean jackpotOnly) {
+    public List<RankDto> getLadder(boolean jackpotOnly) {
         SortedContainer<Integer, User> sortedUsers = getSortedUsers(jackpotOnly);
         return createLadder(sortedUsers);
     }
@@ -36,9 +36,9 @@ public class LadderService {
         return sortedUsers;
     }
 
-    private List<Rank> createLadder(SortedContainer<Integer, User> sortedUsers) {
+    private List<RankDto> createLadder(SortedContainer<Integer, User> sortedUsers) {
 
-        List<Rank> ladder = new ArrayList<Rank>();
+        List<RankDto> ladder = new ArrayList<RankDto>();
 
         // Sort entries descending
         List<SortedContainer<Integer, User>.Entry> entryList = sortedUsers.entryList();
@@ -49,7 +49,7 @@ public class LadderService {
 
         for (SortedContainer<Integer, User>.Entry e : entryList) {
             int points = e.getKey();
-            ladder.add(new Rank(e.getValue(), points, previousPoints != points ? position : null));
+            ladder.add(new RankDto(e.getValue(), points, previousPoints != points ? position : null));
             previousPoints = points;
             position++;
         }

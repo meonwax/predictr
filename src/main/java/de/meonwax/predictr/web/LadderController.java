@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.meonwax.predictr.dto.Rank;
+import de.meonwax.predictr.dto.RankDto;
 import de.meonwax.predictr.service.LadderService;
 
 @RestController
@@ -24,7 +24,7 @@ public class LadderController {
     private LadderService ladderService;
 
     @RequestMapping(value = "/ladder", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Rank> getAll(@RequestParam(value = "jackpot_only", required = false, defaultValue = "0") Boolean jackpotOnly) {
+    public List<RankDto> getAll(@RequestParam(value = "jackpot_only", required = false, defaultValue = "0") Boolean jackpotOnly) {
         return ladderService.getLadder(jackpotOnly);
     }
 }
