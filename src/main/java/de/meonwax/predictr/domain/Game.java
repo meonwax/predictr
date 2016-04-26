@@ -51,7 +51,6 @@ public class Game implements Serializable {
     private String notes;
 
     @OneToMany(mappedBy = "game")
-    @JsonIgnore
     private Set<Bet> bets;
 
     public Long getId() {

@@ -21,7 +21,6 @@ import de.meonwax.predictr.domain.Shout;
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.ShoutDto;
 import de.meonwax.predictr.repository.ShoutRepository;
-import de.meonwax.predictr.repository.UserRepository;
 
 @RestController
 @RequestMapping("api")
@@ -29,9 +28,6 @@ public class ShoutController {
 
     @Autowired
     private ShoutRepository shoutRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @RequestMapping(value = "/shouts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Shout> getAll(@RequestParam(value = "limit", required = false, defaultValue = "100") Integer limit) {

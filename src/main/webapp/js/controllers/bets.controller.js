@@ -1,32 +1,28 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('BetsCtrl', function($scope, $location, $anchorScroll, $timeout, $translate, toastr, Account, Group, Bet) {
+  .controller('BetsCtrl', function($scope, $location, $anchorScroll, $timeout, $translate, toastr, Group, Bet) {
 
     var query = function() {
       $scope.loading = false;
       $scope.groups = Group.query();
-      Account.get(function(account) {
-        // Reindex bets using gameId
-        $scope.bets = {};
-        angular.forEach(account.bets, function(bet) {
-          $scope.bets[bet.game.id] = bet;
-        });
-      });
     };
 
     $scope.send = function() {
-
       $scope.loading = true;
 
       // Prepare DTO array to save
       var bets = [];
-      angular.forEach($scope.bets, function(bet) {
-        bets.push({
-          'scoreHome': bet.scoreHome,
-          'scoreAway': bet.scoreAway,
-          'game': {
-            'id': bet.game.id
+      angular.forEach($scope.groups, function(group) {
+        angular.forEach(group.games, function(game) {
+          if(game.bets[0]) {
+            bets.push({
+              'scoreHome': game.bets[0].scoreHome,
+              'scoreAway': game.bets[0].scoreAway,
+              'game': {
+                'id': game.id
+              }
+            });
           }
         });
       });

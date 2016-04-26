@@ -29,6 +29,7 @@ public class Bet implements Serializable {
 
     @NotNull
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Game game;
 
     private Integer scoreHome;

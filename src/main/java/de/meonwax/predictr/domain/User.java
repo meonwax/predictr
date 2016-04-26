@@ -77,6 +77,7 @@ public class User implements Serializable, UserDetails {
     private Set<Shout> shouts;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<Bet> bets;
 
     @OneToMany(mappedBy = "user")
