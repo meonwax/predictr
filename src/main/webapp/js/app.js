@@ -18,17 +18,14 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
 
     $rootScope.Auth = Authentication;
 
-    $rootScope.$on('$routeChangeSuccess', function() {
-      console.log('routeChangeSuccess');
-    });
-
     $rootScope.$on('$routeChangeError', function(event, current, previous, eventObj) {
-      console.log('routeChangeError');
-      // Redirect to login page
       $location.path('login');
     });
   })
-  .config(function($translateProvider, localStorageServiceProvider, toastrConfig) {
+  .config(function($httpProvider, $translateProvider, localStorageServiceProvider, toastrConfig) {
+
+    // Register http interceptor for handling AJAX errors
+    $httpProvider.interceptors.push('HttpInterceptorService');
 
     // I18n
     $translateProvider
