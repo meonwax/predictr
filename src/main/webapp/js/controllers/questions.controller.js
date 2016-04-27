@@ -1,12 +1,9 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('QuestionsCtrl', function($scope, $translate, toastr, Question, Answer) {
+  .controller('QuestionsCtrl', function($scope, $translate, toastr, questions, Answer) {
 
-    var query = function() {
-      $scope.loading = false;
-      $scope.questions = Question.query();
-    };
+    $scope.questions = questions;
 
     $scope.send = function() {
       $scope.loading = true;
@@ -34,10 +31,8 @@ angular.module('predictrApp')
         function(response) {
           var errorMessage = $translate.instant('bets.saveError') + '<br>' + response.status + ': ' + response.statusText;
           toastr.error(errorMessage);
-          query();
+          $scope.loading = false;
         }
       );
     };
-
-    query();
   });

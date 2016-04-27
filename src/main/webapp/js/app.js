@@ -17,10 +17,6 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
     }
 
     $rootScope.Auth = Authentication;
-
-    $rootScope.$on('$routeChangeError', function(event, current, previous, eventObj) {
-      $location.path('login');
-    });
   })
   .config(function($httpProvider, $translateProvider, localStorageServiceProvider, toastrConfig) {
 

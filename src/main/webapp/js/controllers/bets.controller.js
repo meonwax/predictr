@@ -1,12 +1,16 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('BetsCtrl', function($scope, $location, $anchorScroll, $timeout, $translate, toastr, Group, Bet) {
+  .controller('BetsCtrl', function($scope, $location, $anchorScroll, $timeout, $translate, toastr, Bet, groups) {
 
-    var query = function() {
-      $scope.loading = false;
-      $scope.groups = Group.query();
-    };
+    $scope.groups = groups;
+
+    if ($location.hash()) {
+      $scope.highlightedGameId = $location.hash();
+      $timeout(function() {
+        $anchorScroll();
+      });
+    }
 
     $scope.send = function() {
       $scope.loading = true;
@@ -36,17 +40,8 @@ angular.module('predictrApp')
         function(response) {
           var errorMessage = $translate.instant('bets.saveError') + '<br>' + response.status + ': ' + response.statusText;
           toastr.error(errorMessage);
-          query();
+          $scope.loading = false;
         }
       );
     };
-
-    query();
-
-    if ($location.hash()) {
-      $scope.highlightedGameId = $location.hash();
-      $timeout(function() {
-        $anchorScroll();
-      });
-    }
   });
