@@ -1,4 +1,4 @@
-spring.jpa.show_sql: true
+spring.jpa.show_sql: false
 
 server:
     port: 8081
