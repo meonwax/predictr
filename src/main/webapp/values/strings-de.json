@@ -59,8 +59,18 @@
         "email": "E-Mail",
         "password": "Passwort",
         "rememberMe": "Angemeldet bleiben",
+        "register": "Konto erstellen",
         "signIn": "Anmelden",
         "error": "Anmeldung fehlgeschlagen. Bitte überprüfe Deine Zugangsdaten."
+    },
+    "register": {
+        "title": "Registrierung",
+        "registerHere": "Bitte Deine Daten eingeben:",
+        "create": "Konto erstellen",
+        "passwordConfirm": "Passwort (wiederholen)",
+        "name": "Name",
+        "login": "Anmelden",
+        "error": "Registrierung fehlgeschlagen."
     },
     "home": {
         "hello": "Hallo {{userName}}!",

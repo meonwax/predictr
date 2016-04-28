@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('predictrApp')
-  .factory('HttpInterceptorService', function($rootScope) {
+  .factory('HttpInterceptorService', function($rootScope, $q) {
     return {
-      responseError: function(response) {
-        if (response.status == 401) {
+      responseError: function(rejection) {
+        if (rejection.status == 401) {
           $rootScope.logout();
         }
         // TODO: Handle AJAX errors here
-        return response;
+        return $q.reject(rejection);
       }
     };
   });

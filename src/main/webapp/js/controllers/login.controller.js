@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('LoginCtrl', function($scope, $location, Authentication) {
+  .controller('LoginCtrl', function($rootScope, $scope, $location, Authentication) {
 
     $scope.credentials = {};
     $scope.focusInput = true;
+    $rootScope.loading = false;
 
     $scope.login = function() {
       $scope.focusInput = false;
@@ -15,6 +16,6 @@ angular.module('predictrApp')
         }, function(error) {
           $scope.focusInput = true;
           $scope.error = true;
-        })
+        });
     };
   });

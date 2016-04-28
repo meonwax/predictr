@@ -8,6 +8,11 @@ angular.module('predictrApp')
         controller: 'LoginCtrl',
         activeTab: 'login'
       })
+      .when('/register', {
+        templateUrl: 'templates/register.html',
+        controller: 'RegisterCtrl',
+        activeTab: 'register'
+      })
       .when('/shoutbox', {
         templateUrl: 'templates/shoutbox.html',
         controller: 'ShoutboxCtrl',

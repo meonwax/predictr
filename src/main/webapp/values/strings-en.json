@@ -59,8 +59,18 @@
         "email": "Email",
         "password": "Password",
         "rememberMe": "Stay signed in",
+        "register": "Create account",
         "signIn": "Sign in",
-        "error": "Sign in failed. Please check your credentials."
+        "error": "Signing in failed. Please check your credentials."
+    },
+    "register": {
+        "title": "Registration",
+        "registerHere": "Please enter your data:",
+        "create": "Create account",
+        "passwordConfirm": "Password (confirmation)",
+        "name": "Name",
+        "login": "Sign in",
+        "error": "Creating account failed."
     },
     "home": {
         "hello": "Hello {{userName}}!",
