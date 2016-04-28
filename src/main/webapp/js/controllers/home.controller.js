@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('HomeCtrl', function($scope, upcomingGames, runningGames, shouts) {
+  .controller('HomeCtrl', function($rootScope, $scope, upcomingGames, runningGames, shouts) {
+
+    $rootScope.loading = false;
 
     // TODO: Read flag from config
     $scope.importantMessage = true;

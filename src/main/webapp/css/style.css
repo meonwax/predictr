@@ -21,6 +21,19 @@ a {
   vertical-align: middle;
 }
 
+.forkme {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+}
+.loading {
+  position: fixed; /* or absolute */
+  top: 5px;
+  left: 50%;
+  font-size: 1em;
+}
+
 /*
 * Input fields
 */

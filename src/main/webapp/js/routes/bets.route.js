@@ -7,7 +7,8 @@ angular.module('predictrApp')
       controller: 'BetsCtrl',
       activeTab: 'bets',
       resolve: {
-        groups: function($q, Group) {
+        groups: function($q, Group, $rootScope) {
+          $rootScope.loading = true;
           var deferred = $q.defer();
           Group.query(function(groups) {
             deferred.resolve(groups);

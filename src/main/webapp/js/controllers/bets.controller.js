@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('BetsCtrl', function($scope, $location, $anchorScroll, $timeout, $translate, toastr, Bet, groups) {
+  .controller('BetsCtrl', function($rootScope, $scope, $location, $anchorScroll, $timeout, $translate, toastr, Bet, groups) {
 
     $scope.groups = groups;
+    $rootScope.loading = false;
 
     if ($location.hash()) {
       $scope.highlightedGameId = $location.hash();
@@ -13,7 +14,7 @@ angular.module('predictrApp')
     }
 
     $scope.send = function() {
-      $scope.loading = true;
+      $scope.saving = true;
 
       // Prepare DTO array to save
       var bets = [];
@@ -35,12 +36,12 @@ angular.module('predictrApp')
       Bet.save(bets,
         function() {
           toastr.success($translate.instant('bets.saveOk'));
-          $scope.loading = false;
+          $scope.saving = false;
         },
         function(response) {
           var errorMessage = $translate.instant('bets.saveError') + '<br>' + response.status + ': ' + response.statusText;
           toastr.error(errorMessage);
-          $scope.loading = false;
+          $scope.saving = false;
         }
       );
     };

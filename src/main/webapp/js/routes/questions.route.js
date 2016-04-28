@@ -7,7 +7,8 @@ angular.module('predictrApp')
       controller: 'QuestionsCtrl',
       activeTab: 'questions',
       resolve: {
-        questions: function($q, Question) {
+        questions: function($rootScope, $q, Question) {
+          $rootScope.loading = true;
           var deferred = $q.defer();
           Question.query(function(questions) {
             deferred.resolve(questions);

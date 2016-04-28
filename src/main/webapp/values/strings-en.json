@@ -2,7 +2,8 @@
     "global": {
         "serverTime": "Server time",
         "version": "Version",
-        "language": "Language"
+        "language": "Language",
+        "loading": "Loading…"
     },
     "navigation": {
         "home": "Home",

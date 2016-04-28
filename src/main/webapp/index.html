@@ -16,8 +16,10 @@
 <body>
 
   <a href="https://github.com/meonwax/predictr" class="hidden-xs">
-    <img style="position: absolute; top: 0; right: 0; border: 0;" src="images/forkme.png" alt="Fork me on GitHub">
+    <img class="forkme" src="images/forkme.png" alt="Fork me on GitHub">
   </a>
+
+  <div ng-if="loading" class="loading btn btn-default btn-sm" translate="global.loading"></div>
 
   <div class="header">
     <div class="container">
