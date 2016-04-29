@@ -18,11 +18,28 @@ angular.module('predictrApp')
       }
     };
   })
+  .directive('validateCompareTo', function() {
+    return {
+      restrict: 'A',
+      require: 'ngModel',
+      scope: {
+        otherModelValue: "=validateCompareTo"
+      },
+      link: function(scope, element, attributes, ngModel) {
+        ngModel.$validators.compareTo = function(modelValue) {
+          return modelValue == scope.otherModelValue;
+        };
+        scope.$watch("otherModelValue", function() {
+          ngModel.$validate();
+        });
+      }
+    };
+  })
   .directive('myBet', function() {
     return {
       restrict: 'A',
       require: 'ngModel',
-      link: function(scope, element, attrs, ngModel) {
+      link: function(scope, element, attributes, ngModel) {
 
         function formatter(value) {
           if (value) {

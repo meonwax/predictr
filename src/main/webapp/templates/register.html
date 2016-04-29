@@ -18,7 +18,7 @@
             <input type="password" class="form-control" minlength="6" required placeholder="{{'login.password' | translate}}" ng-model="credentials.password">
           </div>
           <div class="form-group">
-            <input type="password" class="form-control" minlength="6" required placeholder="{{'register.passwordConfirm' | translate}}">
+            <input type="password" class="form-control" minlength="6" required placeholder="{{'register.passwordConfirm' | translate}}" ng-model="password2" validate-compare-to="credentials.password">
           </div>
           <div class="form-group">
             <input type="text" class="form-control" minlength="3" required placeholder="{{'register.name' | translate}}" ng-model="credentials.name">
