@@ -70,7 +70,8 @@
         "passwordConfirm": "Password (confirmation)",
         "name": "Name",
         "login": "Sign in",
-        "error": "Creating account failed."
+        "error": "Account creation failed.",
+        "createOk": "Account creation successful."
     },
     "home": {
         "hello": "Hello {{userName}}!",

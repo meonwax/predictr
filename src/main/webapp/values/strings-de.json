@@ -70,7 +70,8 @@
         "passwordConfirm": "Passwort (wiederholen)",
         "name": "Name",
         "login": "Anmelden",
-        "error": "Registrierung fehlgeschlagen."
+        "error": "Registrierung fehlgeschlagen.",
+        "createOk": "Registrierung erfolgreich."
     },
     "home": {
         "hello": "Hallo {{userName}}!",
