@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('predictrApp')
-  .factory('User', function($q, $http) {
+  .factory('User', function($q, $http, $resource) {
     return {
       // account: function() {
       //   return $resource('api/users/account', {}, {
@@ -21,6 +21,14 @@ angular.module('predictrApp')
           deferred.reject(error);
         });
         return deferred.promise;
-      }
+      },
+      all: function() {
+        return $resource('api/users', {}, {
+          'get': {
+            method: 'GET',
+            isArray: true
+          }
+        });
+      },
     }
   });

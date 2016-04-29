@@ -10,7 +10,7 @@ angular.module('predictrApp')
         upcomingGames: function($rootScope, $q, Game) {
           $rootScope.loading = true;
           var deferred = $q.defer();
-          Game.upcomingGames().get(function(upcomingGames) {
+          Game.upcomingGames().query(function(upcomingGames) {
             deferred.resolve(upcomingGames);
           });
           return deferred.promise;
@@ -18,7 +18,7 @@ angular.module('predictrApp')
         runningGames: function($rootScope, $q, Game) {
           $rootScope.loading = true;
           var deferred = $q.defer();
-          Game.runningGames().get(function(runningGames) {
+          Game.runningGames().query(function(runningGames) {
             deferred.resolve(runningGames);
           });
           return deferred.promise;

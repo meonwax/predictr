@@ -3,36 +3,27 @@
 angular.module('predictrApp')
   .factory('Game', function($resource) {
     return {
-      games: function() {
-        return $resource('api/games', {}, {
-          'get': {
-            method: 'GET',
-            isArray: true,
-            transformResponse: function (data) {
-              return angular.fromJson(data);
-            }
-          }
-        });
-      },
+      // all: function() {
+      //   return $resource('api/games', {}, {
+      //     'query': {
+      //       method: 'GET',
+      //       isArray: true
+      //     }
+      //   });
+      // },
       upcomingGames: function() {
         return $resource('api/games/upcoming', {}, {
-          'get': {
+          'query': {
             method: 'GET',
-            isArray: true,
-            transformResponse: function (data) {
-              return angular.fromJson(data);
-            }
+            isArray: true
           }
         });
       },
       runningGames: function() {
         return $resource('api/games/running', {}, {
-          'get': {
+          'query': {
             method: 'GET',
-            isArray: true,
-            transformResponse: function (data) {
-              return angular.fromJson(data);
-            }
+            isArray: true
           }
         });
       }
