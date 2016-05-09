@@ -2,14 +2,33 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="panel panel-info">
-      <div class="panel-heading">Under construction</div>
-      <div class="panel-body">
-        <img src="images/construction.gif" class="img-responsive" alt="Under construction" style="-webkit-filter: grayscale(50%);	filter: grayscale(50%);">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <i class="fa fa-users"></i>
+        <strong translate="admin.users"></strong>
       </div>
-      <pre>
-        {{users}}
-      </pre>
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="col-md-2" translate="register.name"></th>
+            <th class="col-md-2" translate="login.email"></th>
+            <th class="col-md-2" translate="admin.wager"></th>
+            <th class="col-md-2" translate="admin.role"></th>
+            <th class="col-md-2" translate="admin.createdDate"></th>
+            <th class="col-md-2" translate="admin.lastModifiedDate"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in users">
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+            <td><span class="badge">{{user.wager}}</span></td>
+            <td>{{user.role}}</td>
+            <td>{{user.createdDate | shoutTime}}</td>
+            <td>{{user.lastModifiedDate | shoutTime}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

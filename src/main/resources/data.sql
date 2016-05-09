@@ -123,9 +123,9 @@ INSERT INTO `game` (`kickoff_time`, `group_id`, `location_id`, `team_home_id`, `
 --
 INSERT INTO `user` (`password`, `name`, `email`, `role`, `wager`, `created_date`, `last_modified_date`) VALUES
     ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Admin', 'admin@example.com', 'ROLE_ADMIN', 0, '2015-02-01', '2015-02-01'),
-    ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Sid Rowland', 'sid@example.com', 'ROLE_USER', 5, '2015-02-01', '2015-02-01'),
-    ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Paula Marsh', 'paula@example.com', 'ROLE_USER', 5, '2015-02-01', '2015-02-01'),
-    ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Johanna Silva', 'johanna@example.com', 'ROLE_USER', 0, '2015-02-01', '2015-02-01');
+    ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Sid Rowland', 'sid@example.com', 'ROLE_USER', 5, '2016-01-03', '2016-01-05'),
+    ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Paula Marsh', 'paula@example.com', 'ROLE_USER', 5, '2016-03-21', '2016-04-01'),
+    ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Johanna Silva', 'johanna@example.com', 'ROLE_USER', 0, '2015-10-11', '2015-12-24');
 -- Password is always: 123vorbei
 
 INSERT INTO `shout` (`date`, `user_id`, `message`) VALUES

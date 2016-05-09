@@ -10,6 +10,8 @@ import de.meonwax.predictr.domain.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    public List<User> findAllByOrderByCreatedDateDesc();
+
     public List<User> findByWagerGreaterThan(BigDecimal wager);
 
     @Query(value = "SELECT SUM(wager) FROM user", nativeQuery = true)

@@ -123,6 +123,11 @@
         "sendMessage": "Send"
     },
     "admin": {
-        "title": "Administration"
+        "title": "Administration",
+        "users": "Users",
+        "role": "Role",
+        "wager": "Wager",
+        "createdDate": "Created",
+        "lastModifiedDate": "Last modified"
     }
 }
