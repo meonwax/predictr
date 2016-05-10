@@ -3,7 +3,8 @@
         "serverTime": "Server time",
         "version": "Version",
         "language": "Language",
-        "loading": "Loading…"
+        "loading": "Loading…",
+        "save": "Save"
     },
     "navigation": {
         "home": "Home",
@@ -124,6 +125,9 @@
     },
     "admin": {
         "title": "Administration",
+        "games": "Games",
+        "scoreHome": "Result A",
+        "scoreAway": "Result B",
         "users": "Users",
         "role": "Role",
         "wager": "Wager",

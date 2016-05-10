@@ -24,7 +24,7 @@ angular.module('predictrApp')
       },
       all: function() {
         return $resource('api/users', {}, {
-          'get': {
+          'query': {
             method: 'GET',
             isArray: true
           }

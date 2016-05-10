@@ -7,10 +7,18 @@ angular.module('predictrApp')
       controller: 'AdminCtrl',
       activeTab: 'admin',
       resolve: {
+        games: function($rootScope, $q, Game) {
+          $rootScope.loading = true;
+          var deferred = $q.defer();
+          Game.all().query(function(games) {
+            deferred.resolve(games);
+          });
+          return deferred.promise;
+        },
         users: function($rootScope, $q, User) {
           $rootScope.loading = true;
           var deferred = $q.defer();
-          User.all().get(function(users) {
+          User.all().query(function(users) {
             deferred.resolve(users);
           });
           return deferred.promise;
