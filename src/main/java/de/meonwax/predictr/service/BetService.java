@@ -25,6 +25,7 @@ public class BetService {
     public void update(User user, List<BetDto> betDtos) {
         List<Bet> bets = new ArrayList<>();
         for (BetDto betDto : betDtos) {
+            // TODO: Prevent saving if game has already started
             Bet bet = betRepository.findOneByUserAndGame(user, betDto.getGame());
             if (bet == null) {
                 bet = new Bet();

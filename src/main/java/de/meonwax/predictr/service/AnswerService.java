@@ -25,6 +25,7 @@ public class AnswerService {
     public void update(User user, List<AnswerDto> answerDtos) {
         List<Answer> answers = new ArrayList<>();
         for (AnswerDto answerDto : answerDtos) {
+            // TODO: Prevent saving if tournament has already started
             Answer answer = answerRepository.findOneByUserAndQuestion(user, answerDto.getQuestion());
             if (answer == null) {
                 answer = new Answer();

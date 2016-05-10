@@ -132,6 +132,8 @@
         "role": "Role",
         "wager": "Wager",
         "createdDate": "Created",
-        "lastModifiedDate": "Last modified"
+        "lastModifiedDate": "Last modified",
+        "saveOk": "Games saved.",
+        "saveError": "Error saving games:"
     }
 }

@@ -132,6 +132,8 @@
         "role": "Rolle",
         "wager": "Einsatz",
         "createdDate": "Erstellt am",
-        "lastModifiedDate": "Geändert am"
+        "lastModifiedDate": "Geändert am",
+        "saveOk": "Spiele wurden gespeichert.",
+        "saveError": "Fehler beim Speichern der Spiele:"
     }
 }
