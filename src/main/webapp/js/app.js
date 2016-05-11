@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies', 'ngResource', 'LocalStorageModule', 'angular-ladda', 'ngAnimate', 'toastr'])
-  .run(function($rootScope, $route, $translate, $location, ServerInfo, Authentication) {
+  .run(function($rootScope, $route, $translate, $location, ServerInfo, Authentication, User, ROLES) {
 
     // Initialize root scope
     $rootScope.$route = $route;
     $rootScope.serverInfo = ServerInfo.get();
+    $rootScope.account = User.account().get();
+    $rootScope.ROLES = ROLES;
 
     $rootScope.changeLanguage = function(language) {
       $translate.use(language);

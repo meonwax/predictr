@@ -3,16 +3,9 @@
 angular.module('predictrApp')
   .factory('User', function($q, $http, $resource) {
     return {
-      // account: function() {
-      //   return $resource('api/users/account', {}, {
-      //     'get': {
-      //       method: 'GET',
-      //       transformResponse: function (data) {
-      //         return angular.fromJson(data);
-      //       }
-      //     }
-      //   });
-      // },
+      account: function() {
+        return $resource('api/users/account');
+      },
       register: function(credentials) {
         var deferred = $q.defer();
         $http.post('api/users/register', credentials).then(function() {

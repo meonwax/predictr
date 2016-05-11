@@ -33,7 +33,7 @@
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'questions'}"><a href="#/questions"><i class="fa fa-question"></i> <span translate="navigation.questions"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'rules'}"><a href="#/rules"><i class="fa fa-book"></i> <span translate="navigation.rules"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'shoutbox'}"><a href="#/shoutbox"><i class="fa fa-comment-o"></i> <span translate="navigation.shoutbox"></span></a></li>
-        <li role="presentation" ng-class="{active: $route.current.activeTab == 'admin'}"><a href="#/admin"><i class="fa fa-cogs"></i> <span translate="navigation.admin"></span></a></li>
+        <li role="presentation" ng-if="account.role == ROLES.ADMIN" ng-class="{active: $route.current.activeTab == 'admin'}"><a href="#/admin"><i class="fa fa-cogs"></i> <span translate="navigation.admin"></span></a></li>
         <li role="presentation"><a ng-click="logout()" class="text-danger"><i class="fa fa-sign-out"></i> <span translate="navigation.logout"></span></a></li>
       </ul>
 
@@ -45,7 +45,7 @@
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'questions'}"><a href="#/questions"><i class="fa fa-question fa-fw"></i> <span translate="navigation.questions"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'rules'}"><a href="#/rules"><i class="fa fa-book fa-fw"></i> <span translate="navigation.rules"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'shoutbox'}"><a href="#/shoutbox"><i class="fa fa-comment-o fa-fw"></i> <span translate="navigation.shoutbox"></span></a></li>
-        <li role="presentation" ng-class="{active: $route.current.activeTab == 'admin'}"><a href="#/admin"><i class="fa fa-cogs fa-fw"></i> <span translate="navigation.admin"></span></a></li>
+        <li role="presentation" ng-if="account.role == ROLES.ADMIN" ng-class="{active: $route.current.activeTab == 'admin'}"><a href="#/admin"><i class="fa fa-cogs fa-fw"></i> <span translate="navigation.admin"></span></a></li>
         <li role="presentation"><a ng-click="logout()" class="text-danger"><i class="fa fa-sign-out fa-fw"></i> <span translate="navigation.logout"></span></a></li>
       </ul>
     </div>
@@ -100,6 +100,7 @@
   <script src="js/app.js"></script>
   <script src="js/directives.js"></script>
   <script src="js/filters.js"></script>
+  <script src="js/constants.js"></script>
   <script src="js/routes/home.route.js"></script>
   <script src="js/routes/bets.route.js"></script>
   <script src="js/routes/ladder.route.js"></script>
