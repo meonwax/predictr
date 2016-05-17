@@ -16,12 +16,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class RestLogoutSuccessHandler extends AbstractAuthenticationTargetUrlRequestHandler implements LogoutSuccessHandler {
 
-    private final Logger log = LoggerFactory.getLogger(RestAuthenticationFailureHandler.class);
+    private final Logger log = LoggerFactory.getLogger(RestLogoutSuccessHandler.class);
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String email = authentication != null ? authentication.getName() : "unknown";
-        log.info("User logged out: " + email);
+        if (authentication != null) {
+            log.info("User logged out: " + authentication.getName());
+        }
         response.setStatus(HttpServletResponse.SC_OK);
     }
 }
