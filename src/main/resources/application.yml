@@ -1,8 +1,10 @@
-spring.jpa.show_sql: false
+spring:
+    jpa.show_sql: false
+    datasource.platform: h2
 
 server:
-    port: 8081
     error.whitelabel.enabled: false
+    port: 8081
 
 predictr:
     owner: John Doe
@@ -14,3 +16,16 @@ predictr:
         result: 5
         tendency: 2
         tendencySpread: 3
+---
+
+spring:
+    profiles: production
+    datasource.platform: mysql
+    jpa.hibernate.ddl-auto: update
+    datasource:
+        url: jdbc:mysql://localhost/predictr
+        username: predictr
+        password: 123vorbei
+
+server:
+    port: 8090
