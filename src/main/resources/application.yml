@@ -1,6 +1,12 @@
 spring:
     jpa.show_sql: false
     datasource.platform: h2
+    mail:
+        host:
+        port: 25
+        username:
+        password:
+        protocol: smtp
 
 logging.level.de.meonwax.predictr: DEBUG
 
