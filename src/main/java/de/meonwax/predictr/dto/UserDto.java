@@ -5,6 +5,9 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import de.meonwax.predictr.util.Utils;
 
 public class UserDto {
@@ -16,6 +19,7 @@ public class UserDto {
 
     @NotNull
     @Size(min = 5, max = 100)
+    @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
 
     @NotNull
