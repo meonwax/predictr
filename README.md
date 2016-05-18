@@ -31,6 +31,7 @@ Data for UEFA EURO 2016 included.
         --spring.mail.host=mailserver \
         --spring.mail.username=mailuser \
         --spring.mail.password=mailpassword
+        --predictr.adminEmail=admin@example.com
 
 * Open [http://localhost:8080/#/register](http://localhost:8080/#/register) in a web browser and register a new user.
 
