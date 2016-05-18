@@ -25,8 +25,8 @@ Data for UEFA EURO 2016 included.
 
     java -jar target/predictr*.jar --spring.profiles.active=production --spring.datasource.url=jdbc:mysql://dbhost/dbname --spring.datasource.username=dbuser --spring.datasource.password=dbpassword
 
-* Open [http://localhost:8090/#/register](http://localhost:8090/#/register) in a web browser and register a new user.
+* Open [http://localhost:8080/#/register](http://localhost:8080/#/register) in a web browser and register a new user.
 
 * Upgrade the created user to an admin setting the field `role` to `ROLE_ADMIN`.
 
-* You can now [log in](http://localhost:8090/#/login) using the admin user.
+* You can now [log in](http://localhost:8080/#/login) using the admin user.

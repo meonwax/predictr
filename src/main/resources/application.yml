@@ -5,6 +5,7 @@ spring:
 server:
     error.whitelabel.enabled: false
     port: 8081
+    address: 127.0.0.1
 
 predictr:
     owner: John Doe
@@ -28,4 +29,4 @@ spring:
         password: 123vorbei
 
 server:
-    port: 8090
+    port: 8080
