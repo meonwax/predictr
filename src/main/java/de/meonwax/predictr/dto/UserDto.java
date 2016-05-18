@@ -5,6 +5,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 
+import de.meonwax.predictr.util.Utils;
+
 public class UserDto {
 
     @NotNull
@@ -42,5 +44,10 @@ public class UserDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return Utils.jsonSerialize(this, true);
     }
 }

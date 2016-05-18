@@ -44,10 +44,13 @@ public class UserController {
 
     @RequestMapping(value = "/users/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> register(@Valid @RequestBody UserDto userDto) {
-        log.info("register");
-        return userService.registerUser(userDto) ?
-                ResponseEntity.status(HttpStatus.CREATED).build() :
-                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        if (userService.registerUser(userDto)) {
+            log.info("User registered: " + userDto.toString());
+            // TODO: Send notification email to admin
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @RequestMapping(value = "/users/jackpot", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

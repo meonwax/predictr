@@ -2,6 +2,8 @@ spring:
     jpa.show_sql: false
     datasource.platform: h2
 
+logging.level.de.meonwax.predictr: DEBUG
+
 server:
     error.whitelabel.enabled: false
     port: 8081
@@ -28,5 +30,6 @@ spring:
         username: predictr
         password: 123vorbei
 
-server:
-    port: 8080
+logging.level.de.meonwax.predictr: INFO
+
+server.port: 8080

@@ -19,7 +19,7 @@ public class RestAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        log.info("Authentication error: " + exception.getMessage());
+        log.debug("Authentication error: " + exception.getMessage());
         super.onAuthenticationFailure(request, response, exception);
     }
 }
