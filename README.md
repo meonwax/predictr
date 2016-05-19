@@ -5,16 +5,33 @@ Data for UEFA EURO 2016 included.
 
 ## Development
 
+* Install `jdk8`, `maven`, `nodejs` and `npm` using your OS package manager.
+
+* Install the needed node modules globally:
+
+      npm install -g bower grunt-cli
+
+* Install the need project dependencies:
+
+      npm install
+      bower install
+
 * Run with development profile:
 
       mvn spring-boot:run
 
-* Open [http://localhost:8081](http://localhost:8081) in a web browser.
+* Open up a new terminal and launch the node web server:
+
+      grunt serve
+
+* Open [http://localhost:3000](http://localhost:3000) in a web browser.
 
 ## Production
 
-* Build the production jar using Maven:
+* Build the production war using Maven:
 
+      npm install
+      bower install
       mvn clean package
 
 * For database tasks, i recommend using a database manipulating tool like [Adminer](https://www.adminer.org) or [phpMyAdmin](https://www.phpmyadmin.net).
@@ -23,7 +40,7 @@ Data for UEFA EURO 2016 included.
 
 * Run with production profile (replace credentials):
 
-      java -jar target/predictr*.jar \
+      java -jar target/predictr*.war \
         --spring.profiles.active=production \
         --spring.datasource.url=jdbc:mysql://dbhost/dbname \
         --spring.datasource.username=dbuser \

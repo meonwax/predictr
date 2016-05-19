@@ -3,6 +3,12 @@
 .classpath
 .settings/
 
+# Node
+node_modules/
+
+# Bower
+src/main/webapp/lib/
+
 # Build
 target/
 
