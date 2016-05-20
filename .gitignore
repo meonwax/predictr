@@ -16,4 +16,4 @@ target/
 
 # Others
 TODO.md
-*.map
+src/main/webapp/css/

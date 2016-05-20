@@ -7,7 +7,7 @@ Data for UEFA EURO 2016 included.
 
 * Install `jdk8`, `maven`, `ruby`, `nodejs` and `npm` using your OS package manager.
 
-* Install the needed node modules globally:
+* Install the required node modules globally:
 
       npm install -g bower grunt-cli
 
@@ -15,12 +15,13 @@ Data for UEFA EURO 2016 included.
 
       gem install sass
 
-* Install the need project dependencies:
+
+## Development
+
+* Install the project dependencies:
 
       npm install
       bower install
-
-## Development
 
 * Run with development profile:
 

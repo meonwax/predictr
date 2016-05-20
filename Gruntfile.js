@@ -8,6 +8,10 @@ module.exports = function(grunt) {
       app: 'src/main/webapp',
       scss: 'src/main/scss'
     },
+    clean: [
+      '.sass-cache',
+      '<%= dirs.app %>/css/'
+    ],
     wiredep: {
       task: {
         src: '<%= dirs.app %>/index.html'
@@ -72,7 +76,9 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'clean',
     'sass:dist',
+    'wiredep'
   ]);
 
   grunt.registerTask('default', [
