@@ -4,20 +4,45 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
+    dirs: {
+        app: 'src/main/webapp'
+    },
     wiredep: {
       task: {
-        src: 'src/main/webapp/index.html'
+        src: '<%= dirs.app %>/index.html'
+      }
+    },
+    sass: {
+      options: {
+        loadPath: 'node_modules/bootstrap-sass/assets/stylesheets'
+      },
+      dev: {
+        files: {
+          '<%= dirs.app %>/css/style.css': 'src/main/scss/style.scss'
+        },
+        options: {
+          style: 'expanded'
+        }
+      },
+      dist: {
+        files: {
+          '<%= dirs.app %>/css/style.css': 'src/main/scss/style.scss'
+        },
+        options: {
+          style: 'compressed',
+          sourcemap: 'none'
+        }
       }
     },
     browserSync: {
       bsFiles: {
         src: [
-          'src/main/webapp/*.html',
-          'src/main/webapp/css/**/*.css',
-          'src/main/webapp/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
-          'src/main/webapp/js/**/*.js',
-          'src/main/webapp/templates/*.html',
-          'src/main/webapp/values/**/*.{md,json}'
+          '<%= dirs.app %>/*.html',
+          '<%= dirs.app %>/css/**/*.css',
+          '<%= dirs.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= dirs.app %>/js/**/*.js',
+          '<%= dirs.app %>/templates/*.html',
+          '<%= dirs.app %>/values/**/*.{md,json}'
         ]
       },
       options: {
@@ -29,13 +54,14 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('serve', [
+    'sass:dev',
     'wiredep',
     'browserSync'
   ]);
 
-  grunt.registerTask('build', function() {
-    grunt.log.writeln('Building not implemented yet.');
-  });
+  grunt.registerTask('build', [
+    'sass:dist',
+  ]);
 
   grunt.registerTask('default', [
     'build'

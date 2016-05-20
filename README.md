@@ -3,18 +3,24 @@
 A football prediction game.  
 Data for UEFA EURO 2016 included.
 
-## Development
+## Requirements
 
-* Install `jdk8`, `maven`, `nodejs` and `npm` using your OS package manager.
+* Install `jdk8`, `maven`, `ruby`, `nodejs` and `npm` using your OS package manager.
 
 * Install the needed node modules globally:
 
       npm install -g bower grunt-cli
 
+* For compiling SCSS to CSS, the RubyGem `sass` is also needed:
+
+      gem install sass
+
 * Install the need project dependencies:
 
       npm install
       bower install
+
+## Development
 
 * Run with development profile:
 
@@ -30,8 +36,6 @@ Data for UEFA EURO 2016 included.
 
 * Build the production war using Maven:
 
-      npm install
-      bower install
       mvn clean package
 
 * For database tasks, i recommend using a database manipulating tool like [Adminer](https://www.adminer.org) or [phpMyAdmin](https://www.phpmyadmin.net).

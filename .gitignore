@@ -3,17 +3,17 @@
 .classpath
 .settings/
 
-# Node
+# Third party libraries
 node_modules/
-
-# Bower
 src/main/webapp/lib/
 
 # Build
 target/
+.sass-cache/
 
 # Legacy code
 2014/
 
 # Others
 TODO.md
+*.map

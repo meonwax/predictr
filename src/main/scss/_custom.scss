@@ -1,0 +1,99 @@
+body {
+  background-color: #f5f5f5;
+  color: #333;
+}
+a {
+  cursor: pointer;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+.bold {
+  font-weight: bold;
+}
+.table tbody > tr > td.vert-align {
+  vertical-align: middle;
+}
+
+.forkme {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+}
+.loading {
+  position: fixed; /* or absolute */
+  top: 5px;
+  left: 50%;
+  font-size: 1em;
+}
+
+/*
+* Input fields
+*/
+.ng-invalid {
+  border-color: #a94442;
+  outline-color: #a94442;
+}
+#bets input {
+  width: 4em;
+  text-align: center;
+}
+/*
+@media (max-width: 991px) {
+  #special input {
+    width: 12em;
+  }
+}
+@media (max-width: 767px) {
+  #special input {
+    width: 10em;
+  }
+}
+*/
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+.blink {
+  -webkit-animation: blink 2s steps(2, start) infinite;
+  -moz-animation: blink 2s steps(2, start) infinite;
+  -ms-animation: blink 2s steps(2, start) infinite;
+  -o-animation: blink 2s steps(2, start) infinite;
+  animation: blink 2s steps(2, start) infinite;
+}
+
+.content {
+  background-color: #fff;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.footer {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  font-size: 0.875em;
+  color: #7a7a7a;
+}
+.copyright {
+  margin-top: 2rem;
+}
+
+/* Tabs navigation */
+.nav-tabs {
+  border-bottom: 0;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+  border-color: #d26911 #e5e5e5 transparent;
+  border-width: 3px 1px 1px;
+}
+
+/* Ladda */
+.ladda-spinner > div > div > div {
+  background: #000 !important;
+}
