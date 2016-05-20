@@ -5,7 +5,8 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     dirs: {
-        app: 'src/main/webapp'
+      app: 'src/main/webapp',
+      scss: 'src/main/scss'
     },
     wiredep: {
       task: {
@@ -18,7 +19,7 @@ module.exports = function(grunt) {
       },
       dev: {
         files: {
-          '<%= dirs.app %>/css/style.css': 'src/main/scss/style.scss'
+          '<%= dirs.app %>/css/style.css': '<%= dirs.scss %>/style.scss'
         },
         options: {
           style: 'expanded'
@@ -26,12 +27,22 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          '<%= dirs.app %>/css/style.css': 'src/main/scss/style.scss'
+          '<%= dirs.app %>/css/style.css': '<%= dirs.scss %>/style.scss'
         },
         options: {
           style: 'compressed',
           sourcemap: 'none'
         }
+      }
+    },
+    watch: {
+      bower: {
+        files: 'bower.json',
+        tasks: ['wiredep']
+      },
+      sass: {
+        files: '<%= dirs.scss %>/*.scss',
+        tasks: ['sass:dev']
       }
     },
     browserSync: {
@@ -46,7 +57,7 @@ module.exports = function(grunt) {
         ]
       },
       options: {
-        //watchTask: true,
+        watchTask: true,
         proxy: 'localhost:8081',
         open: false
       }
@@ -56,7 +67,8 @@ module.exports = function(grunt) {
   grunt.registerTask('serve', [
     'sass:dev',
     'wiredep',
-    'browserSync'
+    'browserSync',
+    'watch'
   ]);
 
   grunt.registerTask('build', [
