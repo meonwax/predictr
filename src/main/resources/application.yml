@@ -29,9 +29,11 @@ predictr:
 
 spring:
     profiles: production
-    datasource.platform: mysql
     jpa.hibernate.ddl-auto: update
     datasource:
+        platform: mysql
+        test-on-borrow: true
+        validationQuery: SELECT 1
         url: jdbc:mysql://localhost/predictr
         username: predictr
         password: 123vorbei
