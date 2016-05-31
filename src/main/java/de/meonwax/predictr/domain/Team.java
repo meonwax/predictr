@@ -22,8 +22,6 @@ public class Team implements Serializable {
     @JsonIgnore
 	private Group group;
 
-	private String icon;
-
 	public String getId() {
 		return id;
 	}
@@ -38,13 +36,5 @@ public class Team implements Serializable {
 
 	public void setGroup(Group group) {
 		this.group = group;
-	}
-
-	public String getIcon() {
-		return icon;
-	}
-
-	public void setIcon(String icon) {
-		this.icon = icon;
 	}
 }
