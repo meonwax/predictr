@@ -116,7 +116,10 @@
         "userAnswer": "Deine Antwort",
         "correctAnswer": "Richtige Antwort",
         "pointsPossible": "Punkte möglich",
-        "pointsEarned": "Punkte erreicht"
+        "pointsEarned": "Punkte erreicht",
+        "otherAnswersTitle": "Antworten zu '{{question}}'",
+        "otherAnswersLocked": "Die Antworten anderer Teilnehmer können erst nach Ablauf der Deadline ({{deadline}}) eingesehen werden.",
+        "otherEmpty": "Für diese Frage hat kein anderer Teilnehmer eine Antwort abgegeben."
     },
     "rules": {
         "title": "Regeln"

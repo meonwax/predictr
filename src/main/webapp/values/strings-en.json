@@ -116,7 +116,10 @@
         "userAnswer": "Your answer",
         "correctAnswer": "Correct answer",
         "pointsPossible": "Points possible",
-        "pointsEarned": "Points earned"
+        "pointsEarned": "Points earned",
+        "otherAnswersTitle": "Answers for '{{question}}'",
+        "otherAnswersLocked": "You cannot view the answers of the other users until the deadline ({{deadline}}) has passed.",
+        "otherEmpty": "No other user has submitted an answer for this question"
     },
     "rules": {
         "title": "Rules"

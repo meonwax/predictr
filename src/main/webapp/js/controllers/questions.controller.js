@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('QuestionsCtrl', function($rootScope, $scope, $translate, toastr, questions, Answer) {
+  .controller('QuestionsCtrl', function($rootScope, $scope, $translate, toastr, $uibModal, Question, questions, Answer) {
 
     $rootScope.loading = false;
 
@@ -36,5 +36,28 @@ angular.module('predictrApp')
           $scope.saving = false;
         }
       );
+    };
+
+    $scope.showOther = function(question) {
+
+      // Inline modal controller function
+      var otherAnswersCtrl = function($scope, $uibModalInstance) {
+        $scope.question = question
+        $scope.deadlinePassed = Question.deadlinePassed(question);
+        if($scope.deadlinePassed) {
+          Answer.query({questionId: question.id}, function(result) {
+            $scope.answers = result;
+          });
+        }
+        $scope.ok = function () {
+          $uibModalInstance.close();
+        };
+      };
+
+      // Open the modal dialog
+      $uibModal.open({
+        templateUrl: 'templates/otheranswers.html',
+        controller: otherAnswersCtrl
+      });
     };
   });

@@ -2,5 +2,17 @@
 
 angular.module('predictrApp')
   .factory('Question', function ($resource) {
-    return $resource('api/questions');
+    return {
+      all: function() {
+        return $resource('api/questions', {}, {
+          'query': {
+            method: 'GET',
+            isArray: true
+          }
+        });
+      },
+      deadlinePassed(question) {
+        return (new Date() > new Date(question.deadline * 1000));
+      }
+    }
   });

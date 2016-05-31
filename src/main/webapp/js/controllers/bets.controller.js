@@ -53,7 +53,7 @@ angular.module('predictrApp')
         $scope.game = game
         $scope.hasStarted = Game.hasStarted(game);
         if($scope.hasStarted) {
-          Bet.query({id: game.id}, function(result) {
+          Bet.query({gameId: game.id}, function(result) {
             $scope.bets = result;
           });
         }

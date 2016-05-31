@@ -10,7 +10,7 @@ angular.module('predictrApp')
         questions: function($rootScope, $q, Question) {
           $rootScope.loading = true;
           var deferred = $q.defer();
-          Question.query(function(questions) {
+          Question.all().query(function(questions) {
             deferred.resolve(questions);
           });
           return deferred.promise;

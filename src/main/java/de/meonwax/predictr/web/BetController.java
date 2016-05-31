@@ -35,7 +35,9 @@ public class BetController {
         return ResponseEntity.noContent().build();
     }
 
-    // Retrieve the bets of other users for an already started game
+    /**
+     * Retrieve the bets of other users for an already started game
+     */
     @RequestMapping(value = "/bets/{gameId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<BetDto>> getOther(@PathVariable Long gameId, @AuthenticationPrincipal User user) {
         return betService.getOther(user, gameId)

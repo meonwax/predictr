@@ -3,6 +3,7 @@ package de.meonwax.predictr.dto;
 import javax.validation.constraints.NotNull;
 
 import de.meonwax.predictr.domain.Question;
+import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.util.Utils;
 
 public class AnswerDto {
@@ -12,6 +13,8 @@ public class AnswerDto {
 
     @NotNull
     private String answer;
+
+    private User user;
 
     public Question getQuestion() {
         return question;
@@ -27,6 +30,14 @@ public class AnswerDto {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

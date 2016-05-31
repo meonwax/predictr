@@ -2,7 +2,7 @@
 
 angular.module('predictrApp')
   .factory('Bet', function($resource) {
-    return $resource('api/bets/:id', {}, {
+    return $resource('api/bets/:gameId', {}, {
       'query': {
         method: 'GET',
         isArray: true
