@@ -96,6 +96,9 @@
         "points": "Punkte",
         "waitForResult": "Bitte warten bis das Ergebnis eingetragen wurde.",
         "otherBets": "Wie haben die Anderen getippt?",
+        "otherBetsTitle": "Tipps für Spiel {{gameId}}",
+        "otherBetsLocked": "Die Tipps anderer Teilnehmer können erst nach Beginn des Spiels eingesehen werden.",
+        "otherEmpty": "Für Spiel {{gameId}} hat kein anderer Teilnehmer einen Tipp abgegeben.",
         "save": "Tipps speichern",
         "saveOk": "Tipps wurden gespeichert.",
         "saveError": "Fehler beim Speichern der Tipps:"

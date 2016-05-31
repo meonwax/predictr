@@ -210,4 +210,9 @@ public class User implements Serializable, UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof User && ((User) obj).id.longValue() == id.longValue();
+    }
 }

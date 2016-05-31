@@ -96,6 +96,9 @@
         "points": "Points",
         "waitForResult": "Please wait until the result data has been entered",
         "otherBets": "Show the bets of the other users",
+        "otherBetsTitle": "Bets for game {{gameId}}",
+        "otherBetsLocked": "You cannot view the bets of the other users until the game has started.",
+        "otherEmpty": "No other user has submitted a prediction for the game {{gameId}}.",
         "save": "Save bets",
         "saveOk": "Bets saved.",
         "saveError": "Error saving bets:"

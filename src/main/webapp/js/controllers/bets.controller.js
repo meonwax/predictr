@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('BetsCtrl', function($rootScope, $scope, $location, $anchorScroll, $timeout, $translate, toastr, Bet, groups) {
+  .controller('BetsCtrl', function($rootScope, $scope, $location, $anchorScroll, $timeout, $translate, toastr, $uibModal, Game, Bet, groups) {
 
     $scope.groups = groups;
     $rootScope.loading = false;
@@ -44,5 +44,28 @@ angular.module('predictrApp')
           $scope.saving = false;
         }
       );
+    };
+
+    $scope.showOther = function(game) {
+
+      // Inline modal controller function
+      var otherBetsCtrl = function($scope, $uibModalInstance) {
+        $scope.game = game
+        $scope.hasStarted = Game.hasStarted(game);
+        if($scope.hasStarted) {
+          Bet.query({id: game.id}, function(result) {
+            $scope.bets = result;
+          });
+        }
+        $scope.ok = function () {
+          $uibModalInstance.close();
+        };
+      };
+
+      // Open the modal dialog
+      $uibModal.open({
+        templateUrl: 'templates/otherbets.html',
+        controller: otherBetsCtrl
+      });
     };
   });
