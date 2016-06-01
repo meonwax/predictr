@@ -30,7 +30,6 @@
         <tr ng-repeat="question in questions">
 
           <td class="vert-align">{{question.question}}</td>
-          <!-- TODO: Timestamp formatting -->
           <td class="hidden-xs vert-align">{{question.deadline | myDate}}</td>
           <td class="visible-xs vert-align">{{question.deadline | myDateShort}}</td>
 
