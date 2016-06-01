@@ -9,27 +9,27 @@ Data for UEFA EURO 2016 included.
 
 * Install the required node modules globally:
 
-      npm install -g bower grunt-cli
+        npm install -g bower grunt-cli
 
 * For compiling SCSS to CSS, the RubyGem `sass` is also needed:
 
-      gem install sass
+        gem install sass
 
 
 ## Development
 
 * Install the project dependencies:
 
-      npm install
-      bower install
+        npm install
+        bower install
 
 * Run with development profile:
 
-      mvn spring-boot:run
+        mvn spring-boot:run
 
 * Open up a new terminal and launch the node web server:
 
-      grunt serve
+        grunt serve
 
 * Open [http://localhost:3000](http://localhost:3000) in a web browser.
 
@@ -37,7 +37,7 @@ Data for UEFA EURO 2016 included.
 
 * Build the production war using Maven:
 
-      mvn clean package
+        mvn clean package
 
 * For database tasks, i recommend using a database manipulating tool like [Adminer](https://www.adminer.org) or [phpMyAdmin](https://www.phpmyadmin.net).
 
@@ -45,15 +45,15 @@ Data for UEFA EURO 2016 included.
 
 * Run with production profile (replace credentials):
 
-      java -jar target/predictr*.war \
-        --spring.profiles.active=production \
-        --spring.datasource.url=jdbc:mysql://dbhost/dbname \
-        --spring.datasource.username=dbuser \
-        --spring.datasource.password=dbpassword \
-        --spring.mail.host=mailserver \
-        --spring.mail.username=mailuser \
-        --spring.mail.password=mailpassword
-        --predictr.adminEmail=admin@example.com
+        java -jar target/predictr*.war \
+          --spring.profiles.active=production \
+          --spring.datasource.url=jdbc:mysql://dbhost/dbname \
+          --spring.datasource.username=dbuser \
+          --spring.datasource.password=dbpassword \
+          --spring.mail.host=mailserver \
+          --spring.mail.username=mailuser \
+          --spring.mail.password=mailpassword
+          --predictr.adminEmail=admin@example.com
 
 * Open [http://localhost:8080/#/register](http://localhost:8080/#/register) in a web browser and register a new user.
 
