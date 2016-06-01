@@ -29,7 +29,9 @@ public class Question implements Serializable {
 
     @NotNull
     @Column(nullable = false)
-    private int points;
+    private Integer points;
+
+    private Integer pointsEarned;
 
     private String correctAnswer;
 
@@ -60,12 +62,20 @@ public class Question implements Serializable {
         this.deadline = date;
     }
 
-    public int getPoints() {
+    public Integer getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(Integer points) {
         this.points = points;
+    }
+
+    public Integer getPointsEarned() {
+        return pointsEarned;
+    }
+
+    public void setPointsEarned(Integer pointsEarned) {
+        this.pointsEarned = pointsEarned;
     }
 
     public String getCorrectAnswer() {

@@ -6,6 +6,7 @@ angular.module('predictrApp')
     $rootScope.loading = false;
 
     $scope.questions = questions;
+    $scope.deadlinePassed = Question.deadlinePassed;
 
     $scope.send = function() {
       $scope.saving = true;

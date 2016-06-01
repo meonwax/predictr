@@ -16,10 +16,19 @@ import de.meonwax.predictr.repository.QuestionRepository;
 public class QuestionService {
 
     @Autowired
-    private QuestionRepository questionRepository;;
+    private QuestionRepository questionRepository;
+
+    @Autowired
+    private CalculationService calculationService;
 
     public List<Question> getAllWithUsersAnswers(User user) {
-        return questionRepository.findAllWithUsersAnswers(user);
+        List<Question> questions = questionRepository.findAllWithUsersAnswers(user);
+        for( Question question : questions) {
+            if( question.getAnswers().size() > 0 ) {
+                question.setPointsEarned(calculationService.calculate(question.getAnswers().iterator().next()));
+            }
+        }
+        return questions;
     }
 
     public void update(List<QuestionDto> questionDtos) {

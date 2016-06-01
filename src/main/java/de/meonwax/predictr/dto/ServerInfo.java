@@ -24,13 +24,13 @@ public class ServerInfo implements Serializable {
     private String adminEmail;
 
     @Value("${predictr.points.result}")
-    private int pointsResult;
+    private Integer pointsResult;
 
     @Value("${predictr.points.tendency}")
-    private int pointsTendency;
+    private Integer pointsTendency;
 
     @Value("${predictr.points.tendencySpread}")
-    private int pointsTendencySpread;
+    private Integer pointsTendencySpread;
 
     public ServerInfo() {
     }
@@ -55,15 +55,15 @@ public class ServerInfo implements Serializable {
         return adminEmail;
     }
 
-    public int getPointsResult() {
+    public Integer getPointsResult() {
         return pointsResult;
     }
 
-    public int getPointsTendency() {
+    public Integer getPointsTendency() {
         return pointsTendency;
     }
 
-    public int getPointsTendencySpread() {
+    public Integer getPointsTendencySpread() {
         return pointsTendencySpread;
     }
 }

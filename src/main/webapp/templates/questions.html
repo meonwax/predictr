@@ -35,16 +35,13 @@
           <td class="visible-xs vert-align">{{question.deadline | myDateShort}}</td>
 
           <td class="vert-align">
-            <!-- TODO: Check timestamp -->
-            <!-- <?php if ($question['timestamp'] > $now): ?> -->
-            <!-- Only display input field if game will start in the future -->
-            <span ng-if="true">
+            <span ng-if="!deadlinePassed(question)">
               <input class="form-control" type="text" ng-model="question.answers[0].answer">
             </span>
-            <span ng-if="false">
+            <span ng-if="deadlinePassed(question)">
               <!-- Display non editable field if deadline has already been passed -->
-              <span ng-if="question.userAnswer">{{question.userAnswer}}</span>
-              <span ng-if="!question.userAnswer">
+              <span ng-if="question.answers[0].answer">{{question.answers[0].answer}}</span>
+              <span ng-if="!question.answers[0].answer">
                 <i class="fa fa-times"></i>
               </span>
             </span>
@@ -60,11 +57,10 @@
           <td class="vert-align">{{question.points}}</td>
 
           <td class="vert-align">
-            <!-- TODO: Check timestamp -->
-            <span ng-if="true">-</span>
-            <span ng-if="false">
-              <span ng-if="question.pointsEarned">{{question.pointsEarned}}</span>
-              <span ng-if="!question.pointsEarned">
+            <span ng-if="!deadlinePassed(question)">-</span>
+            <span ng-if="deadlinePassed(question)">
+              <span ng-if="question.pointsEarned >= 0">{{question.pointsEarned}}</span>
+              <span ng-if="!question.pointsEarned && question.pointsEarned != 0">
                 <i class="fa fa-clock-o" title="{{'bets.waitForResult' | translate}}"></i>
               </span>
             </span>

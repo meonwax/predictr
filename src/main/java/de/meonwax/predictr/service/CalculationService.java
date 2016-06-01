@@ -4,7 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import de.meonwax.predictr.domain.Answer;
@@ -17,8 +17,14 @@ import de.meonwax.predictr.util.Utils;
 @Service
 public class CalculationService {
 
-    @Autowired
-    private Environment env;
+    @Value("${predictr.points.result}")
+    private Integer pointsResult;
+
+    @Value("${predictr.points.tendency}")
+    private Integer pointsTendency;
+
+    @Value("${predictr.points.tendencySpread}")
+    private Integer pointsTendencySpread;
 
     @Autowired
     private BetRepository betRepository;
@@ -50,7 +56,7 @@ public class CalculationService {
     /**
      * Calculate points for a normal game bet
      */
-    private int calculate(Bet bet) {
+    public int calculate(Bet bet) {
 
         Integer betScoreHome = bet.getScoreHome();
         Integer betScoreAway = bet.getScoreAway();
@@ -62,17 +68,17 @@ public class CalculationService {
         if (Utils.allNotNull(betScoreHome, betScoreAway, resultScoreHome, resultScoreAway)) {
 
             if (betScoreHome.equals(resultScoreHome) && betScoreAway.equals(resultScoreAway)) {
-                return env.getProperty("points.result", Integer.class, 0);
+                return pointsResult;
             }
 
             int betSpread = betScoreHome - betScoreAway;
             int resultSpread = resultScoreHome - resultScoreAway;
             if (betSpread == resultSpread) {
-                return env.getProperty("points.tendencySpread", Integer.class, 0);
+                return pointsTendencySpread;
             }
 
             if (betSpread * resultSpread > 0) {
-                return env.getProperty("points.tendency", Integer.class, 0);
+                return pointsTendency;
             }
         }
         return 0;
@@ -81,7 +87,7 @@ public class CalculationService {
     /**
      * Calculate points for a special question/answer
      */
-    private int calculate(Answer answer) {
+    public int calculate(Answer answer) {
 
         String userAnswer = answer.getAnswer();
         String correctAnswer = answer.getQuestion().getCorrectAnswer();

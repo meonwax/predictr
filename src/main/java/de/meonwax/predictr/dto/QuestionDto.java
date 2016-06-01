@@ -18,7 +18,7 @@ public class QuestionDto {
     private ZonedDateTime deadline;
 
     @NotNull
-    private int points;
+    private Integer points;
 
     private String correctAnswer;
 
@@ -46,11 +46,11 @@ public class QuestionDto {
         this.deadline = deadline;
     }
 
-    public int getPoints() {
+    public Integer getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(Integer points) {
         this.points = points;
     }
 
