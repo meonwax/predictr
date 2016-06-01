@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.meonwax.predictr.domain.Group;
 import de.meonwax.predictr.domain.User;
-import de.meonwax.predictr.repository.GroupRepository;
+import de.meonwax.predictr.service.GameService;
 
 @RestController
 @RequestMapping("api")
 public class GroupController {
 
     @Autowired
-    private GroupRepository groupRepository;
+    private GameService gameService;
 
     @RequestMapping(value = "/groups", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Group> getAll(@AuthenticationPrincipal User user) {
-        return groupRepository.findAllWithUsersBets(user);
+        return gameService.findGroupsAllWithUsersBets(user);
     }
 }

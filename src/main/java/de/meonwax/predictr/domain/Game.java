@@ -48,6 +48,8 @@ public class Game implements Serializable {
 
     private String notes;
 
+    private Integer pointsEarned;
+
     @OneToMany(mappedBy = "game")
     private Set<Bet> bets;
 
@@ -121,6 +123,14 @@ public class Game implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public Integer getPointsEarned() {
+        return pointsEarned;
+    }
+
+    public void setPointsEarned(Integer pointsEarned) {
+        this.pointsEarned = pointsEarned;
     }
 
     public Set<Bet> getBets() {

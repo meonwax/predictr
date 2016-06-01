@@ -67,10 +67,10 @@
               </td>
 
               <td class="vert-align nowrap">
-                <span ng-if="game.scoreHome && game.scoreAway">
+                <span ng-if="game.scoreHome >= 0 && game.scoreAway >= 0">
                   {{game.scoreHome}}:{{game.scoreAway}}
                 </span>
-                <span ng-if="!(game.scoreHome && game.scoreAway)">
+                <span ng-if="!(game.scoreHome >= 0 && game.scoreAway >= 0)">
                   -:-
                 </span>
                 <span ng-if="game.notes">
@@ -94,8 +94,8 @@
               <td class="vert-align">
                 <span ng-if="!hasStarted(game)">-</span>
                 <span ng-if="hasStarted(game)">
-                  <span ng-if="game.pointsEarned">{{game.pointsEarned}}</span>
-                  <span ng-if="!game.pointsEarned">
+                  <span ng-if="game.scoreHome >= 0 && game.scoreAway >= 0">{{game.pointsEarned}}</span>
+                  <span ng-if="!(game.scoreHome >= 0 && game.scoreAway >= 0)">
                     <i class="fa fa-clock-o" title="{{'bets.waitForResult' | translate}}"></i>
                   </span>
                 </span>

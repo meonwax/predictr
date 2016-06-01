@@ -58,8 +58,8 @@
           <td class="vert-align">
             <span ng-if="!deadlinePassed(question)">-</span>
             <span ng-if="deadlinePassed(question)">
-              <span ng-if="question.pointsEarned >= 0">{{question.pointsEarned}}</span>
-              <span ng-if="!question.pointsEarned && question.pointsEarned != 0">
+              <span ng-if="question.correctAnswer">{{question.pointsEarned}}</span>
+              <span ng-if="!(question.correctAnswer)">
                 <i class="fa fa-clock-o" title="{{'bets.waitForResult' | translate}}"></i>
               </span>
             </span>
