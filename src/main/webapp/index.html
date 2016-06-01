@@ -40,6 +40,7 @@
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'rules'}"><a href="#/rules"><i class="fa fa-book"></i> <span translate="navigation.rules"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'shoutbox'}"><a href="#/shoutbox"><i class="fa fa-comment-o"></i> <span translate="navigation.shoutbox"></span></a></li>
         <li role="presentation" ng-if="account.role == ROLES.ADMIN" ng-class="{active: $route.current.activeTab == 'admin'}"><a href="#/admin"><i class="fa fa-cogs"></i> <span translate="navigation.admin"></span></a></li>
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'settings'}"><a href="#/settings"><i class="fa fa-sliders"></i> <span translate="navigation.settings"></span></a></li>
         <li role="presentation"><a ng-click="logout()" class="text-danger"><i class="fa fa-sign-out"></i> <span translate="navigation.logout"></span></a></li>
       </ul>
 
@@ -52,6 +53,7 @@
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'rules'}"><a href="#/rules"><i class="fa fa-book fa-fw"></i> <span translate="navigation.rules"></span></a></li>
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'shoutbox'}"><a href="#/shoutbox"><i class="fa fa-comment-o fa-fw"></i> <span translate="navigation.shoutbox"></span></a></li>
         <li role="presentation" ng-if="account.role == ROLES.ADMIN" ng-class="{active: $route.current.activeTab == 'admin'}"><a href="#/admin"><i class="fa fa-cogs fa-fw"></i> <span translate="navigation.admin"></span></a></li>
+        <li role="presentation" ng-class="{active: $route.current.activeTab == 'settings'}"><a href="#/settings"><i class="fa fa-sliders fa-fw"></i> <span translate="navigation.settings"></span></a></li>
         <li role="presentation"><a ng-click="logout()" class="text-danger"><i class="fa fa-sign-out fa-fw"></i> <span translate="navigation.logout"></span></a></li>
       </ul>
 
@@ -112,6 +114,7 @@
   <script src="js/routes/ladder.route.js"></script>
   <script src="js/routes/questions.route.js"></script>
   <script src="js/routes/rules.route.js"></script>
+  <script src="js/routes/settings.route.js"></script>
   <script src="js/routes/admin.route.js"></script>
   <script src="js/routes/generic.routes.js"></script>
   <script src="js/controllers/login.controller.js"></script>
@@ -122,6 +125,7 @@
   <script src="js/controllers/questions.controller.js"></script>
   <script src="js/controllers/rules.controller.js"></script>
   <script src="js/controllers/shoutbox.controller.js"></script>
+  <script src="js/controllers/settings.controller.js"></script>
   <script src="js/controllers/admin.controller.js"></script>
   <script src="js/services/authentication.service.js"></script>
   <script src="js/services/user.service.js"></script>

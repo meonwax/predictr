@@ -13,6 +13,7 @@
         "questions": "Spezialfragen",
         "rules": "Regeln",
         "shoutbox": "Shoutbox",
+        "settings": "Einstellungen",
         "logout": "Abmelden",
         "admin": "Admin"
     },
@@ -128,6 +129,9 @@
         "title": "Shoutbox",
         "message": "Nachricht…",
         "sendMessage": "Senden"
+    },
+    "settings": {
+        "title": "Einstellungen"
     },
     "admin": {
         "title": "Administration",
