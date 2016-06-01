@@ -16,7 +16,7 @@ Wer am Ende des Turniers die meisten Punkte erreicht hat, gewinnt das Tippspiel.
 Die Anstoßzeiten sind im Spielplan angegeben.  
 Nach Anpfiff ist die Tippabgabe für dieses Spiel gesperrt.  
 
-- **Die Antworten auf die Spezialfragen müssen vor Beginn des Turniers (Zeitpunkt in der Tabelle angegeben) abgegeben werden.**
+- **Die Antworten auf die Spezialfragen müssen vor Ablauf der Deadline (Zeitpunkt in der Tabelle angegeben) abgegeben werden.**
 Danach ist die Antwortabgabe gesperrt.
 Bitte achtet auf die richtige Schreibweise.
 

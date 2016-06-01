@@ -138,12 +138,15 @@
         "games": "Games",
         "scoreHome": "Result A",
         "scoreAway": "Result B",
+        "questions": "Questions",
         "users": "Users",
         "role": "Role",
         "wager": "Wager",
         "createdDate": "Created",
         "lastModifiedDate": "Last modified",
-        "saveOk": "Games saved.",
-        "saveError": "Error saving games:"
+        "gamesSaveOk": "Games saved.",
+        "gamesSaveError": "Error saving games:",
+        "questionsSaveOk": "Questions saved.",
+        "questionsSaveError": "Error saving questions:"
     }
 }

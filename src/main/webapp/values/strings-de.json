@@ -138,12 +138,15 @@
         "games": "Spiele",
         "scoreHome": "Ergebnis A",
         "scoreAway": "Ergebnis B",
+        "questions": "Fragen",
         "users": "Benutzer",
         "role": "Rolle",
         "wager": "Einsatz",
         "createdDate": "Erstellt am",
         "lastModifiedDate": "Geändert am",
-        "saveOk": "Spiele wurden gespeichert.",
-        "saveError": "Fehler beim Speichern der Spiele:"
+        "gamesSaveOk": "Spiele wurden gespeichert.",
+        "gamesSaveError": "Fehler beim Speichern der Spiele:",
+        "questionsSaveOk": "Fragen wurden gespeichert.",
+        "questionsSaveError": "Fehler beim Speichern der Fragen:"
     }
 }

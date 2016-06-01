@@ -15,6 +15,14 @@ angular.module('predictrApp')
           });
           return deferred.promise;
         },
+        questions: function($rootScope, $q, Question) {
+          $rootScope.loading = true;
+          var deferred = $q.defer();
+          Question.all().query(function(questions) {
+            deferred.resolve(questions);
+          });
+          return deferred.promise;
+        },
         users: function($rootScope, $q, User) {
           $rootScope.loading = true;
           var deferred = $q.defer();
