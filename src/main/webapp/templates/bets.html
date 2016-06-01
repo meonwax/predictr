@@ -79,15 +79,12 @@
               </td>
 
               <td class="vert-align">
-                <!-- TODO: Check timestamp -->
-                <!-- <?php if (intval($game['timestamp']) > $now): ?> -->
-                <!-- Only display input field if game will start in the future -->
-                <span ng-if="true">
+                <span ng-if="!hasStarted(game)">
                   <input class="form-control has-error" type="text" placeholder="-:-" maxlength="4" ng-model="game.bets[0]" ng-pattern="/^\d{1,2}:\d{1,2}$/" my-bet>
                 </span>
-                <span ng-if="false">
-                  <!-- Display non editable bets if game has already been started -->
-                  <span ng-if="game.bets[0]">{{bets[game.id] | bet}}</span>
+                <span ng-if="hasStarted(game)">
+                  <!-- Display non editable bets if game has already started -->
+                  <span ng-if="game.bets[0]">{{game.bets[0] | bet}}</span>
                   <span ng-if="!game.bets[0]">
                     <i class="fa fa-times"></i>
                   </span>
@@ -95,9 +92,8 @@
               </td>
 
               <td class="vert-align">
-                <!-- TODO: Check timestamp -->
-                <span ng-if="true">-</span>
-                <span ng-if="false">
+                <span ng-if="!hasStarted(game)">-</span>
+                <span ng-if="hasStarted(game)">
                   <span ng-if="game.pointsEarned">{{game.pointsEarned}}</span>
                   <span ng-if="!game.pointsEarned">
                     <i class="fa fa-clock-o" title="{{'bets.waitForResult' | translate}}"></i>

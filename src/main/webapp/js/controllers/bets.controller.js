@@ -3,8 +3,10 @@
 angular.module('predictrApp')
   .controller('BetsCtrl', function($rootScope, $scope, $location, $anchorScroll, $timeout, $translate, toastr, $uibModal, Game, Bet, groups) {
 
-    $scope.groups = groups;
     $rootScope.loading = false;
+
+    $scope.groups = groups;
+    $scope.hasStarted = Game.hasStarted;
 
     if ($location.hash()) {
       $scope.highlightedGameId = $location.hash();
