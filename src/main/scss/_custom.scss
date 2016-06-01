@@ -33,6 +33,14 @@ a {
   height: 11px;
   vertical-align: baseline;
 }
+.logo {
+    background-image: url('../images/logo.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 1.7em;
+    padding-left: 2em;
+    line-height: 1.7em;
+}
 
 /*
 * Input fields

@@ -23,7 +23,13 @@
 
   <div class="header">
     <div class="container">
-      <h1 ng-cloak>{{serverInfo.title}}</h1>
+
+      <!-- <div class="row">
+        <div class="col-md-10"> -->
+          <h1 ng-cloak class="logo">{{serverInfo.title}}</h1>
+        <!-- </div>
+        <div class="col-md-2 logo"></div>
+      </div> -->
 
       <!-- Tabbed navbar for normal screens -->
       <ul class="nav nav-tabs hidden-xs" role="tablist" ng-if="Auth.getToken()">
@@ -48,6 +54,7 @@
         <li role="presentation" ng-if="account.role == ROLES.ADMIN" ng-class="{active: $route.current.activeTab == 'admin'}"><a href="#/admin"><i class="fa fa-cogs fa-fw"></i> <span translate="navigation.admin"></span></a></li>
         <li role="presentation"><a ng-click="logout()" class="text-danger"><i class="fa fa-sign-out fa-fw"></i> <span translate="navigation.logout"></span></a></li>
       </ul>
+
     </div>
   </div>
 
