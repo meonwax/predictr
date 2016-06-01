@@ -40,6 +40,11 @@ a {
     height: 1.7em;
     padding-left: 2em;
     line-height: 1.7em;
+    color: $text-color;
+}
+.title, .title:hover, .title:focus {
+    text-decoration: none;
+    display: inline-block;
 }
 
 /*
