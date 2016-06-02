@@ -223,11 +223,14 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof User && ((User) obj).id.longValue() == id.longValue();
+        return obj instanceof User
+                && ((User) obj).id != null
+                && id != null
+                && ((User) obj).id.longValue() == id.longValue();
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return id != null ? id.hashCode() : 0;
     }
 }
