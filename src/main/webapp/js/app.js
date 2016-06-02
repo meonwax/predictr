@@ -6,11 +6,11 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
     // Initialize root scope
     $rootScope.$route = $route;
     $rootScope.serverInfo = ServerInfo.get();
-    $rootScope.account = User.account().get();
     $rootScope.ROLES = ROLES;
 
     $rootScope.logout = function() {
       Authentication.logout();
+      $rootScope.account = null;
       $location.path('login');
     }
 
