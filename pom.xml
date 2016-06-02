@@ -4,7 +4,7 @@
 
     <groupId>de.meonwax</groupId>
     <artifactId>predictr</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>4.0.0-beta</version>
     <packaging>war</packaging>
 
     <name>Predictr</name>
