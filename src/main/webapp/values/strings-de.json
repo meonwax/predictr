@@ -2,9 +2,10 @@
     "global": {
         "serverTime": "Serverzeit",
         "version": "Version",
-        "language": "Sprache",
         "loading": "Wird geladen…",
-        "save": "Speichern"
+        "save": "Speichern",
+        "english": "Englisch",
+        "german": "Deutsch"
     },
     "navigation": {
         "home": "Home",
@@ -131,7 +132,17 @@
         "sendMessage": "Senden"
     },
     "settings": {
-        "title": "Einstellungen"
+        "title": "Einstellungen",
+        "language": "Sprache",
+        "editHere": "Persönliche Daten anpassen",
+        "editError": "Speichern der persönlichen Daten fehlgeschlagen.",
+        "edit": "Speichern",
+        "updatePasswordHere": "Passwort ändern",
+        "passwordError": "Ändern des Passwortes fehlgeschlagen.",
+        "oldPassword": "Altes Passwort",
+        "newPassword": "Neues Passwort",
+        "newPasswordConfirm": "Neues Passwort (wiederholen)",
+        "updatePassword": "Passwort ändern"
     },
     "admin": {
         "title": "Administration",
