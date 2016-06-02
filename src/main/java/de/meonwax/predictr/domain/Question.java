@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -31,6 +32,7 @@ public class Question implements Serializable {
     @Column(nullable = false)
     private Integer points;
 
+    @Transient
     private Integer pointsEarned;
 
     private String correctAnswer;

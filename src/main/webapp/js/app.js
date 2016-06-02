@@ -1,17 +1,13 @@
 'use strict';
 
 angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies', 'ngResource', 'LocalStorageModule', 'angular-ladda', 'ngAnimate', 'toastr', 'ui.bootstrap'])
-  .run(function($rootScope, $route, $translate, $location, ServerInfo, Authentication, User, ROLES) {
+  .run(function($rootScope, $route, $location, ServerInfo, Authentication, User, ROLES) {
 
     // Initialize root scope
     $rootScope.$route = $route;
     $rootScope.serverInfo = ServerInfo.get();
     $rootScope.account = User.account().get();
     $rootScope.ROLES = ROLES;
-
-    $rootScope.changeLanguage = function(language) {
-      $translate.use(language);
-    };
 
     $rootScope.logout = function() {
       Authentication.logout();
@@ -31,6 +27,7 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
         prefix: 'values/strings-',
         suffix: '.json'
       })
+      // TODO: Determine initial language by browser setting
       .preferredLanguage('de')
       .useCookieStorage()
       .useSanitizeValueStrategy('escapeParameters');

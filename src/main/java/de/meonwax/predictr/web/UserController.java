@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.meonwax.predictr.domain.User;
+import de.meonwax.predictr.dto.UserDataDto;
 import de.meonwax.predictr.dto.UserDto;
 import de.meonwax.predictr.service.MailService;
 import de.meonwax.predictr.service.UserService;
@@ -47,7 +48,14 @@ public class UserController {
 
     @RequestMapping(value = "/users/account", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getAccount(@AuthenticationPrincipal User user) {
-        return ResponseEntity.ok().body(userService.getUser(user.getEmail()));
+        return ResponseEntity.ok(userService.getUser(user.getEmail()));
+    }
+
+    @RequestMapping(value = "/users/account", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> updateAccount(@Valid @RequestBody UserDataDto userDataDto, @AuthenticationPrincipal User user) {
+        return userService.updateUser(userDataDto, user)
+                .map(updatedUser -> ResponseEntity.ok(updatedUser))
+                .orElse(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null));
     }
 
     @RequestMapping(value = "/users/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

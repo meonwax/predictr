@@ -2,6 +2,7 @@ package de.meonwax.predictr.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import de.meonwax.predictr.domain.User;
+import de.meonwax.predictr.dto.UserDataDto;
 import de.meonwax.predictr.dto.UserDto;
 import de.meonwax.predictr.repository.UserRepository;
 
@@ -63,6 +65,18 @@ public class UserService implements UserDetailsService {
             log.error("Error creating new user: " + e.getMessage());
         }
         return false;
+    }
+
+    public Optional<User> updateUser(UserDataDto userDataDto, User user) {
+        user.setName(userDataDto.getName());
+        user.setPreferredLanguage(userDataDto.getPreferredLanguage());
+        try {
+            userRepository.save(user);
+            return Optional.of(user);
+        } catch (Exception e) {
+            log.error("Error updating user " + user.getEmail() + ": " + e.getMessage());
+        }
+        return Optional.empty();
     }
 
     public BigDecimal getFullJackpot() {

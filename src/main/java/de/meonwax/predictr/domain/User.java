@@ -67,6 +67,8 @@ public class User implements Serializable, UserDetails {
     @Column(nullable = false)
     private String role;
 
+    private String preferredLanguage;
+
     @NotNull
     @Min(value = 0)
     @Column(nullable = false)
@@ -139,6 +141,14 @@ public class User implements Serializable, UserDetails {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPreferredLanguage() {
+        return preferredLanguage;
+    }
+
+    public void setPreferredLanguage(String preferredLanguage) {
+        this.preferredLanguage = preferredLanguage;
     }
 
     public BigDecimal getWager() {

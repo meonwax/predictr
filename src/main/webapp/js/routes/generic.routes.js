@@ -18,6 +18,11 @@ angular.module('predictrApp')
         controller: 'ShoutboxCtrl',
         activeTab: 'shoutbox'
       })
+      .when('/settings', {
+        templateUrl: 'templates/settings.html',
+        controller: 'SettingsCtrl',
+        activeTab: 'settings'
+      })
       .otherwise({
         redirectTo: '/'
       });

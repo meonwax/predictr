@@ -136,6 +136,7 @@
         "language": "Language",
         "editHere": "Update personal data",
         "editError": "Updating personal data failed.",
+        "editOk": "Personal data updated.",
         "edit": "Save",
         "updatePasswordHere": "Change password",
         "passwordError": "Changing password failed.",
