@@ -43,7 +43,7 @@ angular.module('predictrApp')
 
       // Inline modal controller function
       var otherAnswersCtrl = function($scope, $uibModalInstance) {
-        $scope.question = question
+        $scope.question = question;
         $scope.deadlinePassed = Question.deadlinePassed(question);
         if($scope.deadlinePassed) {
           Answer.query({questionId: question.id}, function(result) {

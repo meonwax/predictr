@@ -12,7 +12,7 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
       Authentication.logout();
       $rootScope.account = null;
       $location.path('login');
-    }
+    };
 
     $rootScope.Auth = Authentication;
   })

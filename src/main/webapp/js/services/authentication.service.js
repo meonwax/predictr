@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('predictrApp')
-  .factory('Authentication', function($q, $http, localStorageService) {
+  .factory('Authentication', function($q, $http, $window, localStorageService) {
 
     // Initialize token
     var token = localStorageService.get('authenticationToken');
@@ -15,7 +15,7 @@ angular.module('predictrApp')
             'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8; charset=utf-8'
           }
         }).then(function() {
-          token = btoa(credentials.email + Date.now().toString());
+          token = $window.btoa(credentials.email + Date.now().toString());
           localStorageService.set('authenticationToken', token);
           deferred.resolve();
         }, function(error) {
@@ -39,5 +39,5 @@ angular.module('predictrApp')
       getToken: function() {
         return token;
       }
-    }
+    };
   });

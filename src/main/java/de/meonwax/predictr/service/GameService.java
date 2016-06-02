@@ -23,7 +23,7 @@ public class GameService {
     private GameRepository gameRepository;
 
     @Autowired
-    GroupRepository groupRepository;
+    private GroupRepository groupRepository;
 
     @Autowired
     private CalculationService calculationService;

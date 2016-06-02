@@ -27,6 +27,6 @@ angular.module('predictrApp')
         }, function(error) {
           $scope.focusInput = true;
           $scope.error = true;
-        })
+        });
     };
   });

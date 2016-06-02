@@ -225,4 +225,9 @@ public class User implements Serializable, UserDetails {
     public boolean equals(Object obj) {
         return obj instanceof User && ((User) obj).id.longValue() == id.longValue();
     }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

@@ -11,8 +11,8 @@ angular.module('predictrApp')
           }
         });
       },
-      deadlinePassed(question) {
+      deadlinePassed: function(question) {
         return (new Date() > new Date(question.deadline * 1000));
       }
-    }
+    };
   });

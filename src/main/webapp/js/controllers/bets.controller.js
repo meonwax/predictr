@@ -52,7 +52,7 @@ angular.module('predictrApp')
 
       // Inline modal controller function
       var otherBetsCtrl = function($scope, $uibModalInstance) {
-        $scope.game = game
+        $scope.game = game;
         $scope.hasStarted = Game.hasStarted(game);
         if($scope.hasStarted) {
           Bet.query({gameId: game.id}, function(result) {
