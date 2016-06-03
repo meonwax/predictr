@@ -59,6 +59,9 @@ public class User implements Serializable, UserDetails {
     @JsonIgnore
     private String password;
 
+    @OneToMany(mappedBy = "user")
+    private Set<RememberMeToken> rememberMeTokens;
+
     @NotNull
     @Column(nullable = false)
     private String name;
@@ -125,6 +128,14 @@ public class User implements Serializable, UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<RememberMeToken> getRememberMeTokens() {
+        return rememberMeTokens;
+    }
+
+    public void setRememberMeTokens(Set<RememberMeToken> rememberMeTokens) {
+        this.rememberMeTokens = rememberMeTokens;
     }
 
     public String getName() {

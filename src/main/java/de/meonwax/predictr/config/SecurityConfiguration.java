@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import de.meonwax.predictr.security.RestAuthenticationEntryPoint;
 import de.meonwax.predictr.security.RestAuthenticationFailureHandler;
@@ -37,6 +38,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private RestLogoutSuccessHandler logoutSuccessHandler;
+
+    @Autowired
+    private PersistentTokenRepository tokenRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -75,6 +79,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/api/users/logout")
                 .logoutSuccessHandler(logoutSuccessHandler)
                 .clearAuthentication(false)
-                .deleteCookies("JSESSIONID");
+                .deleteCookies("JSESSIONID")
+
+                .and().rememberMe()
+                .rememberMeParameter("remember-me")
+                .tokenRepository(tokenRepository)
+                .tokenValiditySeconds(60 * 60 * 24 * 3);
     }
 }

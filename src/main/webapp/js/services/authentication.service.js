@@ -10,6 +10,9 @@ angular.module('predictrApp')
       login: function(credentials) {
         var deferred = $q.defer();
         var data = 'email=' + encodeURIComponent(credentials.email) + '&password=' + encodeURIComponent(credentials.password);
+        if(credentials.rememberMe) {
+          data += '&remember-me=1';
+        }
         $http.post('api/users/login', data, {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8; charset=utf-8'
