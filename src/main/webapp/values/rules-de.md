@@ -10,17 +10,16 @@ Ein mögliches Elfmeterschießen ist für die Tippabgabe nicht relevant.
 
 
 - Die erreichbaren Punkte für die Spezialfragen sind jeweils angegeben.  
-Wer am Ende des Turniers die meisten Punkte erreicht hat, gewinnt das Tippspiel.
+Wer am Ende des Turniers die meisten Punkte erreicht hat, gewinnt das Tippspiel. Tipper mit gleicher Punktzahl teilen sich den entsprechenden Ranglistenplatz.
 
 - Jeder Tipp muss vor Anpfiff eines jeweiligen Spiels abgegeben werden und ist bis dahin beliebig oft änderbar.  
 Die Anstoßzeiten sind im Spielplan angegeben.  
-Nach Anpfiff ist die Tippabgabe für dieses Spiel gesperrt.  
+Nach Anpfiff ist die Tippabgabe für dieses Spiel gesperrt.
 
 - **Die Antworten auf die Spezialfragen müssen vor Ablauf der Deadline (Zeitpunkt in der Tabelle angegeben) abgegeben werden.**
-Danach ist die Antwortabgabe gesperrt.
-Bitte achtet auf die richtige Schreibweise.
+Danach ist die Antwortabgabe gesperrt. Bitte achtet auf die richtige Schreibweise.
 
-- Maßgeblich ist die unten angegebene Serverzeit, die sich bei jedem Seitenaufruf aktualisiert.  
+- Maßgeblich ist die unten angegebene Serverzeit.  
 Alle Zeiten sind in Mitteleuropäischer Sommerzeit (MESZ) angegeben.
 
 - Eine Punktevergabe erfolgt, sobald das offizielle Ergebnis des Spiels in die Datenbank eingetragen wurde.  
