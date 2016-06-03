@@ -56,7 +56,7 @@ public class GameService {
         return gameRepository.findByKickoffTimeBeforeAndScoreHomeIsNullAndScoreAwayIsNullOrderByKickoffTime(ZonedDateTime.now());
     }
 
-    public List<Group> findAllGroupsWithUsersBets(User user) {
+    public List<Group> getAllGroupsWithUsersBets(User user) {
         List<Group> groups = groupRepository.findAllWithGames();
         for (Group group : groups) {
             for (Game game : group.getGames()) {
