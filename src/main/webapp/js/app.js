@@ -4,9 +4,13 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
   .run(function($rootScope, $route, $location, $translate, ServerInfo, Authentication, User, ROLES) {
 
     // Initialize root scope
-    $rootScope.$route = $route;
-    $rootScope.serverInfo = ServerInfo.get();
     $rootScope.ROLES = ROLES;
+    $rootScope.$route = $route;
+    ServerInfo.get().get(function(serverInfo) {
+      $rootScope.serverInfo = serverInfo;
+      $rootScope.serverClock = ServerInfo.serverClock().init(serverInfo.time);
+    });
+
     User.account().get(function(user) {
       $translate.use(user.preferredLanguage);
       $rootScope.account = user;
@@ -31,7 +35,6 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
         prefix: 'values/strings-',
         suffix: '.json'
       })
-      // TODO: Determine initial language by browser setting
       .preferredLanguage('de')
       .useCookieStorage()
       .useSanitizeValueStrategy('escapeParameters');
