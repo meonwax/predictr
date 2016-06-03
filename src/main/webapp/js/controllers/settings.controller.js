@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('SettingsCtrl', function($rootScope, $scope, $translate, toastr, User) {
+  .controller('SettingsCtrl', function($rootScope, $scope, $translate, amMoment, toastr, User) {
     $scope.language = $rootScope.account.preferredLanguage || $translate.use();
     $scope.name = $rootScope.account.name;
 
@@ -14,16 +14,17 @@ angular.module('predictrApp')
       };
 
       User.account().save(userData,
-        function(result) {
+        function(user) {
           // Immediately use the new preferred language
-          $translate.use(result.preferredLanguage);
+          $translate.use(user.preferredLanguage);
+          amMoment.changeLocale(user.preferredLanguage);
           toastr.success($translate.instant('settings.editOk'));
 
           $scope.editing = false;
           $scope.editError = false;
 
           // Update existing account in webapp
-          $rootScope.account = result;
+          $rootScope.account = user;
         },
         function() {
           $scope.editing = false;

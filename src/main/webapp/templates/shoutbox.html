@@ -22,7 +22,7 @@
         <div class="list-group-item" ng-repeat="shout in shouts">
           <h4 class="list-group-item-heading">
             {{shout.user.name}}
-            <small>{{shout.date | shoutTime}}</small>
+            <small>{{shout.date | myDateShort}}</small>
           </h4>
           <p class="list-group-item-text">
             {{shout.message}}

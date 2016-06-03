@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies', 'ngResource', 'LocalStorageModule', 'angular-ladda', 'ngAnimate', 'toastr', 'ui.bootstrap'])
-  .run(function($rootScope, $route, $location, $translate, ServerInfo, Authentication, User, ROLES) {
+angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'angularMoment', 'ngCookies', 'ngResource', 'LocalStorageModule', 'angular-ladda', 'ngAnimate', 'toastr', 'ui.bootstrap'])
+  .run(function($rootScope, $route, $location, $translate, amMoment, ServerInfo, Authentication, User, ROLES) {
 
     // Initialize root scope
     $rootScope.ROLES = ROLES;
@@ -13,6 +13,7 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'ngCookies',
 
     User.account().get(function(user) {
       $translate.use(user.preferredLanguage);
+      amMoment.changeLocale(user.preferredLanguage);
       $rootScope.account = user;
     });
 

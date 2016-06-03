@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('LoginCtrl', function($rootScope, $scope, $location, $translate, Authentication, User) {
+  .controller('LoginCtrl', function($rootScope, $scope, $location, $translate, amMoment, Authentication, User) {
 
     $scope.credentials = {};
     $scope.focusInput = true;
@@ -14,6 +14,7 @@ angular.module('predictrApp')
           $scope.error = false;
           User.account().get(function(user) {
             $translate.use(user.preferredLanguage);
+            amMoment.changeLocale(user.preferredLanguage);
             $rootScope.account = user;
           });
           $location.path('');
