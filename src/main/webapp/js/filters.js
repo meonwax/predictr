@@ -11,6 +11,11 @@ angular.module('predictrApp')
       return $filter('amDateFormat')(timestamp * 1000, 'L LT');
     };
   })
+  .filter('myDateLong', function($filter) {
+    return function(timestamp) {
+      return $filter('amDateFormat')(timestamp * 1000, 'll LTS z');
+    };
+  })
   .filter('playTime', function() {
     return function(timestamp) {
       var diffSeconds = Date.now() / 1000 - timestamp;
