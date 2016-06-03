@@ -5,6 +5,15 @@ body {
 a {
   cursor: pointer;
 }
+// Smaller fonts on jeading for small screens
+@media (max-width: $screen-xs) {
+  h2 {
+    font-size: 1.4em;
+  }
+  h3 {
+    font-size: 1.25em;
+  }
+}
 
 .nowrap {
   white-space: nowrap;
@@ -23,10 +32,13 @@ a {
   border: 0;
 }
 .loading {
-  position: fixed; /* or absolute */
-  top: 5px;
-  left: 50%;
+  z-index: 10;
+  position: fixed;
   font-size: 1em;
+  top: 0.7em;
+  left: 50%;
+  width: 200px;
+  margin-left: -100px;
 }
 .flag {
   width: 16px;
@@ -34,17 +46,26 @@ a {
   vertical-align: baseline;
 }
 .logo {
-    background-image: url('../images/logo.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-    height: 1.7em;
-    padding-left: 2em;
-    line-height: 1.7em;
-    color: $text-color;
+  background-image: url('../images/logo.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 1.7em;
+  padding-left: 2em;
+  line-height: 1.7em;
 }
 .title, .title:hover, .title:focus {
-    text-decoration: none;
-    display: inline-block;
+  color: $text-color;
+  text-decoration: none;
+  display: inline-block;
+}
+.title-mobile {
+  font-size: 1.4em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  line-height: 2em;
+}
+.dropdown-menu > li > a.text-danger {
+  color: $state-danger-text;
 }
 
 /*
@@ -60,14 +81,14 @@ a {
 }
 /*
 @media (max-width: 991px) {
-  #special input {
-    width: 12em;
-  }
+#special input {
+width: 12em;
+}
 }
 @media (max-width: 767px) {
-  #special input {
-    width: 10em;
-  }
+#special input {
+width: 10em;
+}
 }
 */
 
