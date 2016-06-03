@@ -60,6 +60,7 @@ public class User implements Serializable, UserDetails {
     private String password;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<RememberMeToken> rememberMeTokens;
 
     @NotNull

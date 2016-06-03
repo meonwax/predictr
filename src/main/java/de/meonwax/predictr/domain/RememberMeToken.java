@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class RememberMeToken implements Serializable {
 
@@ -24,6 +26,7 @@ public class RememberMeToken implements Serializable {
     private ZonedDateTime date;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
 
     public String getSeries() {
