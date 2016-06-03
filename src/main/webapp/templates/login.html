@@ -18,7 +18,7 @@
             <div class="form-group">
               <input type="password" class="form-control" tabindex="2" required placeholder="{{'login.password' | translate}}" ng-model="credentials.password">
             </div>
-            <button type="submit" class="btn btn-success" tabindex="4" ng-disabled="form.$invalid">
+            <button type="submit" class="btn btn-success" tabindex="4" ladda="loading" data-style="zoom-in" ng-disabled="form.$invalid">
               <i class="fa fa-sign-in"></i>
               <span translate="login.signIn"></span>
             </button>

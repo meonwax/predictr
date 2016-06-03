@@ -23,7 +23,7 @@
           <div class="form-group">
             <input type="text" class="form-control" minlength="3" required placeholder="{{'register.name' | translate}}" ng-model="credentials.name">
           </div>
-          <button type="submit" class="btn btn-success" ng-disabled="form.$invalid">
+          <button type="submit" class="btn btn-success" ladda="loading" data-style="zoom-in" ng-disabled="form.$invalid">
             <i class="fa fa-user-plus"></i>
             <span translate="register.create"></span>
           </button>

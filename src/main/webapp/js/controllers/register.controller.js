@@ -8,6 +8,7 @@ angular.module('predictrApp')
 
     $scope.register = function() {
       $scope.focusInput = false;
+      $scope.loading = true;
 
       // Try to register the new user
       User.register($scope.credentials)
@@ -18,6 +19,7 @@ angular.module('predictrApp')
           // Login with created user
           Authentication.login($scope.credentials)
             .then(function() {
+              $scope.loading = false;
               $scope.error = false;
               $location.path('');
             }, function(error) {
@@ -25,6 +27,7 @@ angular.module('predictrApp')
               $scope.error = true;
             });
         }, function(error) {
+          $scope.loading = false;
           $scope.focusInput = true;
           $scope.error = true;
         });
