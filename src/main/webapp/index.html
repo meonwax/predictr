@@ -19,7 +19,10 @@
     <img class="forkme" src="images/forkme.png" alt="Fork me on GitHub">
   </a>
 
-  <div ng-if="loading" class="loading btn btn-default btn-sm" translate="global.loading"></div>
+  <div ng-if="loading" class="loading btn btn-default btn-sm">
+    <i class="fa fa-spinner fa-spin"></i>
+    <span translate="global.loading"></span>
+  </div>
 
   <div class="header">
     <div class="container">
