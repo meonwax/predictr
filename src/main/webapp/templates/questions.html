@@ -4,8 +4,8 @@
     <div class="panel panel-default">
 
     <table class="table table-striped">
-      <thead>
-        <tr class="hidden-xs">
+      <thead accesskey=""class="hidden-xs">
+        <tr>
           <th translate="questions.question"></th>
           <th translate="questions.deadline"></th>
           <th class="col-xs-2" translate="questions.userAnswer"></th>
@@ -14,24 +14,13 @@
           <th translate="questions.pointsEarned"></th>
           <th>&nbsp;</th>
         </tr>
-        <tr class="visible-xs">
-          <th><i class="fa fa-question"></i></th>
-          <th><i class="fa fa-clock-o"></i></th>
-          <th><i class="fa fa-hand-o-right"></i></th>
-          <th>=</th>
-          <th><i class="fa fa-star"></i></th>
-          <th><i class="fa fa-star-o"></i></th>
-          <th>&nbsp;</th>
-        </tr>
       </thead>
 
       <tbody>
-
         <tr ng-repeat="question in questions">
 
           <td class="vert-align">{{question.question}}</td>
           <td class="hidden-xs vert-align">{{question.deadline | myDate}}</td>
-          <td class="visible-xs vert-align">{{question.deadline | myDateShort}}</td>
 
           <td class="vert-align">
             <span ng-if="!deadlinePassed(question)">
@@ -46,16 +35,16 @@
             </span>
           </td>
 
-          <td class="vert-align">
+          <td class="vert-align hidden-xs">
             <span ng-if="question.correctAnswer">{{question.correctAnswer}}</span>
             <span ng-if="!question.correctAnswer">
               <i class="fa fa-question-circle"></i>
             </span>
           </td>
 
-          <td class="vert-align">{{question.points}}</td>
+          <td class="vert-align hidden-xs">{{question.points}}</td>
 
-          <td class="vert-align">
+          <td class="vert-align hidden-xs">
             <span ng-if="!deadlinePassed(question)">-</span>
             <span ng-if="deadlinePassed(question)">
               <span ng-if="question.correctAnswer">{{question.pointsEarned}}</span>
@@ -65,7 +54,7 @@
             </span>
           </td>
 
-          <td class="vert-align">
+          <td class="vert-align hidden-xs">
             <button type="button" class="btn btn-default btn-xs" title="{{'bets.otherBets' | translate}}" ng-click="showOther(question)">
               <i class="fa fa-users"></i>
             </button>
