@@ -41,6 +41,10 @@ public class ServerInfo implements Serializable {
         return settings.getAdminEmail();
     }
 
+    public Boolean getShowImportantMessage() {
+        return settings.getShowImportantMessage();
+    }
+
     public List<String> getPagesBlacklist() {
         return settings.getPagesBlacklist();
     }

@@ -5,9 +5,6 @@ angular.module('predictrApp')
 
     $rootScope.loading = false;
 
-    // TODO: Read flag from config
-    $scope.importantMessage = true;
-
     $scope.upcomingGames = upcomingGames;
     $scope.runningGames = runningGames;
     $scope.shouts = shouts;

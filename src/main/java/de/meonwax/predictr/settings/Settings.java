@@ -20,6 +20,8 @@ public class Settings {
 
     private Boolean registrationEnabled;
 
+    private Boolean showImportantMessage;
+
     private List<String> pagesBlacklist;
 
     @NestedConfigurationProperty
@@ -63,6 +65,14 @@ public class Settings {
 
     public void setRegistrationEnabled(Boolean registrationEnabled) {
         this.registrationEnabled = registrationEnabled;
+    }
+
+    public Boolean getShowImportantMessage() {
+        return showImportantMessage;
+    }
+
+    public void setShowImportantMessage(Boolean showImportantMessage) {
+        this.showImportantMessage = showImportantMessage;
     }
 
     public List<String> getPagesBlacklist() {
