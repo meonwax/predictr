@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +23,7 @@ import de.meonwax.predictr.dto.UserDataDto;
 import de.meonwax.predictr.dto.UserDto;
 import de.meonwax.predictr.service.MailService;
 import de.meonwax.predictr.service.UserService;
+import de.meonwax.predictr.settings.Settings;
 
 @RestController
 @RequestMapping("api")
@@ -37,8 +37,8 @@ public class UserController {
     @Autowired
     private MailService mailService;
 
-    @Value("${predictr.adminEmail}")
-    private String adminEmail;
+    @Autowired
+    private Settings settings;
 
     @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Secured(User.ROLE_ADMIN)
@@ -52,7 +52,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/account", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> updateAccount(@Valid @RequestBody UserDataDto userDataDto, @AuthenticationPrincipal User user) {
+    public ResponseEntity<User> updateAccount(@Valid @RequestBody UserDataDto userDataDto,
+            @AuthenticationPrincipal User user) {
         return userService.updateUser(userDataDto, user)
                 .map(updatedUser -> ResponseEntity.ok(updatedUser))
                 .orElse(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null));
@@ -64,7 +65,7 @@ public class UserController {
             String msg = "User registered: " + userDto.toString();
             log.info(msg);
             if (mailService.isEnabled()) {
-                mailService.send(adminEmail, "New user registered", msg);
+                mailService.send(settings.getAdminEmail(), "New user registered", msg);
             }
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }

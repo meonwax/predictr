@@ -9,6 +9,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import de.meonwax.predictr.settings.Settings;
+
 @Service
 public class MailService {
 
@@ -20,8 +22,8 @@ public class MailService {
     @Value("${spring.mail.host}")
     private String mailHost;
 
-    @Value("${predictr.adminEmail}")
-    private String adminEmail;
+    @Autowired
+    private Settings settings;
 
     public boolean isEnabled() {
         return mailHost != null && mailHost.length() > 0;
@@ -29,7 +31,7 @@ public class MailService {
 
     public boolean send(String recipient, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(adminEmail);
+        message.setFrom(settings.getAdminEmail());
         message.setTo(recipient);
         message.setSubject(subject);
         message.setText(text);

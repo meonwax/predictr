@@ -4,7 +4,6 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import de.meonwax.predictr.domain.Answer;
@@ -12,19 +11,14 @@ import de.meonwax.predictr.domain.Bet;
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.repository.AnswerRepository;
 import de.meonwax.predictr.repository.BetRepository;
+import de.meonwax.predictr.settings.Settings;
 import de.meonwax.predictr.util.Utils;
 
 @Service
 public class CalculationService {
 
-    @Value("${predictr.points.result}")
-    private Integer pointsResult;
-
-    @Value("${predictr.points.tendency}")
-    private Integer pointsTendency;
-
-    @Value("${predictr.points.tendencySpread}")
-    private Integer pointsTendencySpread;
+    @Autowired
+    private Settings settings;
 
     @Autowired
     private BetRepository betRepository;
@@ -68,17 +62,17 @@ public class CalculationService {
         if (Utils.allNotNull(betScoreHome, betScoreAway, resultScoreHome, resultScoreAway)) {
 
             if (betScoreHome.equals(resultScoreHome) && betScoreAway.equals(resultScoreAway)) {
-                return pointsResult;
+                return settings.getPoints().getResult();
             }
 
             int betSpread = betScoreHome - betScoreAway;
             int resultSpread = resultScoreHome - resultScoreAway;
             if (betSpread == resultSpread) {
-                return pointsTendencySpread;
+                return settings.getPoints().getTendencySpread();
             }
 
             if (betSpread * resultSpread > 0) {
-                return pointsTendency;
+                return settings.getPoints().getTendency();
             }
         }
         return 0;

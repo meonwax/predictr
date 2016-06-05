@@ -4,9 +4,9 @@
 A potential penalty shootout will be ignored.
 
 - How many points do I get?
-  - **Correct result: {{pointsResult}} points**
-  - **Correct goal difference with correct trend: {{pointsTendency}} points**
-  - **Correct Trend: {{pointsTendencySpread}} points**
+  - **Correct result: {{points.result}} points**
+  - **Correct goal difference with correct trend: {{points.tendency}} points**
+  - **Correct Trend: {{points.tendencySpread}} points**
 
 
 - Points for additional questions: See the respective question.  

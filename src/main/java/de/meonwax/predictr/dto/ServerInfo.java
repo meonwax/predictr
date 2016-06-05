@@ -2,35 +2,21 @@ package de.meonwax.predictr.dto;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import de.meonwax.predictr.settings.Points;
+import de.meonwax.predictr.settings.Settings;
 
 @Component
 public class ServerInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Value("${predictr.version}")
-    private String version;
-
-    @Value("${predictr.title}")
-    private String title;
-
-    @Value("${predictr.owner}")
-    private String owner;
-
-    @Value("${predictr.adminEmail}")
-    private String adminEmail;
-
-    @Value("${predictr.points.result}")
-    private Integer pointsResult;
-
-    @Value("${predictr.points.tendency}")
-    private Integer pointsTendency;
-
-    @Value("${predictr.points.tendencySpread}")
-    private Integer pointsTendencySpread;
+    @Autowired
+    private Settings settings;
 
     public ServerInfo() {
     }
@@ -40,30 +26,26 @@ public class ServerInfo implements Serializable {
     }
 
     public String getVersion() {
-        return version;
+        return settings.getVersion();
     }
 
     public String getTitle() {
-        return title;
+        return settings.getTitle();
     }
 
     public String getOwner() {
-        return owner;
+        return settings.getOwner();
     }
 
     public String getAdminEmail() {
-        return adminEmail;
+        return settings.getAdminEmail();
     }
 
-    public Integer getPointsResult() {
-        return pointsResult;
+    public List<String> getPagesBlacklist() {
+        return settings.getBlacklist();
     }
 
-    public Integer getPointsTendency() {
-        return pointsTendency;
-    }
-
-    public Integer getPointsTendencySpread() {
-        return pointsTendencySpread;
+    public Points getPoints() {
+        return settings.getPoints();
     }
 }
