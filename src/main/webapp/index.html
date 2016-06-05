@@ -40,13 +40,13 @@
             </button>
             <ul class="nav nav-pills nav-stacked" uib-dropdown-menu>
               <li role="presentation" ng-class="{active: $route.current.activeTab == 'home'}"><a ng-href="#/"><i class="fa fa-home fa-fw"></i> <span translate="navigation.home"></span></a></li>
-              <li role="presentation" ng-class="{active: $route.current.activeTab == 'bets'}"><a href="#/bets"><i class="fa fa-table fa-fw"></i> <span translate="navigation.bets"></span></a></li>
-              <li role="presentation" ng-class="{active: $route.current.activeTab == 'ladder'}"><a href="#/ladder"><i class="fa fa-list-ol fa-fw"></i> <span translate="navigation.ladder"></span></a></li>
-              <li role="presentation" ng-class="{active: $route.current.activeTab == 'questions'}"><a href="#/questions"><i class="fa fa-question fa-fw"></i> <span translate="navigation.questions"></span></a></li>
-              <li role="presentation" ng-class="{active: $route.current.activeTab == 'rules'}"><a href="#/rules"><i class="fa fa-book fa-fw"></i> <span translate="navigation.rules"></span></a></li>
-              <li role="presentation" ng-class="{active: $route.current.activeTab == 'shoutbox'}"><a href="#/shoutbox"><i class="fa fa-comment-o fa-fw"></i> <span translate="navigation.shoutbox"></span></a></li>
+              <li role="presentation" ng-if="isPageEnabled('bets')" ng-class="{active: $route.current.activeTab == 'bets'}"><a href="#/bets"><i class="fa fa-table fa-fw"></i> <span translate="navigation.bets"></span></a></li>
+              <li role="presentation" ng-if="isPageEnabled('ladder')" ng-class="{active: $route.current.activeTab == 'ladder'}"><a href="#/ladder"><i class="fa fa-list-ol fa-fw"></i> <span translate="navigation.ladder"></span></a></li>
+              <li role="presentation" ng-if="isPageEnabled('questions')" ng-class="{active: $route.current.activeTab == 'questions'}"><a href="#/questions"><i class="fa fa-question fa-fw"></i> <span translate="navigation.questions"></span></a></li>
+              <li role="presentation" ng-if="isPageEnabled('rules')" ng-class="{active: $route.current.activeTab == 'rules'}"><a href="#/rules"><i class="fa fa-book fa-fw"></i> <span translate="navigation.rules"></span></a></li>
+              <li role="presentation" ng-if="isPageEnabled('shoutbox')" ng-class="{active: $route.current.activeTab == 'shoutbox'}"><a href="#/shoutbox"><i class="fa fa-comment-o fa-fw"></i> <span translate="navigation.shoutbox"></span></a></li>
               <li role="presentation" ng-if="account.role == ROLES.ADMIN" ng-class="{active: $route.current.activeTab == 'admin'}"><a href="#/admin"><i class="fa fa-cogs fa-fw"></i> <span translate="navigation.admin"></span></a></li>
-              <li role="presentation" ng-class="{active: $route.current.activeTab == 'settings'}"><a href="#/settings"><i class="fa fa-sliders fa-fw"></i> <span translate="navigation.settings"></span></a></li>
+              <li role="presentation" ng-if="isPageEnabled('settings')" ng-class="{active: $route.current.activeTab == 'settings'}"><a href="#/settings"><i class="fa fa-sliders fa-fw"></i> <span translate="navigation.settings"></span></a></li>
               <li role="presentation"><a ng-click="logout()" class="text-danger"><i class="fa fa-sign-out fa-fw"></i> <span translate="navigation.logout"></span></a></li>
             </ul>
           </div>
@@ -61,13 +61,13 @@
       <!-- Tabbed navbar for normal screens -->
       <ul class="nav nav-tabs hidden-xs" role="tablist" ng-if="Auth.getToken()">
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'home'}"><a href="#/"><i class="fa fa-home"></i> <span translate="navigation.home"></span></a></li>
-        <li role="presentation" ng-class="{active: $route.current.activeTab == 'bets'}"><a href="#/bets"><i class="fa fa-table"></i> <span translate="navigation.bets"></span></a></li>
-        <li role="presentation" ng-class="{active: $route.current.activeTab == 'ladder'}"><a href="#/ladder"><i class="fa fa-list-ol"></i> <span translate="navigation.ladder"></span></a></li>
-        <li role="presentation" ng-class="{active: $route.current.activeTab == 'questions'}"><a href="#/questions"><i class="fa fa-question"></i> <span translate="navigation.questions"></span></a></li>
-        <li role="presentation" ng-class="{active: $route.current.activeTab == 'rules'}"><a href="#/rules"><i class="fa fa-book"></i> <span translate="navigation.rules"></span></a></li>
-        <li role="presentation" ng-class="{active: $route.current.activeTab == 'shoutbox'}"><a href="#/shoutbox"><i class="fa fa-comment-o"></i> <span translate="navigation.shoutbox"></span></a></li>
+        <li role="presentation" ng-if="isPageEnabled('bets')" ng-class="{active: $route.current.activeTab == 'bets'}"><a href="#/bets"><i class="fa fa-table"></i> <span translate="navigation.bets"></span></a></li>
+        <li role="presentation" ng-if="isPageEnabled('ladder')" ng-class="{active: $route.current.activeTab == 'ladder'}"><a href="#/ladder"><i class="fa fa-list-ol"></i> <span translate="navigation.ladder"></span></a></li>
+        <li role="presentation" ng-if="isPageEnabled('questions')" ng-class="{active: $route.current.activeTab == 'questions'}"><a href="#/questions"><i class="fa fa-question"></i> <span translate="navigation.questions"></span></a></li>
+        <li role="presentation" ng-if="isPageEnabled('rules')" ng-class="{active: $route.current.activeTab == 'rules'}"><a href="#/rules"><i class="fa fa-book"></i> <span translate="navigation.rules"></span></a></li>
+        <li role="presentation" ng-if="isPageEnabled('shoutbox')" ng-class="{active: $route.current.activeTab == 'shoutbox'}"><a href="#/shoutbox"><i class="fa fa-comment-o"></i> <span translate="navigation.shoutbox"></span></a></li>
         <li role="presentation" ng-if="account.role == ROLES.ADMIN" ng-class="{active: $route.current.activeTab == 'admin'}"><a href="#/admin"><i class="fa fa-cogs"></i> <span translate="navigation.admin"></span></a></li>
-        <li role="presentation" ng-class="{active: $route.current.activeTab == 'settings'}"><a href="#/settings"><i class="fa fa-sliders"></i> <span translate="navigation.settings"></span></a></li>
+        <li role="presentation" ng-if="isPageEnabled('settings')" ng-class="{active: $route.current.activeTab == 'settings'}"><a href="#/settings"><i class="fa fa-sliders"></i> <span translate="navigation.settings"></span></a></li>
         <li role="presentation"><a ng-click="logout()" class="text-danger"><i class="fa fa-sign-out"></i> <span translate="navigation.logout"></span></a></li>
       </ul>
 

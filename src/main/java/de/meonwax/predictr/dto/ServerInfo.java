@@ -42,7 +42,7 @@ public class ServerInfo implements Serializable {
     }
 
     public List<String> getPagesBlacklist() {
-        return settings.getBlacklist();
+        return settings.getPagesBlacklist();
     }
 
     public Points getPoints() {

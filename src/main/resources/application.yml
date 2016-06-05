@@ -21,14 +21,14 @@ predictr:
     version: 4.0.1
     adminEmail: admin@example.com
     registrationEnabled: true
-    # Comment out any of these pages to hide them in the navigation bar
-    blacklist:
-        - bets
-        - ladder
-        - questions
-        - rules
-        - shoutbox
-        - settings
+    # Uncomment any pages to hide them in the navigation
+    pagesBlacklist:
+        #- bets
+        #- ladder
+        #- questions
+        #- rules
+        #- shoutbox
+        #- settings
     points:
         result: 5
         tendency: 2

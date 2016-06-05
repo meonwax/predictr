@@ -20,7 +20,7 @@ public class Settings {
 
     private Boolean registrationEnabled;
 
-    private List<String> blacklist;
+    private List<String> pagesBlacklist;
 
     @NestedConfigurationProperty
     private Points points;
@@ -65,12 +65,12 @@ public class Settings {
         this.registrationEnabled = registrationEnabled;
     }
 
-    public List<String> getBlacklist() {
-        return blacklist;
+    public List<String> getPagesBlacklist() {
+        return pagesBlacklist;
     }
 
-    public void setBlacklist(List<String> blacklist) {
-        this.blacklist = blacklist;
+    public void setPagesBlacklist(List<String> pagesBlacklist) {
+        this.pagesBlacklist = pagesBlacklist;
     }
 
     public Points getPoints() {

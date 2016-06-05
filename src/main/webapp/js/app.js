@@ -11,6 +11,13 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'angularMome
       $rootScope.serverClock = ServerInfo.serverClock().init(serverInfo.time);
     });
 
+    $rootScope.isPageEnabled = function(page) {
+      if($rootScope.serverInfo && $rootScope.serverInfo.pagesBlacklist) {
+        return $rootScope.serverInfo.pagesBlacklist.indexOf(page) == -1;
+      }
+      return true;
+    };
+
     User.account().get(function(user) {
       $translate.use(user.preferredLanguage);
       amMoment.changeLocale(user.preferredLanguage);
