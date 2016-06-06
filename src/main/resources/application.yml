@@ -18,7 +18,7 @@ server:
 predictr:
     owner: John Doe
     title: Predictr
-    version: 4.0.2
+    version: 4.0.3
     adminEmail: admin@example.com
     registrationEnabled: true
     showImportantMessage: true
