@@ -16,7 +16,8 @@
         "angular-ladda": "0.3.4",
         "angular-toastr": "1.7.0",
         "angular-moment": "0.10.3",
-        "moment-timezone": "0.5.4"
+        "moment-timezone": "0.5.4",
+        "ngSmoothScroll": "2.0.0"
     },
     "resolutions": {
         "angular": "1.5.3",

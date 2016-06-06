@@ -1,17 +1,17 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('BetsCtrl', function($rootScope, $scope, $location, $anchorScroll, $timeout, $translate, toastr, $uibModal, Game, Bet, groups) {
+  .controller('BetsCtrl', function($rootScope, $scope, $location, smoothScroll, $timeout, $translate, toastr, $uibModal, Game, Bet, groups) {
 
     $rootScope.loading = false;
 
     $scope.groups = groups;
     $scope.hasStarted = Game.hasStarted;
 
-    if ($location.hash()) {
-      $scope.highlightedGameId = $location.hash();
+    if ($location.search().id) {
+      $scope.highlightedGameId = $location.search().id;
       $timeout(function() {
-        $anchorScroll();
+        smoothScroll(document.getElementById($scope.highlightedGameId));
       });
     }
 

@@ -31,7 +31,7 @@
       </div>
       <ul class="list-group">
         <li class="list-group-item" ng-repeat="game in runningGames">
-          <a href="#/bets#{{game.id}}" role="button" class="btn btn-default btn-lg btn-block" title="Gruppe ???">
+          <a href="#/bets#{{game.id}}" role="button" class="btn btn-default btn-lg btn-block">
             <span class="flag-icon {{game.teamHome.icon}}"></span>
             <span class="hidden-xs" translate="team.{{game.teamHome.id}}"></span>
             <span class="visible-xs-inline">{{game.teamHome.id | uppercase}}</span>
@@ -57,7 +57,7 @@
       </div>
       <ul class="list-group">
         <li class="list-group-item" ng-repeat="game in upcomingGames">
-          <a href="#/bets#{{game.id}}" role="button" class="btn btn-default btn-lg btn-block" title="Gruppe ???">
+          <a href="#/bets?id={{game.id}}" role="button" class="btn btn-default btn-lg btn-block">
             <span class="flag-icon {{game.teamHome.icon}}"></span>
             <span class="hidden-xs" translate="team.{{game.teamHome.id}}"></span>
             <span class="visible-xs-inline">{{game.teamHome.id | uppercase}}</span>

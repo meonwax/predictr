@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'angularMoment', 'ngCookies', 'ngResource', 'LocalStorageModule', 'angular-ladda', 'ngAnimate', 'toastr', 'ui.bootstrap'])
+angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'angularMoment', 'ngCookies', 'ngResource', 'LocalStorageModule', 'angular-ladda', 'ngAnimate', 'smoothScroll', 'toastr', 'ui.bootstrap'])
   .run(function($rootScope, $route, $location, $translate, amMoment, ServerInfo, Authentication, User, ROLES) {
 
     // Initialize root scope

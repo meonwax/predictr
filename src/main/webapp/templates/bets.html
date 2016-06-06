@@ -1,7 +1,5 @@
 <h2 translate="bets.title"></h2>
 
-<!-- <form id="bets" role="form" class="form-inline" onsubmit="postData('ajax.php?page=post_bets', $(this).serialize(), true); return false;"> -->
-<!-- <input type="hidden" name="groupid" value="<?= $groupid ?>"> -->
 <form role="form" ng-submit="send()" name="form">
 
   <div class="row" ng-repeat="group in groups">
@@ -37,7 +35,7 @@
           </thead>
 
           <tbody>
-            <tr ng-repeat="game in group.games" ng-class="{info: highlightedGameId == game.id}">
+            <tr ng-repeat="game in group.games" id="{{game.id}}" ng-class="{info: highlightedGameId == game.id}">
 
               <td class="hidden-xs vert-align">{{game.id}}</td>
               <td class="hidden-xs vert-align">{{game.kickoffTime | myDate}}</td>
