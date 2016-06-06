@@ -43,7 +43,7 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'angularMome
     // Local storage
     localStorageServiceProvider
       .setPrefix('predictr')
-      .setStorageType('sessionStorage');
+      .setStorageType('localStorage');
 
     //Toastr
     angular.extend(toastrConfig, {
