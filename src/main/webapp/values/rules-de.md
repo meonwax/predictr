@@ -5,8 +5,8 @@ Ein mögliches Elfmeterschießen ist für die Tippabgabe nicht relevant.
 
 - Die Punkte werden wie folgt vergeben:
   - **Richtiges Ergebnis: {{points.result}} Punkte**
-  - **Richtige Tordifferenz bei richtiger Tendenz: {{points.tendency}} Punkte**
-  - **Richtige Tendenz: {{points.tendencySpread}} Punkte**
+  - **Richtige Tordifferenz bei richtiger Tendenz: {{points.tendencySpread}} Punkte**
+  - **Richtige Tendenz: {{points.tendency}} Punkte**
 
 
 - Die erreichbaren Punkte für die Spezialfragen sind jeweils angegeben.  
