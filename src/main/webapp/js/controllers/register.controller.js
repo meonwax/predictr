@@ -11,25 +11,27 @@ angular.module('predictrApp')
       $scope.loading = true;
 
       // Try to register the new user
-      User.register($scope.credentials)
-        .then(function() {
+      User.register().save($scope.credentials,
+        function() {
           $scope.error = false;
           toastr.success($translate.instant('register.createOk'));
 
           // Login with created user
           Authentication.login($scope.credentials)
-            .then(function() {
-              $scope.loading = false;
-              $scope.error = false;
-              $location.path('');
-            }, function(error) {
-              $scope.focusInput = true;
-              $scope.error = true;
-            });
-        }, function(error) {
+          .then(function() {
+            $scope.loading = false;
+            $scope.error = false;
+            $location.path('');
+          }, function(error) {
+            $scope.focusInput = true;
+            $scope.error = true;
+          });
+        },
+        function() {
           $scope.loading = false;
           $scope.focusInput = true;
           $scope.error = true;
-        });
+        }
+      );
     };
   });

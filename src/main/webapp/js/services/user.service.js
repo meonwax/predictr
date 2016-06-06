@@ -6,14 +6,8 @@ angular.module('predictrApp')
       account: function() {
         return $resource('api/users/account');
       },
-      register: function(credentials) {
-        var deferred = $q.defer();
-        $http.post('api/users/register', credentials).then(function() {
-          deferred.resolve();
-        }, function(error) {
-          deferred.reject(error);
-        });
-        return deferred.promise;
+      register: function() {
+        return $resource('api/users/register');
       },
       password: function() {
         return $resource('api/users/password');
