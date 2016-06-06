@@ -32,4 +32,28 @@ angular.module('predictrApp')
         }
       );
     };
+
+    $scope.updatePassword = function() {
+      $scope.updatingPassword = true;
+
+      var passwordData = {
+        'oldPassword': $scope.password.old,
+        'newPassword': $scope.password.new
+      };
+
+      User.password().save(passwordData,
+        function() {
+          $scope.updatingPassword = false;
+          $scope.password = null;
+          $scope.passwordError = false;
+          toastr.success($translate.instant('settings.passwordOk'));
+        },
+        function() {
+          $scope.updatingPassword = false;
+          // Clear input fields to avoid typos
+          $scope.password = null;
+          $scope.passwordError = true;
+        }
+      );
+    };
   });

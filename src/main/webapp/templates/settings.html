@@ -45,7 +45,6 @@
   </div>
 </div>
 
-<!--
 <div class="row">
   <div class="col-md-12">
 
@@ -59,13 +58,13 @@
 
         <div class="panel-body">
           <div class="form-group">
-            <input type="password" class="form-control" minlength="6" required placeholder="{{'settings.oldPassword' | translate}}" ng-model="oldPassword">
+            <input type="password" class="form-control" minlength="6" required placeholder="{{'settings.oldPassword' | translate}}" ng-model="password.old">
           </div>
           <div class="form-group">
-            <input type="password" class="form-control" minlength="6" required placeholder="{{'settings.newPassword' | translate}}" ng-model="newPassword">
+            <input type="password" class="form-control" minlength="6" required placeholder="{{'settings.newPassword' | translate}}" ng-model="password.new">
           </div>
           <div class="form-group">
-            <input type="password" class="form-control" minlength="6" required placeholder="{{'settings.newPasswordConfirm' | translate}}" ng-model="newPassword2" validate-compare-to="newPassword">
+            <input type="password" class="form-control" minlength="6" required placeholder="{{'settings.newPasswordConfirm' | translate}}" ng-model="password.new2" validate-compare-to="password.new">
           </div>
         </div>
 
@@ -81,4 +80,3 @@
 
   </div>
 </div>
--->

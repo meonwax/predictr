@@ -2,7 +2,6 @@ package de.meonwax.predictr.service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import de.meonwax.predictr.domain.User;
+import de.meonwax.predictr.dto.PasswordDto;
 import de.meonwax.predictr.dto.UserDataDto;
 import de.meonwax.predictr.dto.UserDto;
 import de.meonwax.predictr.repository.UserRepository;
@@ -67,16 +67,20 @@ public class UserService implements UserDetailsService {
         return false;
     }
 
-    public Optional<User> updateUser(UserDataDto userDataDto, User user) {
+    public User updateUser(UserDataDto userDataDto, User user) {
         user.setName(userDataDto.getName());
         user.setPreferredLanguage(userDataDto.getPreferredLanguage());
-        try {
+        userRepository.save(user);
+        return user;
+    }
+
+    public boolean changePassword(PasswordDto passwordDto, User user) {
+        if (passwordEncoder.matches(passwordDto.getOldPassword(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
             userRepository.save(user);
-            return Optional.of(user);
-        } catch (Exception e) {
-            log.error("Error updating user " + user.getEmail() + ": " + e.getMessage());
+            return true;
         }
-        return Optional.empty();
+        return false;
     }
 
     public BigDecimal getFullJackpot() {

@@ -140,6 +140,7 @@
         "edit": "Speichern",
         "updatePasswordHere": "Passwort ändern",
         "passwordError": "Ändern des Passwortes fehlgeschlagen.",
+        "passwordOk": "Das Passwort wurde geändert.",
         "oldPassword": "Altes Passwort",
         "newPassword": "Neues Passwort",
         "newPasswordConfirm": "Neues Passwort (wiederholen)",

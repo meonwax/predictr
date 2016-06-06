@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.meonwax.predictr.domain.User;
+import de.meonwax.predictr.dto.PasswordDto;
 import de.meonwax.predictr.dto.UserDataDto;
 import de.meonwax.predictr.dto.UserDto;
 import de.meonwax.predictr.service.MailService;
@@ -52,11 +53,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/account", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> updateAccount(@Valid @RequestBody UserDataDto userDataDto,
-            @AuthenticationPrincipal User user) {
-        return userService.updateUser(userDataDto, user)
-                .map(updatedUser -> ResponseEntity.ok(updatedUser))
-                .orElse(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null));
+    public ResponseEntity<User> updateAccount(@Valid @RequestBody UserDataDto userDataDto, @AuthenticationPrincipal User user) {
+        User updatedUser = userService.updateUser(userDataDto, user);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @RequestMapping(value = "/users/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,7 +68,14 @@ public class UserController {
             }
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
 
+    @RequestMapping(value = "/users/password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> changePassword(@Valid @RequestBody PasswordDto passwordDto, @AuthenticationPrincipal User user) {
+        if (userService.changePassword(passwordDto, user)) {
+            return ResponseEntity.ok().build();
+        }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 

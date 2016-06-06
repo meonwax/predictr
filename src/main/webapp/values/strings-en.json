@@ -140,6 +140,7 @@
         "edit": "Save",
         "updatePasswordHere": "Change password",
         "passwordError": "Changing password failed.",
+        "passwordOk": "Password changed.",
         "oldPassword": "Old password",
         "newPassword": "New password",
         "newPasswordConfirm": "New password (confirmation)",

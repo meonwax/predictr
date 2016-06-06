@@ -15,6 +15,9 @@ angular.module('predictrApp')
         });
         return deferred.promise;
       },
+      password: function() {
+        return $resource('api/users/password');
+      },
       all: function() {
         return $resource('api/users', {}, {
           'query': {
