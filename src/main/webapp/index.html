@@ -33,7 +33,7 @@
 
       <!-- Dropdown stacked pills for small screens -->
       <div class="row visible-xs title-mobile" ng-cloak>
-        <div class="col-xs-2" ng-if="Auth.getToken()">
+        <div class="col-xs-2" ng-if="account.id">
           <div class="btn-group" uib-dropdown>
             <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
               <i class="fa fa-bars"></i>
@@ -51,7 +51,7 @@
             </ul>
           </div>
         </div>
-        <div ng-class="{'col-xs-10': Auth.getToken(), 'col-xs-12': !Auth.getToken()}">
+        <div ng-class="{'col-xs-10': account.id, 'col-xs-12': !account.id}">
           <a href="#/" class="title">
             {{serverInfo.title}}
           </a>
@@ -59,7 +59,7 @@
       </div>
 
       <!-- Tabbed navbar for normal screens -->
-      <ul class="nav nav-tabs hidden-xs" role="tablist" ng-if="Auth.getToken()">
+      <ul class="nav nav-tabs hidden-xs" role="tablist" ng-if="account.id">
         <li role="presentation" ng-class="{active: $route.current.activeTab == 'home'}"><a href="#/"><i class="fa fa-home"></i> <span translate="navigation.home"></span></a></li>
         <li role="presentation" ng-if="Auth.isPageEnabled('bets')" ng-class="{active: $route.current.activeTab == 'bets'}"><a href="#/bets"><i class="fa fa-table"></i> <span translate="navigation.bets"></span></a></li>
         <li role="presentation" ng-if="Auth.isPageEnabled('ladder')" ng-class="{active: $route.current.activeTab == 'ladder'}"><a href="#/ladder"><i class="fa fa-list-ol"></i> <span translate="navigation.ladder"></span></a></li>
@@ -107,7 +107,6 @@
   <script src="lib/angular-translate/angular-translate.js"></script>
   <script src="lib/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
   <script src="lib/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
-  <script src="lib/angular-local-storage/dist/angular-local-storage.js"></script>
   <script src="lib/jquery/dist/jquery.js"></script>
   <script src="lib/marked/lib/marked.js"></script>
   <script src="lib/spin.js/spin.js"></script>

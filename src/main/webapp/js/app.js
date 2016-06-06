@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'angularMoment', 'ngCookies', 'ngResource', 'LocalStorageModule', 'angular-ladda', 'ngAnimate', 'smoothScroll', 'toastr', 'ui.bootstrap'])
+angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'angularMoment', 'ngCookies', 'ngResource', 'angular-ladda', 'ngAnimate', 'smoothScroll', 'toastr', 'ui.bootstrap'])
   .run(function($rootScope, $route, $location, $translate, amMoment, ServerInfo, Authentication, User, ROLES) {
 
     // Initialize root scope
@@ -25,7 +25,7 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'angularMome
 
     $rootScope.Auth = Authentication;
   })
-  .config(function($httpProvider, $translateProvider, localStorageServiceProvider, toastrConfig) {
+  .config(function($httpProvider, $translateProvider, toastrConfig) {
 
     // Register http interceptor for handling AJAX errors
     $httpProvider.interceptors.push('HttpInterceptorService');
@@ -39,11 +39,6 @@ angular.module('predictrApp', ['ngRoute', 'pascalprecht.translate', 'angularMome
       .preferredLanguage('de')
       .useCookieStorage()
       .useSanitizeValueStrategy('escapeParameters');
-
-    // Local storage
-    localStorageServiceProvider
-      .setPrefix('predictr')
-      .setStorageType('localStorage');
 
     //Toastr
     angular.extend(toastrConfig, {
