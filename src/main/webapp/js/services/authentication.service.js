@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('predictrApp')
-  .factory('Authentication', function($q, $http, $window, localStorageService) {
+  .factory('Authentication', function($rootScope, $q, $http, $window, localStorageService) {
 
     // Initialize token
     var token = localStorageService.get('authenticationToken');
@@ -41,6 +41,13 @@ angular.module('predictrApp')
 
       getToken: function() {
         return token;
+      },
+
+      isPageEnabled: function(page) {
+        if($rootScope.serverInfo && $rootScope.serverInfo.pagesBlacklist) {
+          return $rootScope.serverInfo.pagesBlacklist.indexOf(page) == -1;
+        }
+        return true;
       }
     };
   });
