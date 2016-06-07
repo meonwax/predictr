@@ -6,11 +6,14 @@ module.exports = function(grunt) {
   grunt.initConfig({
     dirs: {
       app: 'src/main/webapp',
+      dist: 'src/main/webapp/dist',
       scss: 'src/main/scss'
     },
     clean: [
       '.sass-cache',
-      '<%= dirs.app %>/css/'
+      '.tmp',
+      '<%= dirs.app %>/css/',
+      '<%= dirs.dist %>'
     ],
     wiredep: {
       task: {
@@ -65,23 +68,101 @@ module.exports = function(grunt) {
         proxy: 'localhost:8081',
         open: false
       }
+    },
+    copy: {
+      dist: {
+        // options: {
+        //   removeComments: true,
+        //   collapseWhitespace: true
+        // },
+        files: [{
+          expand: true,
+          // dot: true,
+          cwd: '<%= dirs.app %>',
+          dest: '<%= dirs.dist %>',
+          src: [
+            '*.html',
+            'images/**/*.{png,gif}',
+            'templates/*.html',
+            'values/*.{json,md}',
+            'favicon.ico',
+            'robots.txt'
+          ]
+        }, {
+          expand: true,
+          cwd: '<%= dirs.app %>/lib/components-font-awesome',
+          dest: '<%= dirs.dist %>',
+          src: [
+            'fonts/**/*.{eot,svg,ttf,woff,woff2}'
+          ]
+        }
+      ]
     }
-  });
+  },
+  useminPrepare: {
+    html: '<%= dirs.app %>/index.html',
+    options: {
+      dest: '<%= dirs.dist %>',
+      flow: {
+        html: {
+          steps: {
+            js: ['uglifyjs'],
+            css: ['cssmin']
+          }
+        }
+      }
+    }
+  },
+  usemin: {
+    html: ['<%= dirs.dist %>/*.html'],
+    js: ['<%= dirs.dist %>/js/**/*.js'],
+    css: ['<%= dirs.dist %>/css/*.css'],
+    options: {
+      dirs: ['<%= dirs.app %>']
+    }
+  },
+  ngAnnotate: {
+    options: {
+      singleQuotes: true
+    },
+    dist: {
+      files: [{
+        expand: true,
+        cwd: '<%= dirs.app %>/js',
+        src: '**/*.js',
+        dest: '.tmp/js'
+      }]
+    }
+  },
+  uglify: {
+    options: {
+      compress: {
+        drop_console: true
+      }
+    }
+  }
+});
 
-  grunt.registerTask('serve', [
-    'sass:dev',
-    'wiredep',
-    'browserSync',
-    'watch'
-  ]);
+grunt.registerTask('serve', [
+  'sass:dev',
+  'wiredep',
+  'browserSync',
+  'watch'
+]);
 
-  grunt.registerTask('build', [
-    'clean',
-    'sass:dist',
-    'wiredep'
-  ]);
+grunt.registerTask('build', [
+  'clean',
+  'sass:dist',
+  'wiredep',
+  'useminPrepare',
+  'copy:dist',
+  'cssmin',
+  'ngAnnotate:dist',
+  'uglify',
+  'usemin'
+]);
 
-  grunt.registerTask('default', [
-    'build'
-  ]);
+grunt.registerTask('default', [
+  'build'
+]);
 };

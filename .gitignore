@@ -10,6 +10,8 @@ src/main/webapp/lib/
 # Build
 target/
 .sass-cache/
+.tmp/
+src/main/webapp/dist/
 
 # Legacy code
 2014/
