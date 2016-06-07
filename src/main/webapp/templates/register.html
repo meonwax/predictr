@@ -1,42 +1,46 @@
-<h2 translate="register.title"></h2>
+<div class="animated fadeIn">
 
-<div class="row">
-  <div class="col-md-4">
-    <div class="panel panel-default" ng-class="{'panel-primary': !error, 'panel-danger': error}">
+  <h2 translate="register.title"></h2>
 
-      <div class="panel-heading">
-        <strong translate="register.registerHere" ng-show="!error"></strong>
-        <strong translate="register.error" ng-show="error"></strong>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="panel panel-default" ng-class="{'panel-primary': !error, 'panel-danger': error}">
+
+        <div class="panel-heading">
+          <strong translate="register.registerHere" ng-show="!error"></strong>
+          <strong translate="register.error" ng-show="error"></strong>
+        </div>
+
+        <div class="panel-body">
+          <form role="form" ng-submit="register()" name="form">
+            <div class="form-group">
+              <input type="email" class="form-control" required placeholder="{{'login.email' | translate}}" ng-model="credentials.email" focus-me="{{focusInput}}">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" minlength="6" required placeholder="{{'login.password' | translate}}" ng-model="credentials.password">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" minlength="6" required placeholder="{{'register.passwordConfirm' | translate}}" ng-model="password2" validate-compare-to="credentials.password">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" minlength="3" required placeholder="{{'register.name' | translate}}" ng-model="credentials.name">
+            </div>
+            <button type="submit" class="btn btn-success" ladda="loading" data-style="zoom-in" ng-disabled="form.$invalid">
+              <i class="fa fa-user-plus"></i>
+              <span translate="register.create"></span>
+            </button>
+          </form>
+        </div>
+
+        <div class="panel-footer">
+          <a class="btn btn-default" href="#/login" role="button">
+            <i class="fa fa-sign-in"></i>
+            <span translate="register.login"></span>
+          </a>
+        </div>
+
       </div>
-
-      <div class="panel-body">
-        <form role="form" ng-submit="register()" name="form">
-          <div class="form-group">
-            <input type="email" class="form-control" required placeholder="{{'login.email' | translate}}" ng-model="credentials.email" focus-me="{{focusInput}}">
-          </div>
-          <div class="form-group">
-            <input type="password" class="form-control" minlength="6" required placeholder="{{'login.password' | translate}}" ng-model="credentials.password">
-          </div>
-          <div class="form-group">
-            <input type="password" class="form-control" minlength="6" required placeholder="{{'register.passwordConfirm' | translate}}" ng-model="password2" validate-compare-to="credentials.password">
-          </div>
-          <div class="form-group">
-            <input type="text" class="form-control" minlength="3" required placeholder="{{'register.name' | translate}}" ng-model="credentials.name">
-          </div>
-          <button type="submit" class="btn btn-success" ladda="loading" data-style="zoom-in" ng-disabled="form.$invalid">
-            <i class="fa fa-user-plus"></i>
-            <span translate="register.create"></span>
-          </button>
-        </form>
-      </div>
-
-      <div class="panel-footer">
-        <a class="btn btn-default" href="#/login" role="button">
-          <i class="fa fa-sign-in"></i>
-          <span translate="register.login"></span>
-        </a>
-      </div>
-
     </div>
   </div>
+
 </div>

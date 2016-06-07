@@ -1,103 +1,107 @@
-<h2>
-  <span translate="home.hello" translate-values="{userName: account.name}"></span>
-  <small class="hidden-xs" translate="home.welcome" translate-values="{appName: serverInfo.title}"></small>
-</h2>
+<div class="animated fadeIn">
 
-<div class="row" ng-if="serverInfo.showImportantMessage">
-  <div class="col-md-12">
-    <div class="panel panel-info" >
-      <div class="panel-heading">
-        <strong translate="home.important"></strong>
+  <h2>
+    <span translate="home.hello" translate-values="{userName: account.name}"></span>
+    <small class="hidden-xs" translate="home.welcome" translate-values="{appName: serverInfo.title}"></small>
+  </h2>
+
+  <div class="row" ng-if="serverInfo.showImportantMessage">
+    <div class="col-md-12">
+      <div class="panel panel-info" >
+        <div class="panel-heading">
+          <strong translate="home.important"></strong>
+        </div>
+
+        <ul class="list-group">
+          <li class="list-group-item">
+            <a href="#/rules" role="button" class="btn btn-default btn-lg btn-block" translate="home.readTheRules"></a>
+          </li>
+          <li class="list-group-item">
+            <a href="#/questions" role="button" style="white-space: normal;" class="btn btn-default btn-lg btn-block" translate="home.dontForget"></a>
+          </li>
+        </ul>
       </div>
-
-      <ul class="list-group">
-        <li class="list-group-item">
-          <a href="#/rules" role="button" class="btn btn-default btn-lg btn-block" translate="home.readTheRules"></a>
-        </li>
-        <li class="list-group-item">
-          <a href="#/questions" role="button" style="white-space: normal;" class="btn btn-default btn-lg btn-block" translate="home.dontForget"></a>
-        </li>
-      </ul>
     </div>
   </div>
-</div>
 
-<div class="row" ng-if="runningGames.length > 0">
-  <div class="col-md-12">
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        <i class="fa fa-play"></i>
-        <strong translate="home.runningGames"></strong>
+  <div class="row" ng-if="runningGames.length > 0">
+    <div class="col-md-12">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <i class="fa fa-play"></i>
+          <strong translate="home.runningGames"></strong>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="game in runningGames">
+            <a href="#/bets#{{game.id}}" role="button" class="btn btn-default btn-lg btn-block">
+              <span class="flag-icon {{game.teamHome.icon}}"></span>
+              <span class="hidden-xs" translate="team.{{game.teamHome.id}}"></span>
+              <span class="visible-xs-inline">{{game.teamHome.id | uppercase}}</span>
+              -
+              <span class="flag-icon {{game.teamAway.icon}}"></span>
+              <span class="hidden-xs" translate="team.{{game.teamAway.id}}"></span>
+              <span class="visible-xs-inline">{{game.teamAway.id | uppercase}}</span>
+              <br class="visible-xs">
+              <small>{{game.kickoffTime | playTime}} <i class="fa fa-clock-o blink"></i></small>
+            </a>
+          </li>
+        </ul>
       </div>
-      <ul class="list-group">
-        <li class="list-group-item" ng-repeat="game in runningGames">
-          <a href="#/bets#{{game.id}}" role="button" class="btn btn-default btn-lg btn-block">
-            <span class="flag-icon {{game.teamHome.icon}}"></span>
-            <span class="hidden-xs" translate="team.{{game.teamHome.id}}"></span>
-            <span class="visible-xs-inline">{{game.teamHome.id | uppercase}}</span>
-            -
-            <span class="flag-icon {{game.teamAway.icon}}"></span>
-            <span class="hidden-xs" translate="team.{{game.teamAway.id}}"></span>
-            <span class="visible-xs-inline">{{game.teamAway.id | uppercase}}</span>
-            <br class="visible-xs">
-            <small>{{game.kickoffTime | playTime}} <i class="fa fa-clock-o blink"></i></small>
+    </div>
+  </div>
+
+  <div class="row" ng-if="upcomingGames.length > 0">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <i class="fa fa-clock-o"></i>
+          <strong translate="home.upcomingGames"></strong>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="game in upcomingGames">
+            <a href="#/bets?id={{game.id}}" role="button" class="btn btn-default btn-lg btn-block">
+              <span class="flag-icon {{game.teamHome.icon}}"></span>
+              <span class="hidden-xs" translate="team.{{game.teamHome.id}}"></span>
+              <span class="visible-xs-inline">{{game.teamHome.id | uppercase}}</span>
+              -
+              <span class="flag-icon {{game.teamAway.icon}}"></span>
+              <span class="hidden-xs" translate="team.{{game.teamAway.id}}"></span>
+              <span class="visible-xs-inline">{{game.teamAway.id | uppercase}}</span>
+              <br class="visible-xs">
+              <small class="hidden-xs">{{game.kickoffTime | myDate}}</small>
+              <small class="visible-xs">{{game.kickoffTime | myDateShort}}</small>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" ng-if="shouts.length > 0">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <i class="fa fa-comment-o"></i>
+          <a href="#/shoutbox">
+            <strong translate="home.shouts"></strong>
           </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<div class="row" ng-if="upcomingGames.length > 0">
-  <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <i class="fa fa-clock-o"></i>
-        <strong translate="home.upcomingGames"></strong>
+        </div>
+        <table class="table">
+          <tbody>
+            <tr ng-repeat="shout in shouts">
+              <td class="col-md-2">
+                <strong>
+                  {{shout.user.name}}
+                </strong>
+              </td>
+              <td class="col-md-10">
+                {{shout.message}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <ul class="list-group">
-        <li class="list-group-item" ng-repeat="game in upcomingGames">
-          <a href="#/bets?id={{game.id}}" role="button" class="btn btn-default btn-lg btn-block">
-            <span class="flag-icon {{game.teamHome.icon}}"></span>
-            <span class="hidden-xs" translate="team.{{game.teamHome.id}}"></span>
-            <span class="visible-xs-inline">{{game.teamHome.id | uppercase}}</span>
-            -
-            <span class="flag-icon {{game.teamAway.icon}}"></span>
-            <span class="hidden-xs" translate="team.{{game.teamAway.id}}"></span>
-            <span class="visible-xs-inline">{{game.teamAway.id | uppercase}}</span>
-            <br class="visible-xs">
-            <small class="hidden-xs">{{game.kickoffTime | myDate}}</small>
-            <small class="visible-xs">{{game.kickoffTime | myDateShort}}</small>
-          </a>
-        </li>
-      </ul>
     </div>
   </div>
-</div>
 
-<div class="row" ng-if="shouts.length > 0">
-  <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <i class="fa fa-comment-o"></i>
-        <a href="#/shoutbox">
-          <strong translate="home.shouts"></strong>
-        </a>
-      </div>
-      <table class="table">
-        <tbody>
-          <tr ng-repeat="shout in shouts">
-            <td class="col-md-2">
-              <strong>
-                {{shout.user.name}}
-              </strong>
-            </td>
-            <td class="col-md-10">
-              {{shout.message}}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
 </div>

@@ -1,41 +1,45 @@
-<h2 translate="ladder.title"></h2>
+<div class="animated fadeIn">
 
-<div class="row">
-	<div ng-class="{'col-md-6': jackpot > 0, 'col-md-12': jackpot <= 0}">
-		<div class="panel panel-info">
-			<div class="panel-heading">
-				<i class="fa fa-list-ol"></i>
-				<strong translate="ladder.overall"></strong>
-			</div>
-			<table class="table">
-				<tbody>
-					<tr ng-class="{bold: rank.user.id == account.id}" ng-repeat="rank in ladder">
-						<td>{{rank.position}}</td>
-						<td>{{rank.user.name}}</td>
-						<td><span class="badge">{{rank.points}}</span></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
+  <h2 translate="ladder.title"></h2>
 
-	<div class="col-md-6" ng-if="jackpot > 0">
-		<div class="panel panel-success">
-			<div class="panel-heading">
-				<i class="fa fa-money"></i>
-				<strong translate="ladder.jackpot"></strong>
-			</div>
-			<table class="table">
-				<tbody>
-					<tr ng-class="{bold: rank.user.id == account.id}" ng-repeat="rank in ladderJackpot">
-						<td>{{rank.position}}</td>
-						<td>{{rank.user.name}}</td>
-						<td><span class="badge">{{rank.points}}</span></td>
-					</tr>
-				</tbody>
-			</table>
+  <div class="row">
+    <div ng-class="{'col-md-6': jackpot > 0, 'col-md-12': jackpot <= 0}">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <i class="fa fa-list-ol"></i>
+          <strong translate="ladder.overall"></strong>
+        </div>
+        <table class="table">
+          <tbody>
+            <tr ng-class="{bold: rank.user.id == account.id}" ng-repeat="rank in ladder">
+              <td>{{rank.position}}</td>
+              <td>{{rank.user.name}}</td>
+              <td><span class="badge">{{rank.points}}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-			<div class="panel-footer" translate="ladder.jackpotDescription" translate-values="{jackpot: jackpot}"></div>
-		</div>
-	</div>
+    <div class="col-md-6" ng-if="jackpot > 0">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <i class="fa fa-money"></i>
+          <strong translate="ladder.jackpot"></strong>
+        </div>
+        <table class="table">
+          <tbody>
+            <tr ng-class="{bold: rank.user.id == account.id}" ng-repeat="rank in ladderJackpot">
+              <td>{{rank.position}}</td>
+              <td>{{rank.user.name}}</td>
+              <td><span class="badge">{{rank.points}}</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="panel-footer" translate="ladder.jackpotDescription" translate-values="{jackpot: jackpot}"></div>
+      </div>
+    </div>
+  </div>
+
 </div>

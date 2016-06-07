@@ -1,82 +1,86 @@
-<h2 translate="settings.title"></h2>
+<div class="animated fadeIn">
 
-<div class="row">
-  <div class="col-md-12">
+  <h2 translate="settings.title"></h2>
 
-    <form role="form" ng-submit="edit()" name="editForm">
-      <div class="panel panel-default" ng-class="{'panel-default': !editError, 'panel-danger': editError}">
+  <div class="row">
+    <div class="col-md-12">
 
-        <div class="panel-heading">
-          <strong translate="settings.editHere" ng-show="!editError"></strong>
-          <strong translate="settings.editError" ng-show="editError"></strong>
-        </div>
+      <form role="form" ng-submit="edit()" name="editForm">
+        <div class="panel panel-default" ng-class="{'panel-default': !editError, 'panel-danger': editError}">
 
-        <div class="panel-body">
-          <div class="form-group">
-            <label for="name" translate="register.name"></label>
-            <input type="text" class="form-control" id="name" minlength="3" required ng-model="name">
+          <div class="panel-heading">
+            <strong translate="settings.editHere" ng-show="!editError"></strong>
+            <strong translate="settings.editError" ng-show="editError"></strong>
           </div>
-          <label for="language" class="control-label" translate="settings.language"></label>
-          <div class="radio" id="language">
-            <label>
-              <input type="radio" name="language" ng-model="language" value="de">
-              {{'global.german' | translate}}
-            </label>
+
+          <div class="panel-body">
+            <div class="form-group">
+              <label for="name" translate="register.name"></label>
+              <input type="text" class="form-control" id="name" minlength="3" required ng-model="name">
+            </div>
+            <label for="language" class="control-label" translate="settings.language"></label>
+            <div class="radio" id="language">
+              <label>
+                <input type="radio" name="language" ng-model="language" value="de">
+                {{'global.german' | translate}}
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="language" ng-model="language" value="en">
+                {{'global.english' | translate}}
+              </label>
+            </div>
+            <!-- TODO: Upload and change avatar -->
           </div>
-          <div class="radio">
-            <label>
-              <input type="radio" name="language" ng-model="language" value="en">
-              {{'global.english' | translate}}
-            </label>
+
+          <div class="panel-footer">
+            <button type="submit" class="btn btn-success" ladda="editing" data-style="zoom-in" ng-disabled="editForm.$invalid">
+              <i class="fa fa-check"></i>
+              <span translate="settings.edit"></span>
+            </button>
           </div>
-          <!-- TODO: Upload and change avatar -->
+
         </div>
+      </form>
 
-        <div class="panel-footer">
-          <button type="submit" class="btn btn-success" ladda="editing" data-style="zoom-in" ng-disabled="editForm.$invalid">
-            <i class="fa fa-check"></i>
-            <span translate="settings.edit"></span>
-          </button>
-        </div>
-
-      </div>
-    </form>
-
+    </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="col-md-12">
+  <div class="row">
+    <div class="col-md-12">
 
-    <form role="form" ng-submit="updatePassword()" name="passwordForm">
-      <div class="panel panel-default" ng-class="{'panel-default': !passwordError, 'panel-danger': passwordError}">
+      <form role="form" ng-submit="updatePassword()" name="passwordForm">
+        <div class="panel panel-default" ng-class="{'panel-default': !passwordError, 'panel-danger': passwordError}">
 
-        <div class="panel-heading">
-          <strong translate="settings.updatePasswordHere" ng-show="!passwordError"></strong>
-          <strong translate="settings.passwordError" ng-show="passwordError"></strong>
-        </div>
-
-        <div class="panel-body">
-          <div class="form-group">
-            <input type="password" class="form-control" minlength="6" required placeholder="{{'settings.oldPassword' | translate}}" ng-model="password.old">
+          <div class="panel-heading">
+            <strong translate="settings.updatePasswordHere" ng-show="!passwordError"></strong>
+            <strong translate="settings.passwordError" ng-show="passwordError"></strong>
           </div>
-          <div class="form-group">
-            <input type="password" class="form-control" minlength="6" required placeholder="{{'settings.newPassword' | translate}}" ng-model="password.new">
+
+          <div class="panel-body">
+            <div class="form-group">
+              <input type="password" class="form-control" minlength="6" required placeholder="{{'settings.oldPassword' | translate}}" ng-model="password.old">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" minlength="6" required placeholder="{{'settings.newPassword' | translate}}" ng-model="password.new">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" minlength="6" required placeholder="{{'settings.newPasswordConfirm' | translate}}" ng-model="password.new2" validate-compare-to="password.new">
+            </div>
           </div>
-          <div class="form-group">
-            <input type="password" class="form-control" minlength="6" required placeholder="{{'settings.newPasswordConfirm' | translate}}" ng-model="password.new2" validate-compare-to="password.new">
+
+          <div class="panel-footer">
+            <button type="submit" class="btn btn-success" ladda="updatingPassword" data-style="zoom-in" ng-disabled="passwordForm.$invalid">
+              <i class="fa fa-check"></i>
+              <span translate="settings.updatePassword"></span>
+            </button>
           </div>
+
         </div>
+      </form>
 
-        <div class="panel-footer">
-          <button type="submit" class="btn btn-success" ladda="updatingPassword" data-style="zoom-in" ng-disabled="passwordForm.$invalid">
-            <i class="fa fa-check"></i>
-            <span translate="settings.updatePassword"></span>
-          </button>
-        </div>
-
-      </div>
-    </form>
-
+    </div>
   </div>
+  
 </div>
