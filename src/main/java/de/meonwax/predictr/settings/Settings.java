@@ -16,6 +16,8 @@ public class Settings {
 
     private String version;
 
+    private String rememberMeKey;
+
     private String adminEmail;
 
     private Boolean registrationEnabled;
@@ -49,6 +51,14 @@ public class Settings {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public String getRememberMeKey() {
+        return rememberMeKey;
+    }
+
+    public void setRememberMeKey(String rememberMeKey) {
+        this.rememberMeKey = rememberMeKey;
     }
 
     public String getAdminEmail() {

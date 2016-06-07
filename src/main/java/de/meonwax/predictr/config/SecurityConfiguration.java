@@ -18,6 +18,7 @@ import de.meonwax.predictr.security.RestAuthenticationFailureHandler;
 import de.meonwax.predictr.security.RestAuthenticationSuccessHandler;
 import de.meonwax.predictr.security.RestLogoutSuccessHandler;
 import de.meonwax.predictr.service.UserService;
+import de.meonwax.predictr.settings.Settings;
 
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -41,6 +42,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private PersistentTokenRepository tokenRepository;
+
+    @Autowired
+    private Settings settings;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -83,6 +87,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .and().rememberMe()
                 .rememberMeParameter("remember-me")
+                .key(settings.getRememberMeKey())
                 .tokenRepository(tokenRepository);
     }
 }
