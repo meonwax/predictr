@@ -1,0 +1,10 @@
+
+${AnsiColor.BRIGHT_GREEN}  ▄▄▄·▄▄▄  ▄▄▄ .·▄▄▄▄  ▪   ▄▄· ▄▄▄▄▄▄▄▄
+ ▐█ ▄█▀▄ █·▀▄.▀·██▪ ██ ██ ▐█ ▌▪•██  ▀▄ █·
+  ██▀·▐▀▀▄ ▐▀▀▪▄▐█· ▐█▌▐█·██ ▄▄ ▐█.▪▐▀▀▄
+ ▐█▪·•▐█•█▌▐█▄▄▌██. ██ ▐█▌▐███▌ ▐█▌·▐█•█▌
+ .▀   .▀  ▀ ▀▀▀ ▀▀▀▀▀• ▀▀▀·▀▀▀  ▀▀▀ .▀  ▀
+ 
+ ${application.title}${application.formatted-version}
+${AnsiColor.BRIGHT_YELLOW}
+ powered by Spring Boot${spring-boot.formatted-version}${AnsiColor.DEFAULT}
