@@ -71,10 +71,6 @@ module.exports = function(grunt) {
     },
     copy: {
       dist: {
-        // options: {
-        //   removeComments: true,
-        //   collapseWhitespace: true
-        // },
         files: [{
           expand: true,
           // dot: true,
@@ -139,6 +135,18 @@ module.exports = function(grunt) {
           drop_console: true
         }
       }
+    },
+    htmlmin: {
+      dist: {
+        options: {
+        removeComments: true,
+        collapseWhitespace: true,
+        //conservativeCollapse: true,
+        },
+        files: {
+          '<%= dirs.dist %>/index.html': '<%= dirs.dist %>/index.html'
+        }
+      }
     }
   });
 
@@ -158,7 +166,8 @@ module.exports = function(grunt) {
     'cssmin',
     'ngAnnotate:dist',
     'uglify',
-    'usemin'
+    'usemin',
+    'htmlmin'
   ]);
 
   grunt.registerTask('default', [
