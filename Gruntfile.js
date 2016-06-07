@@ -95,74 +95,73 @@ module.exports = function(grunt) {
           src: [
             'fonts/**/*.{eot,svg,ttf,woff,woff2}'
           ]
-        }
-      ]
-    }
-  },
-  useminPrepare: {
-    html: '<%= dirs.app %>/index.html',
-    options: {
-      dest: '<%= dirs.dist %>',
-      flow: {
-        html: {
-          steps: {
-            js: ['uglifyjs'],
-            css: ['cssmin']
+        }]
+      }
+    },
+    useminPrepare: {
+      html: '<%= dirs.app %>/index.html',
+      options: {
+        dest: '<%= dirs.dist %>',
+        flow: {
+          html: {
+            steps: {
+              js: ['uglifyjs'],
+              css: ['cssmin']
+            }
           }
         }
       }
-    }
-  },
-  usemin: {
-    html: ['<%= dirs.dist %>/*.html'],
-    js: ['<%= dirs.dist %>/js/**/*.js'],
-    css: ['<%= dirs.dist %>/css/*.css'],
-    options: {
-      dirs: ['<%= dirs.app %>']
-    }
-  },
-  ngAnnotate: {
-    options: {
-      singleQuotes: true
     },
-    dist: {
-      files: [{
-        expand: true,
-        cwd: '<%= dirs.app %>/js',
-        src: '**/*.js',
-        dest: '.tmp/js'
-      }]
-    }
-  },
-  uglify: {
-    options: {
-      compress: {
-        drop_console: true
+    usemin: {
+      html: ['<%= dirs.dist %>/*.html'],
+      js: ['<%= dirs.dist %>/js/**/*.js'],
+      css: ['<%= dirs.dist %>/css/*.css'],
+      options: {
+        dirs: ['<%= dirs.app %>']
+      }
+    },
+    ngAnnotate: {
+      options: {
+        singleQuotes: true
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= dirs.app %>/js',
+          src: '**/*.js',
+          dest: '.tmp/js'
+        }]
+      }
+    },
+    uglify: {
+      options: {
+        compress: {
+          drop_console: true
+        }
       }
     }
-  }
-});
+  });
 
-grunt.registerTask('serve', [
-  'sass:dev',
-  'wiredep',
-  'browserSync',
-  'watch'
-]);
+  grunt.registerTask('serve', [
+    'sass:dev',
+    'wiredep',
+    'browserSync',
+    'watch'
+  ]);
 
-grunt.registerTask('build', [
-  'clean',
-  'sass:dist',
-  'wiredep',
-  'useminPrepare',
-  'copy:dist',
-  'cssmin',
-  'ngAnnotate:dist',
-  'uglify',
-  'usemin'
-]);
+  grunt.registerTask('build', [
+    'clean',
+    'sass:dist',
+    'wiredep',
+    'useminPrepare',
+    'copy:dist',
+    'cssmin',
+    'ngAnnotate:dist',
+    'uglify',
+    'usemin'
+  ]);
 
-grunt.registerTask('default', [
-  'build'
-]);
+  grunt.registerTask('default', [
+    'build'
+  ]);
 };
