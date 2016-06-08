@@ -71,7 +71,7 @@ module.exports = function(grunt) {
         src: [
           '<%= dirs.app %>/*.html',
           '<%= dirs.app %>/css/**/*.css',
-          '<%= dirs.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= dirs.app %>/images/**/*.{png,jpg,jpeg,gif}',
           '<%= dirs.app %>/js/**/*.js',
           '<%= dirs.app %>/templates/*.html',
           '<%= dirs.app %>/values/**/*.{md,json}'
@@ -92,7 +92,7 @@ module.exports = function(grunt) {
           dest: '<%= dirs.dist %>',
           src: [
             '*.html',
-            'images/**/*.{png,gif}',
+            'images/**/*.{png,jpg,jpeg,gif}',
             'templates/*.html',
             'values/*.{json,md}',
             'favicon.ico',
