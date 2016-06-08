@@ -1,7 +1,5 @@
 # Predictr
 
-[![Build Status](https://travis-ci.org/meonwax/predictr.svg?branch=master)](https://travis-ci.org/meonwax/predictr)
-
 A football prediction game.  
 Data for UEFA EURO 2016 included.
 
