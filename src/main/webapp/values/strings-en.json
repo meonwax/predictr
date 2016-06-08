@@ -77,6 +77,13 @@
         "error": "Account creation failed.",
         "createOk": "Account creation successful."
     },
+    "lostpwd": {
+        "title": "Reset password",
+        "emailHere": "Please enter your email address:",
+        "request": "Reset",
+        "error": "Email address not found.",
+        "ok": "An email for requesting a new password has been sent."
+    },
     "home": {
         "hello": "Hello {{userName}}!",
         "welcome": "Welcome to {{appName}}.",

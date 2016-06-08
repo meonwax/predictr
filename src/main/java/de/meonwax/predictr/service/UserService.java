@@ -83,6 +83,11 @@ public class UserService implements UserDetailsService {
         return false;
     }
 
+    public boolean resetPassword(String email) {
+        log.info("Reset password for email: " + email);
+        return true;
+    }
+
     public BigDecimal getFullJackpot() {
         return userRepository.getFullJackpot();
     }

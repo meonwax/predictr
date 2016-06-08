@@ -1,0 +1,37 @@
+<div class="animated fadeIn">
+
+  <h2 translate="lostpwd.title"></h2>
+
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6">
+      <div class="panel panel-default" ng-class="{'panel-primary': !error, 'panel-danger': error}">
+
+        <div class="panel-heading">
+          <strong translate="lostpwd.emailHere" ng-show="!error"></strong>
+          <strong translate="lostpwd.error" ng-show="error"></strong>
+        </div>
+
+        <div class="panel-body">
+          <form role="form" ng-submit="request()" name="form">
+            <div class="form-group">
+              <input type="email" class="form-control" required placeholder="{{'login.email' | translate}}" ng-model="email" focus-me="{{focusInput}}">
+            </div>
+            <button type="submit" class="btn btn-success" ladda="loading" data-style="zoom-in" ng-disabled="form.$invalid">
+              <i class="fa fa-undo"></i>
+              <span translate="lostpwd.request"></span>
+            </button>
+          </form>
+        </div>
+
+        <div class="panel-footer">
+          <a class="btn btn-primary" href="#/login" role="button">
+            <i class="fa fa-sign-in"></i>
+            <span translate="register.login"></span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -41,7 +41,7 @@ angular.module('predictrApp')
         'newPassword': $scope.password.new
       };
 
-      User.password().save(passwordData,
+      User.changePassword().save(passwordData,
         function() {
           $scope.updatingPassword = false;
           $scope.password = null;

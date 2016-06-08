@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +18,6 @@ import de.meonwax.predictr.repository.QuestionRepository;
 
 @Service
 public class AnswerService {
-
-    private final Logger log = LoggerFactory.getLogger(AnswerService.class);
 
     @Autowired
     private AnswerRepository answerRepository;

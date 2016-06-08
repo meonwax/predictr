@@ -2,8 +2,6 @@ package de.meonwax.predictr.web;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +15,6 @@ import de.meonwax.predictr.service.LadderService;
 @RestController
 @RequestMapping("api")
 public class LadderController {
-
-    private final Logger log = LoggerFactory.getLogger(LadderController.class);
 
     @Autowired
     private LadderService ladderService;

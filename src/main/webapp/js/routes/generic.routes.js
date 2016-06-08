@@ -5,13 +5,15 @@ angular.module('predictrApp')
     $routeProvider
       .when('/login', {
         templateUrl: 'templates/login.html',
-        controller: 'LoginCtrl',
-        activeTab: 'login'
+        controller: 'LoginCtrl'
       })
       .when('/register', {
         templateUrl: 'templates/register.html',
-        controller: 'RegisterCtrl',
-        activeTab: 'register'
+        controller: 'RegisterCtrl'
+      })
+      .when('/lostpwd', {
+        templateUrl: 'templates/lostpwd.html',
+        controller: 'LostPasswordCtrl'
       })
       .when('/settings', {
         templateUrl: 'templates/settings.html',

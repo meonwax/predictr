@@ -18,6 +18,7 @@ public final class SortedContainer<K extends Comparable<? super K>, V> {
      * Pairs of arguments are treated as key/value pairs.
      * The number of arguments needs to be even and 'null' values are allowed.
      */
+    @SuppressWarnings("unchecked")
     public SortedContainer(final Object... args) {
         if (args == null || args.length == 0 || args.length % 2 != 0) {
             return;

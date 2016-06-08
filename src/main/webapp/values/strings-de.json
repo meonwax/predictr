@@ -77,6 +77,13 @@
         "error": "Registrierung fehlgeschlagen.",
         "createOk": "Registrierung erfolgreich."
     },
+    "lostpwd": {
+        "title": "Passwort zurücksetzen",
+        "emailHere": "Bitte Deine E-Mail Adresse eingeben:",
+        "request": "Zurücksetzen",
+        "error": "E-Mail Adresse nicht gefunden.",
+        "ok": "Eine E-Mail zur Anforderung eines neuen Passwortes wurde Dir zugeschickt."
+    },
     "home": {
         "hello": "Hallo {{userName}}!",
         "welcome": "Willkommen zum {{appName}}.",

@@ -9,8 +9,11 @@ angular.module('predictrApp')
       register: function() {
         return $resource('api/users/register');
       },
-      password: function() {
-        return $resource('api/users/password');
+      changePassword: function() {
+        return $resource('api/users/password/change');
+      },
+      resetPassword: function() {
+        return $resource('api/users/password/reset');
       },
       all: function() {
         return $resource('api/users', {}, {
