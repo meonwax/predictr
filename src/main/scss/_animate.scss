@@ -11,6 +11,21 @@
 }
 
 /*
+ * blink
+ */
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+.blink {
+  animation: blink 2s steps(2, start) infinite;
+}
+.blink.right {
+  animation-direction: reverse;
+}
+
+/*
  * fadeIn
  */
 @keyframes fadeIn {

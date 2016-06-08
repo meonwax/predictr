@@ -34,15 +34,21 @@
         <ul class="list-group">
           <li class="list-group-item" ng-repeat="game in runningGames">
             <a href="#/bets#{{game.id}}" role="button" class="btn btn-default btn-lg btn-block">
-              <span class="flag-icon {{game.teamHome.icon}}"></span>
+              <span class="icon flag-{{game.teamHome.id}}"></span>
               <span class="hidden-xs" translate="team.{{game.teamHome.id}}"></span>
               <span class="visible-xs-inline">{{game.teamHome.id | uppercase}}</span>
               -
-              <span class="flag-icon {{game.teamAway.icon}}"></span>
+              <span class="icon flag-{{game.teamAway.id}}"></span>
               <span class="hidden-xs" translate="team.{{game.teamAway.id}}"></span>
               <span class="visible-xs-inline">{{game.teamAway.id | uppercase}}</span>
-              <br class="visible-xs">
-              <small>{{game.kickoffTime | playTime}} <i class="fa fa-clock-o blink"></i></small>
+              <br>
+              <small>
+                {{game.kickoffTime | playTime}}
+                <span class="playtime">
+                  <i class="fa fa-circle blink"></i>
+                  <i class="fa fa-circle blink right"></i>
+                </span>
+              </small>
             </a>
           </li>
         </ul>
@@ -60,14 +66,14 @@
         <ul class="list-group">
           <li class="list-group-item" ng-repeat="game in upcomingGames">
             <a href="#/bets?id={{game.id}}" role="button" class="btn btn-default btn-lg btn-block">
-              <span class="flag-icon {{game.teamHome.icon}}"></span>
+              <span class="icon flag-{{game.teamHome.id}}"></span>
               <span class="hidden-xs" translate="team.{{game.teamHome.id}}"></span>
               <span class="visible-xs-inline">{{game.teamHome.id | uppercase}}</span>
               -
-              <span class="flag-icon {{game.teamAway.icon}}"></span>
+              <span class="icon flag-{{game.teamAway.id}}"></span>
               <span class="hidden-xs" translate="team.{{game.teamAway.id}}"></span>
               <span class="visible-xs-inline">{{game.teamAway.id | uppercase}}</span>
-              <br class="visible-xs">
+              <br>
               <small class="hidden-xs">{{game.kickoffTime | myDate}}</small>
               <small class="visible-xs">{{game.kickoffTime | myDateShort}}</small>
             </a>

@@ -2,12 +2,11 @@
 
 body {
   background-color: #f5f5f5;
-  color: #333;
 }
 a {
   cursor: pointer;
 }
-// Smaller fonts on jeading for small screens
+// Smaller fonts on headings for small screens
 @media (max-width: $screen-xs) {
   h2 {
     font-size: 1.4em;
@@ -67,30 +66,20 @@ a {
 .dropdown-menu > li > a.text-danger {
   color: $state-danger-text;
 }
+.playtime {
+  color: #0a0;
+}
 
 /*
 * Input fields
 */
 .ng-invalid {
-  border-color: #a94442;
-  outline-color: #a94442;
+  border-color: $state-danger-text;
+  outline-color: $state-danger-text;
 }
 #bets input {
   width: 4em;
   text-align: center;
-}
-
-@keyframes blink {
-  to {
-    visibility: hidden;
-  }
-}
-.blink {
-  -webkit-animation: blink 2s steps(2, start) infinite;
-  -moz-animation: blink 2s steps(2, start) infinite;
-  -ms-animation: blink 2s steps(2, start) infinite;
-  -o-animation: blink 2s steps(2, start) infinite;
-  animation: blink 2s steps(2, start) infinite;
 }
 
 .content {
@@ -105,7 +94,7 @@ a {
   padding-top: 2rem;
   padding-bottom: 2rem;
   font-size: 0.875em;
-  color: #7a7a7a;
+  color: $gray-light;
 }
 .copyright {
   margin-top: 2rem;
@@ -122,5 +111,5 @@ a {
 
 /* Ladda */
 .ladda-spinner > div > div > div {
-  background: #000 !important;
+  background: $gray-dark !important;
 }
