@@ -3,7 +3,7 @@
   <h2 translate="login.title"></h2>
 
   <div class="row">
-    <div class="col-md-4 col-sm-6">
+    <div class="col-lg-6 col-md-6 col-sm-6">
       <div class="panel panel-default" ng-class="{'panel-primary': !error, 'panel-danger': error}">
 
         <div class="panel-heading">
@@ -21,8 +21,11 @@
             </div>
             <div class="checkbox">
               <label>
-                <input type="checkbox" ng-model="credentials.rememberMe"><span translate="login.rememberMe"></span>
+                <input type="checkbox" ng-model="credentials.rememberMe">
+                <span translate="login.rememberMe"></span>
               </label>
+              <span class="hidden-xs">·</span>
+              <a class="hidden-xs" href="#/lostpwd" translate="login.lostPassword"></a>
             </div>
             <button type="submit" class="btn btn-success" ladda="loading" data-style="zoom-in" ng-disabled="form.$invalid">
               <i class="fa fa-sign-in"></i>
@@ -32,7 +35,7 @@
         </div>
 
         <div class="panel-footer">
-          <a class="btn btn-default" href="#/register" role="button">
+          <a class="btn btn-primary" href="#/register" role="button">
             <i class="fa fa-user-plus"></i>
             <span translate="login.register"></span>
           </a>
@@ -40,7 +43,7 @@
 
       </div>
     </div>
-    <div class="col-md-8 col-sm-6 hidden-xs">
+    <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
       <img src="images/logo-banner.jpg" alt="UEFA EURO 2016" class="img-responsive img-rounded">
     </div>
   </div>

@@ -62,6 +62,7 @@
         "email": "E-Mail",
         "password": "Passwort",
         "rememberMe": "Angemeldet bleiben",
+        "lostPassword": "Passwort vergessen?",
         "register": "Konto erstellen",
         "signIn": "Anmelden",
         "error": "Anmeldung fehlgeschlagen. Bitte überprüfe Deine Zugangsdaten."

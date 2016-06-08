@@ -62,6 +62,7 @@
         "email": "Email",
         "password": "Password",
         "rememberMe": "Stay signed in",
+        "lostPassword": "Password lost?",
         "register": "Create account",
         "signIn": "Sign in",
         "error": "Signing in failed. Please check your credentials."
