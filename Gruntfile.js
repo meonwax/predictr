@@ -7,17 +7,31 @@ module.exports = function(grunt) {
     dirs: {
       app: 'src/main/webapp',
       dist: 'src/main/webapp/dist',
-      scss: 'src/main/scss'
+      scss: 'src/main/scss',
+      sprites: 'src/main/sprites'
     },
     clean: [
       '.sass-cache',
       '.tmp',
       '<%= dirs.app %>/css/',
+      '<%= dirs.app %>/images/sprites/',
       '<%= dirs.dist %>'
     ],
     wiredep: {
       task: {
         src: '<%= dirs.app %>/index.html'
+      }
+    },
+    sprite:{
+      flags: {
+        src: '<%= dirs.sprites %>/flags/*.png',
+        dest: '<%= dirs.app %>/images/sprites/flags.png',
+        destCss: '<%= dirs.app %>/css/sprites.css',
+        cssOpts: {
+          cssSelector: function(sprite) {
+            return '.flag-' + sprite.name;
+          }
+        }
       }
     },
     sass: {
@@ -139,9 +153,8 @@ module.exports = function(grunt) {
     htmlmin: {
       dist: {
         options: {
-        removeComments: true,
-        collapseWhitespace: true,
-        //conservativeCollapse: true,
+          removeComments: true,
+          collapseWhitespace: true
         },
         files: {
           '<%= dirs.dist %>/index.html': '<%= dirs.dist %>/index.html'
@@ -151,6 +164,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('serve', [
+    'sprite',
     'sass:dev',
     'wiredep',
     'browserSync',
@@ -159,6 +173,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean',
+    'sprite',
     'sass:dist',
     'wiredep',
     'useminPrepare',

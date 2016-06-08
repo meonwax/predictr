@@ -26,6 +26,9 @@ a {
 .table tbody > tr > td.vert-align {
   vertical-align: middle;
 }
+.icon {
+  display: inline-block;
+}
 
 .forkme {
   position: absolute;
@@ -41,11 +44,6 @@ a {
   left: 50%;
   width: 200px;
   margin-left: -100px;
-}
-.flag {
-  width: 16px;
-  height: 11px;
-  vertical-align: baseline;
 }
 .logo {
   background-image: url('../images/logo-ball.png');
