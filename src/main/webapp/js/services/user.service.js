@@ -13,7 +13,7 @@ angular.module('predictrApp')
         return $resource('api/users/password/change');
       },
       resetPassword: function() {
-        return $resource('api/users/password/reset');
+        return $resource('api/users/password/resetRequest');
       },
       all: function() {
         return $resource('api/users', {}, {

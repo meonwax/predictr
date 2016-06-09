@@ -3,12 +3,14 @@ package de.meonwax.predictr.web;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.hibernate.validator.constraints.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +19,18 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.PasswordDto;
 import de.meonwax.predictr.dto.UserDataDto;
 import de.meonwax.predictr.dto.UserDto;
+import de.meonwax.predictr.exception.PasswordResetException;
 import de.meonwax.predictr.service.MailService;
 import de.meonwax.predictr.service.UserService;
 import de.meonwax.predictr.settings.Settings;
+import de.meonwax.predictr.util.Utils;
 
 @RestController
 @RequestMapping("api")
@@ -41,6 +46,11 @@ public class UserController {
 
     @Autowired
     private Settings settings;
+
+    @RequestMapping(value = "/users/jackpot", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public BigDecimal getFullJackpot() {
+        return userService.getFullJackpot();
+    }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Secured(User.ROLE_ADMIN)
@@ -65,7 +75,7 @@ public class UserController {
             String msg = "User registered: " + userDto.toString();
             log.info(msg);
             if (mailService.isEnabled()) {
-                mailService.send(settings.getAdminEmail(), "New user registered", msg);
+                mailService.send(settings.getAdminEmail(), settings.getTitle() + ": New user registered", msg);
             }
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
@@ -80,16 +90,24 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @RequestMapping(value = "/users/password/reset", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> changePassword(@Email @RequestBody String email) {
-        if (userService.resetPassword(email)) {
+    @RequestMapping(value = "/users/password/resetRequest", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> requestPasswordReset(@Email @RequestBody String email, HttpServletRequest request) {
+        String baseUrl = Utils.getBaseUrl(request);
+        if (userService.requestPasswordReset(email, baseUrl)) {
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @RequestMapping(value = "/users/jackpot", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BigDecimal getFullJackpot() {
-        return userService.getFullJackpot();
+    @RequestMapping(value = "/users/password/reset", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ResponseEntity<String> confirmPasswordReset(
+            @RequestParam(value = "email", required = true) @Email String email,
+            @RequestParam(value = "token", required = true) String token) {
+        try {
+            userService.confirmPasswordReset(email, token);
+            return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, "/").body("");
+        } catch (PasswordResetException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("<h2>Error</h2><h3>" + e.getMessage() + "</h3>");
+        }
     }
 }

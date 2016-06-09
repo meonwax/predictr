@@ -2,6 +2,8 @@ package de.meonwax.predictr.util;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -57,5 +59,14 @@ public abstract class Utils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Get the base URL to this application for use in external requests (e.g. mails)
+     */
+    public static String getBaseUrl(HttpServletRequest request) {
+        String port = Integer.toString(request.getServerPort());
+        port = port.equals("443") || port.equals("80") ? "" : ":" + port;
+        return request.getScheme() + "://" + request.getServerName() + port;
     }
 }

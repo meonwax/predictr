@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,7 +18,6 @@ public class RememberMeToken implements Serializable {
     @Id
     private String series;
 
-    @NotNull
     @Column(unique = true, nullable = false)
     private String value;
 

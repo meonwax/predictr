@@ -1,6 +1,7 @@
 package de.meonwax.predictr.service;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,23 +12,50 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import de.meonwax.predictr.domain.PasswordResetToken;
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.PasswordDto;
 import de.meonwax.predictr.dto.UserDataDto;
 import de.meonwax.predictr.dto.UserDto;
+import de.meonwax.predictr.exception.PasswordResetException;
+import de.meonwax.predictr.repository.PasswordResetTokenRepository;
 import de.meonwax.predictr.repository.UserRepository;
+import de.meonwax.predictr.settings.Settings;
+import de.meonwax.predictr.util.PasswortGenerator;
+import de.meonwax.predictr.util.Utils;
 
 @Service
 public class UserService implements UserDetailsService {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
+    // TODO: Externalize into templates
+    private final static String REQUEST_TITLE = "Password reset request";
+    private final static String REQUEST_MESSAGE = "Dear %s,\n\nA password reset has been triggered.\nPlease go to %s to reset your password.\nThis link will only be valid for 24 hours.\n\nRegards,\n\n%s";
+
+    private final static String CONFIRMATION_TITLE = "Password reset confirmation";
+    private final static String CONFIRMATION_MESSAGE = "Dear %s,\n\nYour password has been reset to:\n%s\n\nPlease login now and change it on the 'Settings' page.\n\nRegards,\n\n%s";
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    private Settings settings;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public BigDecimal getFullJackpot() {
+        return userRepository.getFullJackpot();
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -76,19 +104,76 @@ public class UserService implements UserDetailsService {
 
     public boolean changePassword(PasswordDto passwordDto, User user) {
         if (passwordEncoder.matches(passwordDto.getOldPassword(), user.getPassword())) {
-            user.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
-            userRepository.save(user);
+            changePassword(passwordDto.getNewPassword(), user);
             return true;
         }
         return false;
     }
 
-    public boolean resetPassword(String email) {
-        log.info("Reset password for email: " + email);
+    private void changePassword(String newPassword, User user) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    public boolean requestPasswordReset(String email, String baseUrl) {
+
+        log.info("Requesting password reset for email: " + email);
+
+        // Check for existing user
+        User user = userRepository.findOneByEmailIgnoringCase(email);
+        if (user == null) {
+            log.error("Failed: user not found.");
+            return false;
+        }
+
+        // Create new reset token
+        PasswordResetToken token = new PasswordResetToken(user);
+        passwordResetTokenRepository.save(token);
+
+        // Build the confirm URL
+        UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl + "/api/users/password/reset");
+        urlBuilder.queryParam("email", email);
+        urlBuilder.queryParam("token", token.getValue());
+        String url = urlBuilder.toUriString();
+
+        // Send URL to user
+        if (mailService.send(email, settings.getTitle() + ": " + REQUEST_TITLE, String.format(REQUEST_MESSAGE, user.getName(), url, settings.getOwner()))) {
+            log.info("Mail sent.");
+        }
         return true;
     }
 
-    public BigDecimal getFullJackpot() {
-        return userRepository.getFullJackpot();
+    public void confirmPasswordReset(String email, String token) throws PasswordResetException {
+
+        PasswordResetToken passwordResetToken = passwordResetTokenRepository.findOneByValue(token);
+        User user = userRepository.findOneByEmailIgnoringCase(email);
+
+        // Check for correct params
+        if (!Utils.allNotNull(passwordResetToken, user)) {
+            throw new PasswordResetException("Email or token not found.");
+        }
+
+        // Check for correct user
+        if (!passwordResetToken.getUser().equals(user)) {
+            throw new PasswordResetException("Wrong token.");
+        }
+
+        // Check for token expiry
+        if (passwordResetToken.getExpiry().isBefore(ZonedDateTime.now())) {
+            throw new PasswordResetException("Token expired.");
+        }
+
+        // Everything is OK, so we can delete the token
+        passwordResetTokenRepository.delete(passwordResetToken);
+
+        // Generate a new password and apply it
+        log.info("Generating new password for user " + email);
+        String newPassword = PasswortGenerator.generate(16);
+        changePassword(newPassword, user);
+
+        // Send password to user
+        if (mailService.send(email, settings.getTitle() + ": " + CONFIRMATION_TITLE, String.format(CONFIRMATION_MESSAGE, user.getName(), newPassword, settings.getOwner()))) {
+            log.info("Mail sent.");
+        }
     }
 }
