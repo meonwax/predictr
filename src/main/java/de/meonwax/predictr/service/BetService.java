@@ -25,6 +25,9 @@ public class BetService {
     @Autowired
     private GameRepository gameRepository;
 
+    @Autowired
+    private CalculationService calculationService;
+
     public void update(User user, List<BetDto> betDtos) {
         List<Bet> bets = new ArrayList<>();
         for (BetDto betDto : betDtos) {
@@ -63,6 +66,7 @@ public class BetService {
                 dto.setUser(bet.getUser());
                 dto.setScoreHome(bet.getScoreHome());
                 dto.setScoreAway(bet.getScoreAway());
+                dto.setCssClass(calculationService.getCssClass(bet));
                 result.add(dto);
             }
         }

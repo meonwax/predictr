@@ -94,4 +94,18 @@ public class CalculationService {
         }
         return 0;
     }
+
+    public String getCssClass(Bet bet) {
+        int points = calculate(bet);
+        if (points == settings.getPoints().getResult()) {
+            return "success bold";
+        }
+        if (points == settings.getPoints().getTendencySpread()) {
+            return "info";
+        }
+        if (points == settings.getPoints().getTendency()) {
+            return "warning";
+        }
+        return null;
+    }
 }

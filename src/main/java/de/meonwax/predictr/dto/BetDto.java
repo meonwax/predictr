@@ -19,6 +19,8 @@ public class BetDto {
 
     private User user;
 
+    private String cssClass;
+
     public Game getGame() {
         return game;
     }
@@ -49,6 +51,14 @@ public class BetDto {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getCssClass() {
+        return cssClass;
+    }
+
+    public void setCssClass(String cssClass) {
+        this.cssClass = cssClass;
     }
 
     @Override

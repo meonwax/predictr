@@ -4,8 +4,7 @@
 <div class="modal-body">
   <table class="table table-condensed" ng-if="bets">
     <tbody>
-      <!-- TODO: Use class based on points tendency -->
-      <tr ng-repeat="bet in bets">
+      <tr ng-repeat="bet in bets" class="{{bet.cssClass}}">
         <td>{{bet.user.name}}</td>
         <td>{{bet.scoreHome}}:{{bet.scoreAway}}</td>
       </tr>
