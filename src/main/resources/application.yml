@@ -7,6 +7,7 @@ spring:
         username:
         password:
         protocol: smtp
+        tls: false
 
 logging.level.de.meonwax.predictr: DEBUG
 

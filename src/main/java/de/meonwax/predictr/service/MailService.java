@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
 import de.meonwax.predictr.settings.Settings;
@@ -17,10 +17,13 @@ public class MailService {
     private final Logger log = LoggerFactory.getLogger(MailService.class);
 
     @Autowired
-    private JavaMailSender mailSender;
+    private JavaMailSenderImpl mailSender;
 
     @Value("${spring.mail.host}")
     private String mailHost;
+
+    @Value("${spring.mail.tls}")
+    private Boolean tls;
 
     @Autowired
     private Settings settings;
@@ -30,6 +33,9 @@ public class MailService {
     }
 
     public boolean send(String recipient, String subject, String text) {
+        if (tls) {
+            mailSender.getJavaMailProperties().setProperty("mail.smtp.starttls.enable", "true");
+        }
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(settings.getAdminEmail());
         message.setTo(recipient);
