@@ -165,6 +165,7 @@
         "wager": "Einsatz",
         "createdDate": "Erstellt am",
         "lastModifiedDate": "Geändert am",
+        "lastLoginDate": "Letzter Login",
         "gamesSaveOk": "Spiele wurden gespeichert.",
         "gamesSaveError": "Fehler beim Speichern der Spiele:",
         "questionsSaveOk": "Fragen wurden gespeichert.",

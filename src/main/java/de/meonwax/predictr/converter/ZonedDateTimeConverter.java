@@ -11,14 +11,20 @@ import javax.persistence.Converter;
 @Converter(autoApply = true)
 public class ZonedDateTimeConverter implements AttributeConverter<ZonedDateTime, Timestamp> {
 
-	@Override
-	public java.sql.Timestamp convertToDatabaseColumn(ZonedDateTime entityValue) {
-		return Timestamp.from(entityValue.toInstant());
-	}
+    @Override
+    public java.sql.Timestamp convertToDatabaseColumn(ZonedDateTime entityValue) {
+        if (entityValue == null) {
+            return null;
+        }
+        return Timestamp.from(entityValue.toInstant());
+    }
 
-	@Override
-	public ZonedDateTime convertToEntityAttribute(Timestamp databaseValue) {
-		LocalDateTime localDateTime = databaseValue.toLocalDateTime();
-		return localDateTime.atZone(ZoneId.systemDefault());
-	}
+    @Override
+    public ZonedDateTime convertToEntityAttribute(Timestamp databaseValue) {
+        if (databaseValue == null) {
+            return null;
+        }
+        LocalDateTime localDateTime = databaseValue.toLocalDateTime();
+        return localDateTime.atZone(ZoneId.systemDefault());
+    }
 }

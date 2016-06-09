@@ -36,10 +36,10 @@
                   <span ng-if="!game.teamAway"><i class="fa fa-question-circle"></i></span>
                 </td>
                 <td>
-                  <input class="form-control input-sm" type="text" maxlength="2" ng-model="game.scoreHome">
+                  <input class="form-control" type="text" maxlength="2" ng-model="game.scoreHome">
                 </td>
                 <td>
-                  <input class="form-control input-sm" type="text" maxlength="2" ng-model="game.scoreAway">
+                  <input class="form-control" type="text" maxlength="2" ng-model="game.scoreAway">
                 </td>
               </tr>
             </tbody>
@@ -75,16 +75,16 @@
             <tbody>
               <tr ng-repeat="question in questions">
                 <td>
-                  <input class="form-control input-sm" type="text" ng-model="question.question">
+                  <input class="form-control" type="text" ng-model="question.question">
                 </td>
                 <!-- TODO: Make deadline editable -->
                 <!-- TODO: Allow to add and delete questions -->
                 <td class="vert-align">{{question.deadline | myDate}}</td>
                 <td>
-                  <input class="form-control input-sm" type="text" maxlength="3" ng-model="question.points">
+                  <input class="form-control" type="text" maxlength="3" ng-model="question.points">
                 </td>
                 <td>
-                  <input class="form-control input-sm" type="text" ng-model="question.correctAnswer">
+                  <input class="form-control" type="text" ng-model="question.correctAnswer">
                 </td>
               </tr>
             </tbody>
@@ -112,10 +112,11 @@
             <tr>
               <th class="col-md-2" translate="register.name"></th>
               <th class="col-md-2" translate="login.email"></th>
-              <th class="col-md-2" translate="admin.wager"></th>
-              <th class="col-md-2" translate="admin.role"></th>
+              <th class="col-md-1" translate="admin.wager"></th>
+              <th class="col-md-1" translate="admin.role"></th>
               <th class="col-md-2" translate="admin.createdDate"></th>
               <th class="col-md-2" translate="admin.lastModifiedDate"></th>
+              <th class="col-md-2" translate="admin.lastLoginDate"></th>
             </tr>
           </thead>
           <tbody>
@@ -126,6 +127,7 @@
               <td>{{user.role}}</td>
               <td>{{user.createdDate | myDateShort}}</td>
               <td>{{user.lastModifiedDate | myDateShort}}</td>
+              <td>{{user.lastLoginDate | myDateShort}}</td>
             </tr>
           </tbody>
         </table>

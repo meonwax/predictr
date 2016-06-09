@@ -165,6 +165,7 @@
         "wager": "Wager",
         "createdDate": "Created",
         "lastModifiedDate": "Last modified",
+        "lastLoginDate": "Last login",
         "gamesSaveOk": "Games saved.",
         "gamesSaveError": "Error saving games:",
         "questionsSaveOk": "Questions saved.",

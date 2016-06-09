@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,10 +43,11 @@ public class User implements Serializable, UserDetails {
     @Column(nullable = false)
     private ZonedDateTime createdDate = ZonedDateTime.now();
 
-    @LastModifiedDate
     @NotNull
     @Column(nullable = false)
     private ZonedDateTime lastModifiedDate = ZonedDateTime.now();
+
+    private ZonedDateTime lastLoginDate;
 
     @NotNull
     @Email
@@ -112,6 +112,14 @@ public class User implements Serializable, UserDetails {
 
     public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public ZonedDateTime getLastLoginDate() {
+        return lastLoginDate;
+    }
+
+    public void setLastLoginDate(ZonedDateTime lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
     }
 
     public String getEmail() {
