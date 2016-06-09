@@ -28,14 +28,19 @@ public class BetService {
     public void update(User user, List<BetDto> betDtos) {
         List<Bet> bets = new ArrayList<>();
         for (BetDto betDto : betDtos) {
-            // TODO: Prevent saving if game has already started
-            Bet bet = betRepository.findOneByUserAndGame(user, betDto.getGame());
-            if (bet == null) {
-                bet = new Bet();
+            Game game = gameRepository.findOne(betDto.getGame().getId());
+            if (game != null) {
+                // Prevent saving if game has already started
+                if (game.getKickoffTime().isAfter(ZonedDateTime.now())) {
+                    Bet bet = betRepository.findOneByUserAndGame(user, game);
+                    if (bet == null) {
+                        bet = new Bet();
+                    }
+                    BeanUtils.copyProperties(betDto, bet);
+                    bet.setUser(user);
+                    bets.add(bet);
+                }
             }
-            BeanUtils.copyProperties(betDto, bet);
-            bet.setUser(user);
-            bets.add(bet);
         }
         betRepository.save(bets);
     }

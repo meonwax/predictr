@@ -28,14 +28,19 @@ public class AnswerService {
     public void update(User user, List<AnswerDto> answerDtos) {
         List<Answer> answers = new ArrayList<>();
         for (AnswerDto answerDto : answerDtos) {
-            // TODO: Prevent saving if deadline has already passed
-            Answer answer = answerRepository.findOneByUserAndQuestion(user, answerDto.getQuestion());
-            if (answer == null) {
-                answer = new Answer();
+            Question question = questionRepository.findOne(answerDto.getQuestion().getId());
+            if (question != null) {
+                // Prevent saving if deadline has already passed
+                if (question.getDeadline().isAfter(ZonedDateTime.now())) {
+                    Answer answer = answerRepository.findOneByUserAndQuestion(user, question);
+                    if (answer == null) {
+                        answer = new Answer();
+                    }
+                    BeanUtils.copyProperties(answerDto, answer);
+                    answer.setUser(user);
+                    answers.add(answer);
+                }
             }
-            BeanUtils.copyProperties(answerDto, answer);
-            answer.setUser(user);
-            answers.add(answer);
         }
         answerRepository.save(answers);
     }
