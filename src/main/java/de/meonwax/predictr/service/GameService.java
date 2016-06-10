@@ -73,7 +73,7 @@ public class GameService {
 
                     if (usersBet != null) {
                         // Calculate points
-                        game.setPointsEarned(calculationService.calculate(game.getBets().iterator().next()));
+                        game.setPointsEarned(calculationService.calculate(usersBet));
                         // Set only user's bet to result
                         game.setBets(new HashSet<Bet>(Arrays.asList(usersBet)));
                     } else {

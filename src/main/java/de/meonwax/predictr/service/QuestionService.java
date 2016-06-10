@@ -53,7 +53,7 @@ public class QuestionService {
 
                 if (usersAnswer != null) {
                     // Calculate points
-                    question.setPointsEarned(calculationService.calculate(question.getAnswers().iterator().next()));
+                    question.setPointsEarned(calculationService.calculate(usersAnswer));
                     // Set only user's answer to result
                     question.setAnswers(new HashSet<Answer>(Arrays.asList(usersAnswer)));
                 } else {
