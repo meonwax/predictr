@@ -7,17 +7,17 @@ angular.module('predictrApp')
 
     $scope.request = function() {
       $scope.focusInput = false;
-      $scope.loading = true;
+      $scope.sending = true;
 
       User.resetPassword().save($scope.email,
         function() {
           $scope.error = false;
-          $scope.loading = false;
+          $scope.sending = false;
           toastr.success($translate.instant('lostpwd.ok'), {timeOut: 5000});
           $location.path('login');
         },
         function() {
-          $scope.loading = false;
+          $scope.sending = false;
           $scope.focusInput = true;
           $scope.error = true;
         }

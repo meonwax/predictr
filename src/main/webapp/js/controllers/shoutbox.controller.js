@@ -8,14 +8,14 @@ angular.module('predictrApp')
     $scope.shouts = shouts;
 
     var query = function() {
-      $scope.loading = false;
+      $scope.sending = false;
       $scope.message = null;
       $scope.shouts = Shout.query({limit: 15});
       $scope.focusInput = true;
     };
 
     $scope.send = function() {
-      $scope.loading = true;
+      $scope.sending = true;
       $scope.focusInput = false;
       Shout.save({message: $scope.message},
         function() {

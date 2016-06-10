@@ -9,10 +9,10 @@ angular.module('predictrApp')
 
     $scope.login = function() {
       $scope.focusInput = false;
-      $scope.loading = true;
+      $scope.sending = true;
       Authentication.login($scope.credentials)
         .then(function() {
-          $scope.loading = false;
+          $scope.sending = false;
           $scope.error = false;
           User.account().get(function(user) {
             $translate.use(user.preferredLanguage);
@@ -21,7 +21,7 @@ angular.module('predictrApp')
           });
           $location.path('');
         }, function(error) {
-          $scope.loading = false;
+          $scope.sending = false;
           $scope.focusInput = true;
           $scope.error = true;
         });
