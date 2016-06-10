@@ -3,6 +3,11 @@
 angular.module('predictrApp')
   .controller('LoginCtrl', function($rootScope, $scope, $location, $translate, amMoment, Authentication, User) {
 
+    // Redirect if already logged in
+    if( $rootScope.account && $rootScope.account.id) {
+      $location.path('');
+    }
+
     $scope.credentials = {};
     $scope.focusInput = true;
     $rootScope.loading = false;

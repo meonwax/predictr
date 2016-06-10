@@ -1,7 +1,12 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('LostPasswordCtrl', function($scope, $location, $translate, toastr, User) {
+  .controller('LostPasswordCtrl', function($rootScope, $scope, $location, $translate, toastr, User) {
+
+    // Redirect if already logged in
+    if( $rootScope.account && $rootScope.account.id) {
+      $location.path('');
+    }
 
     $scope.focusInput = true;
 
