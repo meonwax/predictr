@@ -33,7 +33,7 @@
         </div>
         <ul class="list-group">
           <li class="list-group-item" ng-repeat="game in runningGames">
-            <a href="#/bets#{{game.id}}" role="button" class="btn btn-default btn-lg btn-block">
+            <a href="#/bets?id={{game.id}}" role="button" class="btn btn-default btn-lg btn-block">
               <span class="icon flag-{{game.teamHome.id}}"></span>
               <span class="hidden-xs" translate="team.{{game.teamHome.id}}"></span>
               <span class="visible-xs-inline">{{game.teamHome.id | uppercase}}</span>
@@ -41,9 +41,7 @@
               <span class="icon flag-{{game.teamAway.id}}"></span>
               <span class="hidden-xs" translate="team.{{game.teamAway.id}}"></span>
               <span class="visible-xs-inline">{{game.teamAway.id | uppercase}}</span>
-              <br>
               <small>
-                {{game.kickoffTime | playTime}}
                 <span class="playtime">
                   <i class="fa fa-circle blink"></i>
                   <i class="fa fa-circle blink right"></i>
