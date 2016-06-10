@@ -13,6 +13,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -58,6 +59,10 @@ public class User implements Serializable, UserDetails {
     @Column(nullable = false)
     @JsonIgnore
     private String password;
+
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private PasswordResetToken passwordResetToken;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -137,6 +142,14 @@ public class User implements Serializable, UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public PasswordResetToken getPasswordResetToken() {
+        return passwordResetToken;
+    }
+
+    public void setPasswordResetToken(PasswordResetToken passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
     }
 
     public Set<RememberMeToken> getRememberMeTokens() {

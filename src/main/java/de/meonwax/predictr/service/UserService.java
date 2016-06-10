@@ -1,6 +1,8 @@
 package de.meonwax.predictr.service;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -12,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import de.meonwax.predictr.domain.PasswordResetToken;
 import de.meonwax.predictr.domain.User;
@@ -128,15 +129,24 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
+        // Delete possibly existing tokens first
+        if (user.getPasswordResetToken() != null) {
+            passwordResetTokenRepository.delete(user.getPasswordResetToken());
+        }
+
         // Create new reset token
         PasswordResetToken token = new PasswordResetToken(user);
         passwordResetTokenRepository.save(token);
 
         // Build the confirm URL
-        UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl + "/api/users/password/reset");
-        urlBuilder.queryParam("email", email);
-        urlBuilder.queryParam("token", token.getValue());
-        String url = urlBuilder.toUriString();
+        String urlTemplate = baseUrl + "/api/users/password/reset/%s/%s";
+        String url;
+        try {
+            url = String.format(urlTemplate, URLEncoder.encode(token.getValue(), "UTF-8"), URLEncoder.encode(email, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return false;
+        }
 
         // Send URL to user
         if (mailService.send(email, settings.getTitle() + ": " + REQUEST_TITLE, String.format(REQUEST_MESSAGE, user.getName(), url, settings.getOwner()))) {

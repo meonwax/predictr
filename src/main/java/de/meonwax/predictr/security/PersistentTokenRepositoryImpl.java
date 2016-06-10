@@ -29,7 +29,6 @@ public class PersistentTokenRepositoryImpl implements PersistentTokenRepository 
 
     @Override
     public void createNewToken(PersistentRememberMeToken token) {
-        log.info("Creating token for user " + token.getUsername());
         RememberMeToken rememberMeToken = new RememberMeToken();
         rememberMeToken.setUser(userRepository.findOneByEmailIgnoringCase(token.getUsername()));
         rememberMeToken.setSeries(token.getSeries());
@@ -40,7 +39,6 @@ public class PersistentTokenRepositoryImpl implements PersistentTokenRepository 
 
     @Override
     public void updateToken(String seriesId, String tokenValue, Date lastUsed) {
-        log.info("Updating token for seriesId: " + seriesId);
         RememberMeToken rememberMeToken = rememberMeTokenRepository.findOne(seriesId);
         rememberMeToken.setValue(tokenValue);
         rememberMeToken.setDate(ZonedDateTime.ofInstant(lastUsed.toInstant(), ZoneId.systemDefault()));
@@ -49,22 +47,19 @@ public class PersistentTokenRepositoryImpl implements PersistentTokenRepository 
 
     @Override
     public PersistentRememberMeToken getTokenForSeries(String seriesId) {
-        log.info("Fetch token if any for seriesId: " + seriesId);
         RememberMeToken rememberMeToken = rememberMeTokenRepository.findOne(seriesId);
         if (rememberMeToken != null) {
+            log.info("User " + rememberMeToken.getUser().getEmail() + " logged in using remember-me token");
             return new PersistentRememberMeToken(rememberMeToken.getUser().getEmail(), rememberMeToken.getSeries(), rememberMeToken.getValue(), Date.from(rememberMeToken.getDate().toInstant()));
         }
-        log.info("Token not found.");
         return null;
     }
 
     @Override
     public void removeUserTokens(String username) {
-        log.info("Removing token if any for user: " + username);
         Set<RememberMeToken> rememberMeTokens = rememberMeTokenRepository.findAllByUser(userRepository.findOneByEmailIgnoringCase(username));
         for (RememberMeToken rememberMeToken : rememberMeTokens) {
             rememberMeTokenRepository.delete(rememberMeToken);
-            log.info("Token deleted for user " + username);
         }
     }
 }

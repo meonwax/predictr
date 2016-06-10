@@ -19,7 +19,7 @@ server:
 predictr:
     owner: John Doe
     title: Predictr
-    version: 4.1.0
+    version: 4.1.1
     rememberMeKey: 8604aa56a02e3dc7b191859ef5952fe49fd1f128
     adminEmail: admin@example.com
     registrationEnabled: true
@@ -51,4 +51,6 @@ spring:
 
 logging.level.de.meonwax.predictr: INFO
 
-server.port: 8080
+server:
+    port: 8080
+    use-forward-headers: true
