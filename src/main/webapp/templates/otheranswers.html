@@ -11,7 +11,7 @@
     </tbody>
   </table>
   <p class="text-info" ng-if="!deadlinePassed" translate="questions.otherAnswersLocked" translate-values="{deadline: (question.deadline | myDate)}"></p>
-  <p class="text-info" ng-if="deadlinePassed && !bets" translate="questions.otherEmpty"></p>
+  <p class="text-info" ng-if="deadlinePassed && !answers" translate="questions.otherEmpty"></p>
 </div>
 <div class="modal-footer">
   <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
