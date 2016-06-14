@@ -148,7 +148,7 @@ public class CustomPersistentRememberMeServices extends AbstractRememberMeServic
         }
 
         // We have a match for this user/series combination
-        log.info("presentedToken={} / tokenValue={}", presentedToken, token.getValue());
+        log.debug("presentedToken={} / tokenValue={}", presentedToken, token.getValue());
         if (!presentedToken.equals(token.getValue())) {
             // Token doesn't match series value. Delete this session and throw an exception.
             rememberMeTokenRepository.delete(token);
@@ -159,6 +159,9 @@ public class CustomPersistentRememberMeServices extends AbstractRememberMeServic
             rememberMeTokenRepository.delete(token);
             throw new RememberMeAuthenticationException("Remember-me login has expired");
         }
+
+        log.info("User " + token.getUser().getEmail() + " logged in using RememberMeToken");
+
         return token;
     }
 
