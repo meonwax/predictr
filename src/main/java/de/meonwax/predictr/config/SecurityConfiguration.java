@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.authentication.RememberMeServices;
 
 import de.meonwax.predictr.security.RestAuthenticationEntryPoint;
 import de.meonwax.predictr.security.RestAuthenticationFailureHandler;
@@ -26,9 +26,6 @@ import de.meonwax.predictr.settings.Settings;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private RestAuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
@@ -41,7 +38,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private RestLogoutSuccessHandler logoutSuccessHandler;
 
     @Autowired
-    private PersistentTokenRepository tokenRepository;
+    private UserService userService;
+
+    @Autowired
+    private RememberMeServices rememberMeServices;
 
     @Autowired
     private Settings settings;
@@ -90,8 +90,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .deleteCookies("JSESSIONID")
 
                 .and().rememberMe()
+                .rememberMeServices(rememberMeServices)
                 .rememberMeParameter("remember-me")
-                .key(settings.getRememberMeKey())
-                .tokenRepository(tokenRepository);
+                .key(settings.getRememberMeKey());
     }
 }
