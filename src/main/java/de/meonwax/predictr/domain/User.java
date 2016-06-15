@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
@@ -75,6 +76,10 @@ public class User implements Serializable, UserDetails {
     @NotNull
     @Column(nullable = false)
     private String role;
+
+    @ManyToOne
+    @JsonIgnore
+    private Avatar avatar;
 
     private String preferredLanguage;
 
@@ -174,6 +179,14 @@ public class User implements Serializable, UserDetails {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
     }
 
     public String getPreferredLanguage() {

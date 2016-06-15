@@ -71,6 +71,21 @@ a {
 }
 
 /*
+* Avatars
+*/
+$ladder-avatar-height: 2.3em;
+.ladder-rank {
+  line-height: $ladder-avatar-height;
+  padding: 4px 15px;
+}
+.ladder-rank > div > div > img {
+  height: $ladder-avatar-height;
+}
+.shoutbox-avatar {
+  max-height: 3em;
+}
+
+/*
 * Input fields
 */
 .ng-invalid {

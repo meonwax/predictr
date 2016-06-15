@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import de.meonwax.predictr.domain.Avatar;
 import de.meonwax.predictr.domain.PasswordResetToken;
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.PasswordDto;
@@ -47,6 +48,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private MailService mailService;
+
+    @Autowired
+    private AvatarService avatarService;
 
     @Autowired
     private Settings settings;
@@ -187,5 +191,17 @@ public class UserService implements UserDetailsService {
         if (mailService.send(email, settings.getTitle() + ": " + CONFIRMATION_TITLE, String.format(CONFIRMATION_MESSAGE, user.getName(), newPassword, settings.getOwner()))) {
             log.info("Mail sent.");
         }
+    }
+
+    public Avatar getAvatar(Long userId) {
+        User user = userRepository.findOne(userId);
+        if (user != null) {
+            Avatar avatar = user.getAvatar();
+            if (avatar == null) {
+                avatar = avatarService.generateGenericAvatar(user);
+            }
+            return avatar;
+        }
+        return null;
     }
 }

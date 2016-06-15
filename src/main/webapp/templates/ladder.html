@@ -9,15 +9,24 @@
           <i class="fa fa-list-ol"></i>
           <strong translate="ladder.overall"></strong>
         </div>
-        <table class="table">
-          <tbody>
-            <tr ng-class="{bold: rank.user.id == account.id}" ng-repeat="rank in ladder">
-              <td>{{rank.position}}</td>
-              <td>{{rank.user.name}}</td>
-              <td><span class="badge">{{rank.points}}</span></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="list-group">
+          <div class="list-group-item ladder-rank" ng-class="{bold: rank.user.id == account.id}" ng-repeat="rank in ladder">
+            <div class="row">
+              <div class="col-xs-1">
+                {{rank.position}}.
+              </div>
+              <div class="col-sm-2 hidden-xs">
+                <img ng-src="api/users/avatar/{{rank.user.id}}" alt="{{rank.user.name}}" class="img-responsive img-circle">
+              </div>
+              <div class="col-sm-8 col-xs-9">
+                {{rank.user.name}}
+              </div>
+              <div class="col-xs-1">
+                <span class="badge">{{rank.points}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -27,15 +36,24 @@
           <i class="fa fa-money"></i>
           <strong translate="ladder.jackpot"></strong>
         </div>
-        <table class="table">
-          <tbody>
-            <tr ng-class="{bold: rank.user.id == account.id}" ng-repeat="rank in ladderJackpot">
-              <td>{{rank.position}}</td>
-              <td>{{rank.user.name}}</td>
-              <td><span class="badge">{{rank.points}}</span></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="list-group">
+          <div class="list-group-item ladder-rank" ng-class="{bold: rank.user.id == account.id}" ng-repeat="rank in ladderJackpot">
+            <div class="row">
+              <div class="col-xs-1">
+                {{rank.position}}.
+              </div>
+              <div class="col-sm-2 hidden-xs">
+                <img ng-src="api/users/avatar/{{rank.user.id}}" alt="{{rank.user.name}}" class="img-responsive img-circle">
+              </div>
+              <div class="col-sm-8 col-xs-9">
+                {{rank.user.name}}
+              </div>
+              <div class="col-xs-1">
+                <span class="badge">{{rank.points}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div class="panel-footer" translate="ladder.jackpotDescription" translate-values="{jackpot: jackpot}"></div>
       </div>

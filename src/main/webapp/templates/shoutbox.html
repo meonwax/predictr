@@ -22,13 +22,20 @@
 
         <div class="list-group" ng-if="shouts.length > 0">
           <div class="list-group-item" ng-repeat="shout in shouts">
-            <h4 class="list-group-item-heading">
-              {{shout.user.name}}
-              <small>{{shout.date | myDateShort}}</small>
-            </h4>
-            <p class="list-group-item-text">
-              {{shout.message}}
-            </p>
+            <div class="row">
+              <div class="col-sm-1 hidden-xs">
+                <img src="api/users/avatar/{{shout.user.id}}" alt="{{shout.user.name}}" class="img-responsive img-circle shoutbox-avatar">
+              </div>
+              <div class="col-sm-11 col-xs-12">
+                <h4 class="list-group-item-heading">
+                  {{shout.user.name}}
+                  <small>{{shout.date | myDateShort}}</small>
+                </h4>
+                <p class="list-group-item-text">
+                  {{shout.message}}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 

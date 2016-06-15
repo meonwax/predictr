@@ -1,5 +1,6 @@
 package de.meonwax.predictr.web;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.meonwax.predictr.domain.Avatar;
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.PasswordDto;
 import de.meonwax.predictr.dto.UserDataDto;
@@ -107,5 +109,16 @@ public class UserController {
         } catch (PasswordResetException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("<h2>Error</h2><h3>" + e.getMessage() + "</h3>");
         }
+    }
+
+    @RequestMapping(value = "/users/avatar/{userId}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<byte[]> getAvatar(@PathVariable Long userId) throws IOException {
+        Avatar avatar = userService.getAvatar(userId);
+        if (avatar != null) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.valueOf(avatar.getMimeType()));
+            return ResponseEntity.ok().headers(headers).body(avatar.getData());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 }
