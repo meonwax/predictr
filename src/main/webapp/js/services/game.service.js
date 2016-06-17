@@ -27,6 +27,9 @@ angular.module('predictrApp')
           }
         });
       },
+      progress: function() {
+        return $resource('api/games/progress');
+      },
       hasStarted: function(game) {
         return (new Date() > new Date(game.kickoffTime * 1000));
       }

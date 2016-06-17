@@ -14,4 +14,6 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     // TODO: Implement as custom query with @Query
     List<Game> findByKickoffTimeBeforeAndScoreHomeIsNullAndScoreAwayIsNullOrderByKickoffTime(ZonedDateTime dateTime);
+
+    Long countByScoreHomeIsNotNullAndScoreAwayIsNotNull();
 }

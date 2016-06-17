@@ -58,10 +58,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public BigDecimal getFullJackpot() {
-        return userRepository.getFullJackpot();
-    }
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         if (email.length() > 0) {

@@ -1,6 +1,9 @@
 <div class="animated fadeIn">
 
-  <h2 translate="ladder.title"></h2>
+  <h2>
+    <span translate="ladder.title"></span>
+    <small>nach {{progress.finished}} von {{progress.amount}} Spielen</small>
+  </h2>
 
   <div class="row">
     <div ng-class="{'col-md-6': jackpot > 0, 'col-md-12': jackpot <= 0}">

@@ -1,7 +1,6 @@
 package de.meonwax.predictr.web;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,9 +48,17 @@ public class UserController {
     @Autowired
     private Settings settings;
 
-    @RequestMapping(value = "/users/jackpot", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BigDecimal getFullJackpot() {
-        return userService.getFullJackpot();
+    @RequestMapping(value = "/users/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> register(@Valid @RequestBody UserDto userDto) {
+        if (userService.registerUser(userDto)) {
+            String msg = "User registered: " + userDto.toString();
+            log.info(msg);
+            if (mailService.isEnabled()) {
+                mailService.send(settings.getAdminEmail(), settings.getTitle() + ": New user registered", msg);
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,19 +76,6 @@ public class UserController {
     public ResponseEntity<User> updateAccount(@Valid @RequestBody UserDataDto userDataDto, @AuthenticationPrincipal User user) {
         User updatedUser = userService.updateUser(userDataDto, user);
         return ResponseEntity.ok(updatedUser);
-    }
-
-    @RequestMapping(value = "/users/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> register(@Valid @RequestBody UserDto userDto) {
-        if (userService.registerUser(userDto)) {
-            String msg = "User registered: " + userDto.toString();
-            log.info(msg);
-            if (mailService.isEnabled()) {
-                mailService.send(settings.getAdminEmail(), settings.getTitle() + ": New user registered", msg);
-            }
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @RequestMapping(value = "/users/password/change", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

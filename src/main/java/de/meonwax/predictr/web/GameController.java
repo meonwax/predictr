@@ -1,6 +1,7 @@
 package de.meonwax.predictr.web;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -49,5 +50,10 @@ public class GameController {
     @RequestMapping(value = "/games/running", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Game> getRunning() {
         return gameService.getRunning();
+    }
+
+    @RequestMapping(value = "/games/progress", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Long> getProgress() {
+        return gameService.getProgress();
     }
 }

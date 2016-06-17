@@ -3,8 +3,10 @@ package de.meonwax.predictr.service;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,15 @@ public class GameService {
 
     public List<Game> getRunning() {
         return gameRepository.findByKickoffTimeBeforeAndScoreHomeIsNullAndScoreAwayIsNullOrderByKickoffTime(ZonedDateTime.now());
+    }
+
+    public Map<String, Long> getProgress() {
+        long gamesCount = gameRepository.count();
+        long gamesFinished = gameRepository.countByScoreHomeIsNotNullAndScoreAwayIsNotNull();
+        Map<String, Long> result = new HashMap<>();
+        result.put("amount", gamesCount);
+        result.put("finished", gamesFinished);
+        return result;
     }
 
     public List<Group> getAllGroupsWithUsersBets(User user) {

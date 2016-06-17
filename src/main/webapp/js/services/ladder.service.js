@@ -17,6 +17,9 @@ angular.module('predictrApp')
             isArray: true
           }
         });
+      },
+      jackpot: function() {
+        return $resource('api/ladder/jackpot');
       }
     };
   });

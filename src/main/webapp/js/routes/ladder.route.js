@@ -23,11 +23,19 @@ angular.module('predictrApp')
           });
           return deferred.promise;
         },
-        jackpot: function($rootScope, $q, $http) {
+        jackpot: function($rootScope, $q, Ladder) {
           $rootScope.loading = true;
           var deferred = $q.defer();
-          $http.get('api/users/jackpot').then(function(response) {
-            deferred.resolve(response.data);
+          Ladder.jackpot().get(function(jackpot) {
+            deferred.resolve(jackpot.value);
+          });
+          return deferred.promise;
+        },
+        progress: function($rootScope, $q, Game) {
+          $rootScope.loading = true;
+          var deferred = $q.defer();
+          Game.progress().get(function(progress) {
+            deferred.resolve(progress);
           });
           return deferred.promise;
         }
