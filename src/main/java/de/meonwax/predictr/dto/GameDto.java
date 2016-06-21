@@ -15,6 +15,8 @@ public class GameDto {
     @NotNull
     private Integer scoreAway;
 
+    private String notes;
+
     public Long getId() {
         return id;
     }
@@ -37,6 +39,14 @@ public class GameDto {
 
     public void setScoreAway(Integer scoreAway) {
         this.scoreAway = scoreAway;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     @Override

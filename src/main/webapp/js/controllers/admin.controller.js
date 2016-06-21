@@ -18,7 +18,8 @@ angular.module('predictrApp')
           dtos.push({
             'id': game.id,
             'scoreHome': game.scoreHome,
-            'scoreAway': game.scoreAway
+            'scoreAway': game.scoreAway,
+            'notes': game.notes
           });
         }
       });
