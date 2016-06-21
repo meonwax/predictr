@@ -16,7 +16,7 @@
           <div class="list-group-item ladder-rank" ng-class="{bold: rank.user.id == account.id}" ng-repeat="rank in ladder">
             <div class="row">
               <div class="col-xs-1">
-                {{rank.position}}.
+                {{rank.position | rank}}
               </div>
               <div class="col-sm-2 hidden-xs">
                 <img ng-src="api/users/avatar/{{rank.user.id}}" alt="{{rank.user.name}}" class="img-responsive img-circle">
@@ -43,7 +43,7 @@
           <div class="list-group-item ladder-rank" ng-class="{bold: rank.user.id == account.id}" ng-repeat="rank in ladderJackpot">
             <div class="row">
               <div class="col-xs-1">
-                {{rank.position}}.
+                {{rank.position | rank}}
               </div>
               <div class="col-sm-2 hidden-xs">
                 <img ng-src="api/users/avatar/{{rank.user.id}}" alt="{{rank.user.name}}" class="img-responsive img-circle">

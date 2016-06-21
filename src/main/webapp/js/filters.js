@@ -28,4 +28,9 @@ angular.module('predictrApp')
     return function(bet) {
       return bet ? bet.scoreHome + ':' + bet.scoreAway : null;
     };
+  })
+  .filter('rank', function($filter) {
+    return function(rank) {
+      return rank ? rank + '.' : '';
+    };
   });
