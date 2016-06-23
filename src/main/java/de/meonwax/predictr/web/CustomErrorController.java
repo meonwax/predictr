@@ -46,9 +46,7 @@ public class CustomErrorController implements ErrorController {
 
     private HttpStatus getStatus(HttpServletRequest request) {
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
-        if (mailService.isEnabled() &&
-                statusCode != HttpStatus.UNAUTHORIZED.value() &&
-                statusCode != HttpStatus.NOT_FOUND.value()) {
+        if (mailService.isEnabled() && statusCode >= HttpStatus.INTERNAL_SERVER_ERROR.value()) {
             sendMail((Exception) request.getAttribute("javax.servlet.error.exception"));
         }
         if (statusCode != null) {
