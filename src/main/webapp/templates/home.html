@@ -34,13 +34,23 @@
         <ul class="list-group">
           <li class="list-group-item" ng-repeat="game in runningGames">
             <a href="#/bets?id={{game.id}}" role="button" class="btn btn-default btn-lg btn-block">
-              <span class="icon flag-{{game.teamHome.id}}"></span>
-              <span class="hidden-xs" translate="team.{{game.teamHome.id}}"></span>
-              <span class="visible-xs-inline">{{game.teamHome.id | uppercase}}</span>
+              <span ng-if="!game.teamHome">
+                <i class="fa fa-question-circle"></i>
+              </span>
+              <span ng-if="game.teamHome">
+                <span class="icon flag-{{game.teamHome.id}}"></span>
+                <span class="hidden-xs" translate="team.{{game.teamHome.id}}"></span>
+                <span class="visible-xs-inline">{{game.teamHome.id | uppercase}}</span>
+              </span>
               -
-              <span class="icon flag-{{game.teamAway.id}}"></span>
-              <span class="hidden-xs" translate="team.{{game.teamAway.id}}"></span>
-              <span class="visible-xs-inline">{{game.teamAway.id | uppercase}}</span>
+              <span ng-if="!game.teamAway">
+                <i class="fa fa-question-circle"></i>
+              </span>
+              <span ng-if="game.teamAway">
+                <span class="icon flag-{{game.teamAway.id}}"></span>
+                <span class="hidden-xs" translate="team.{{game.teamAway.id}}"></span>
+                <span class="visible-xs-inline">{{game.teamAway.id | uppercase}}</span>
+              </span>
               <small>
                 <span class="playtime">
                   <i class="fa fa-circle blink"></i>
@@ -64,13 +74,23 @@
         <ul class="list-group">
           <li class="list-group-item" ng-repeat="game in upcomingGames">
             <a href="#/bets?id={{game.id}}" role="button" class="btn btn-default btn-lg btn-block">
-              <span class="icon flag-{{game.teamHome.id}}"></span>
-              <span class="hidden-xs" translate="team.{{game.teamHome.id}}"></span>
-              <span class="visible-xs-inline">{{game.teamHome.id | uppercase}}</span>
+              <span ng-if="!game.teamHome">
+                <i class="fa fa-question-circle"></i>
+              </span>
+              <span ng-if="game.teamHome">
+                <span class="icon flag-{{game.teamHome.id}}"></span>
+                <span class="hidden-xs" translate="team.{{game.teamHome.id}}"></span>
+                <span class="visible-xs-inline">{{game.teamHome.id | uppercase}}</span>
+              </span>
               -
-              <span class="icon flag-{{game.teamAway.id}}"></span>
-              <span class="hidden-xs" translate="team.{{game.teamAway.id}}"></span>
-              <span class="visible-xs-inline">{{game.teamAway.id | uppercase}}</span>
+              <span ng-if="!game.teamAway">
+                <i class="fa fa-question-circle"></i>
+              </span>
+              <span ng-if="game.teamAway">
+                <span class="icon flag-{{game.teamAway.id}}"></span>
+                <span class="hidden-xs" translate="team.{{game.teamAway.id}}"></span>
+                <span class="visible-xs-inline">{{game.teamAway.id | uppercase}}</span>
+              </span>
               <br>
               <small class="hidden-xs">{{game.kickoffTime | myDate}}</small>
               <small class="visible-xs">{{game.kickoffTime | myDateShort}}</small>
