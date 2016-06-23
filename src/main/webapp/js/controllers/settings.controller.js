@@ -3,10 +3,14 @@
   angular.module('predictrApp')
   .controller('SettingsCtrl', function($rootScope, $scope, $timeout, $translate, amMoment, toastr, User) {
 
+    var reloadAvatarPreview = function() {
+      $scope.avatarUrl = $rootScope.account.id + '?' + new Date().getTime();
+    }
+
     $timeout(function () {
       $scope.language = $rootScope.account.preferredLanguage || $translate.use();
       $scope.name = $rootScope.account.name;
-      $scope.avatarUrl = $rootScope.account.id + '?' + new Date().getTime();
+      reloadAvatarPreview();
     });
 
     $scope.edit = function() {
@@ -29,6 +33,8 @@
 
           // Update existing account in webapp
           $rootScope.account = user;
+
+          reloadAvatarPreview();
         },
         function() {
           $scope.editing = false;
@@ -48,9 +54,7 @@
             $scope.uploadingAvatar = false;
             $scope.avatarError = false;
             toastr.success($translate.instant('settings.avatarOk'));
-
-            // Reload preview
-            $scope.avatarUrl = $rootScope.account.id + '?' + new Date().getTime();
+            reloadAvatarPreview();
           },
           function() {
             $scope.uploadingAvatar = false;
@@ -65,9 +69,7 @@
       User.avatar().delete(
         function() {
           toastr.success($translate.instant('settings.deleteAvatarOk'));
-
-          // Reload preview
-          $scope.avatarUrl = $rootScope.account.id + '?' + new Date().getTime();
+          reloadAvatarPreview();
         },
         function() {
           toastr.error($translate.instant('settings.deleteAvatarError'));
