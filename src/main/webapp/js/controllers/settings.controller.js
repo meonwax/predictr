@@ -1,10 +1,13 @@
 'use strict';
 
-angular.module('predictrApp')
-  .controller('SettingsCtrl', function($rootScope, $scope, $translate, amMoment, toastr, User) {
-    $scope.language = $rootScope.account.preferredLanguage || $translate.use();
-    $scope.name = $rootScope.account.name;
-    $scope.avatarUrl = $rootScope.account.id + '?' + new Date().getTime();
+  angular.module('predictrApp')
+  .controller('SettingsCtrl', function($rootScope, $scope, $timeout, $translate, amMoment, toastr, User) {
+
+    $timeout(function () {
+      $scope.language = $rootScope.account.preferredLanguage || $translate.use();
+      $scope.name = $rootScope.account.name;
+      $scope.avatarUrl = $rootScope.account.id + '?' + new Date().getTime();
+    });
 
     $scope.edit = function() {
       $scope.editing = true;
