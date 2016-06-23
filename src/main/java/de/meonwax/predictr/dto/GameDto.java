@@ -2,6 +2,7 @@ package de.meonwax.predictr.dto;
 
 import javax.validation.constraints.NotNull;
 
+import de.meonwax.predictr.domain.Team;
 import de.meonwax.predictr.util.Utils;
 
 public class GameDto {
@@ -9,10 +10,12 @@ public class GameDto {
     @NotNull
     private Long id;
 
-    @NotNull
+    private Team teamHome;
+
+    private Team teamAway;
+
     private Integer scoreHome;
 
-    @NotNull
     private Integer scoreAway;
 
     private String notes;
@@ -23,6 +26,22 @@ public class GameDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Team getTeamHome() {
+        return teamHome;
+    }
+
+    public void setTeamHome(Team teamHome) {
+        this.teamHome = teamHome;
+    }
+
+    public Team getTeamAway() {
+        return teamAway;
+    }
+
+    public void setTeamAway(Team teamAway) {
+        this.teamAway = teamAway;
     }
 
     public Integer getScoreHome() {

@@ -30,12 +30,22 @@
                   <td class="vert-align">{{game.kickoffTime | myDate}}</td>
                   <td class="vert-align">{{game.location.city}}</td>
                   <td class="vert-align">
-                    <span ng-if="game.teamHome" translate="team.{{game.teamHome.id}}"></span>
-                    <span ng-if="!game.teamHome"><i class="fa fa-question-circle"></i></span>
+                    <select class="form-control" ng-if="!hasStarted(game)" ng-model="game.teamHome.id" ng-options="team.id as 'team.' + team.id | translate for team in teams">
+                      <option value="">-</option>
+                    </select>
+                    <span ng-if="hasStarted(game)">
+                      <span ng-if="game.teamHome" translate="team.{{game.teamHome.id}}"></span>
+                      <span ng-if="!game.teamHome"><i class="fa fa-question-circle"></i></span>
+                    </span>
                   </td>
                   <td class="vert-align">
-                    <span ng-if="game.teamAway" translate="team.{{game.teamAway.id}}"></span>
-                    <span ng-if="!game.teamAway"><i class="fa fa-question-circle"></i></span>
+                    <select class="form-control" ng-if="!hasStarted(game)" ng-model="game.teamAway.id" ng-options="team.id as 'team.' + team.id | translate for team in teams">
+                      <option value="">-</option>
+                    </select>
+                    <span ng-if="hasStarted(game)">
+                      <span ng-if="game.teamAway" translate="team.{{game.teamAway.id}}"></span>
+                      <span ng-if="!game.teamAway"><i class="fa fa-question-circle"></i></span>
+                    </span>
                   </td>
                   <td>
                     <input class="form-control" type="text" maxlength="2" ng-model="game.scoreHome">

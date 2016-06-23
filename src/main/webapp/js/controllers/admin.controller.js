@@ -1,11 +1,18 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('AdminCtrl', function($rootScope, $scope, toastr, $translate, Game, games, Question, questions, users) {
+  .controller('AdminCtrl', function($rootScope, $scope, toastr, $translate, Game, games, teams, Question, questions, users) {
     $rootScope.loading = false;
     $scope.games = games;
+    $scope.teams = teams;
     $scope.questions = questions;
     $scope.users = users;
+    $scope.hasStarted = Game.hasStarted;
+
+    var isInteger = function(str) {
+      var n = ~~Number(str);
+      return String(n) == str && n >= 0;
+    };
 
     $scope.saveGames = function() {
       $scope.gamesSaving = true;
@@ -13,15 +20,14 @@ angular.module('predictrApp')
       // Prepare DTO array to save
       var dtos = [];
       angular.forEach($scope.games, function(game) {
-        // Check mandatory fields
-        if(!isNaN(game.scoreHome) && !isNaN(game.scoreAway)) {
           dtos.push({
             'id': game.id,
-            'scoreHome': game.scoreHome,
-            'scoreAway': game.scoreAway,
+            'teamHome': game.teamHome && game.teamHome.id ? game.teamHome : null,
+            'teamAway': game.teamAway && game.teamAway.id ? game.teamAway : null,
+            'scoreHome': !game.scoreHome && game.scoreHome != '0' ? null : game.scoreHome,
+            'scoreAway': !game.scoreAway && game.scoreAway != '0' ? null : game.scoreAway,
             'notes': game.notes
           });
-        }
       });
 
       // Actually save it
