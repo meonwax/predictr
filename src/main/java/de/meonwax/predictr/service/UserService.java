@@ -49,9 +49,6 @@ public class UserService implements UserDetailsService {
     private MailService mailService;
 
     @Autowired
-    private AvatarService avatarService;
-
-    @Autowired
     private Settings settings;
 
     @Autowired
@@ -171,6 +168,7 @@ public class UserService implements UserDetailsService {
 
         // Check for token expiry
         if (passwordResetToken.getExpiry().isBefore(ZonedDateTime.now())) {
+            passwordResetTokenRepository.delete(passwordResetToken);
             throw new PasswordResetException("Token expired.");
         }
 
