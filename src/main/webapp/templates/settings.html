@@ -31,13 +31,52 @@
                 {{'global.english' | translate}}
               </label>
             </div>
-            <!-- TODO: Upload and change avatar -->
           </div>
 
           <div class="panel-footer">
             <button type="submit" class="btn btn-success" ladda="editing" data-style="zoom-in" ng-disabled="editForm.$invalid">
               <i class="fa fa-check"></i>
               <span translate="settings.edit"></span>
+            </button>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <form role="form" ng-submit="uploadAvatar()" name="avatarForm">
+        <div class="panel panel-default" ng-class="{'panel-default': !avatarError, 'panel-danger': avatarError}">
+
+          <div class="panel-heading">
+            <strong translate="settings.uploadAvatarHere" ng-show="!avatarError"></strong>
+            <strong translate="settings.avatarError" ng-show="avatarError"></strong>
+          </div>
+
+          <div class="panel-body">
+            <div class="form-group">
+              <label translate="settings.currentAvatar"></label>
+              <img ng-src="api/users/avatar/{{avatarUrl}}" alt="{{account.name}}" class="img-responsive img-circle">
+            </div>
+            <div class="form-group">
+              <label for="file" translate="settings.image"></label>
+              <input type="file" id="file" accept="image/*;capture=camera">
+              <p class="help-block" translate="settings.avatarMaxSize"></p>
+            </div>
+          </div>
+
+          <div class="panel-footer">
+            <button type="submit" class="btn btn-success" ladda="uploadingAvatar" data-style="zoom-in" ng-disabled="avatarForm.$invalid">
+              <i class="fa fa-check"></i>
+              <span translate="settings.uploadAvatar"></span>
+            </button>
+            <button type="button" class="btn btn-danger" ng-click="deleteAvatar()">
+              <i class="fa fa-times"></i>
+              <span translate="settings.deleteAvatar"></span>
             </button>
           </div>
 
@@ -82,5 +121,5 @@
 
     </div>
   </div>
-  
+
 </div>

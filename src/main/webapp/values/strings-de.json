@@ -152,7 +152,16 @@
         "oldPassword": "Altes Passwort",
         "newPassword": "Neues Passwort",
         "newPasswordConfirm": "Neues Passwort (wiederholen)",
-        "updatePassword": "Passwort ändern"
+        "updatePassword": "Passwort ändern",
+        "image": "Grafik",
+        "uploadAvatarHere": "Avatar anpassen",
+        "avatarMaxSize": "Nur JPG und PNG erlaubt. Die Datei darf 200 kB nicht überschreiten.",
+        "avatarError": "Hochladen der Grafik fehlgeschlagen.",
+        "avatarOk": "Grafik wurde hochgeladen und als Avatar eingerichtet.",
+        "uploadAvatar": "Hochladen",
+        "deleteAvatar": "Löschen",
+        "deleteAvatarError": "Löschen des Avatars fehlgeschlagen.",
+        "deleteAvatarOk": "Avatar wurde gelöscht."
     },
     "admin": {
         "title": "Administration",

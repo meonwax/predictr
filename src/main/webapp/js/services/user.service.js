@@ -15,6 +15,15 @@ angular.module('predictrApp')
       resetPassword: function() {
         return $resource('api/users/password/resetRequest');
       },
+      avatar: function(contentType) {
+        return $resource('api/users/avatar', {}, {
+          'save': {
+            method: 'POST',
+            headers: {'Content-Type': contentType},
+            transformRequest: []
+          }
+        });
+      },
       all: function() {
         return $resource('api/users', {}, {
           'query': {

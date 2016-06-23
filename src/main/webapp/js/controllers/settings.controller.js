@@ -4,6 +4,7 @@ angular.module('predictrApp')
   .controller('SettingsCtrl', function($rootScope, $scope, $translate, amMoment, toastr, User) {
     $scope.language = $rootScope.account.preferredLanguage || $translate.use();
     $scope.name = $rootScope.account.name;
+    $scope.avatarUrl = $rootScope.account.id + '?' + new Date().getTime();
 
     $scope.edit = function() {
       $scope.editing = true;
@@ -29,6 +30,44 @@ angular.module('predictrApp')
         function() {
           $scope.editing = false;
           $scope.editError = true;
+        }
+      );
+    };
+
+    $scope.uploadAvatar = function() {
+      $scope.uploadingAvatar = true;
+
+      var file = document.getElementById('file').files[0], reader = new FileReader();
+      reader.onloadend = function(event) {
+        var binaryData = new Uint8Array(event.target.result);
+        User.avatar(file.type).save(binaryData,
+          function() {
+            $scope.uploadingAvatar = false;
+            $scope.avatarError = false;
+            toastr.success($translate.instant('settings.avatarOk'));
+
+            // Reload preview
+            $scope.avatarUrl = $rootScope.account.id + '?' + new Date().getTime();
+          },
+          function() {
+            $scope.uploadingAvatar = false;
+            $scope.avatarError = true;
+          }
+        );
+      }
+      reader.readAsArrayBuffer(file);
+    };
+
+    $scope.deleteAvatar = function() {
+      User.avatar().delete(
+        function() {
+          toastr.success($translate.instant('settings.deleteAvatarOk'));
+
+          // Reload preview
+          $scope.avatarUrl = $rootScope.account.id + '?' + new Date().getTime();
+        },
+        function() {
+          toastr.error($translate.instant('settings.deleteAvatarError'));
         }
       );
     };

@@ -3,26 +3,35 @@ package de.meonwax.predictr.service;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import org.imgscalr.Scalr;
+import org.imgscalr.Scalr.Method;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 import de.meonwax.predictr.domain.Avatar;
 import de.meonwax.predictr.domain.User;
+import de.meonwax.predictr.repository.AvatarRepository;
+import de.meonwax.predictr.repository.UserRepository;
 
 @Service
 public class AvatarService {
 
-    private final static int IMAGE_WIDTH = 64;
-    private final static int IMAGE_HEIGHT = 64;
+    private final static int AVATAR_WIDTH = 64;
+    private final static int AVATAR_HEIGHT = 64;
+
+    private final static int IMAGE_RESIZE_DIMENSION = 128;
 
     // Predefined colors inspired by https://github.com/judesfernando/initial.js
     private final static Color[] COLORS = new Color[] {
@@ -56,13 +65,19 @@ public class AvatarService {
 
     private final static float FONT_RATIO = .7f;
 
+    @Autowired
+    private AvatarRepository avatarRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     public Avatar generateGenericAvatar(User user) {
 
         // User's initial character
         char initial = user.getName().toUpperCase().charAt(0);
 
         // Create image
-        BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage image = new BufferedImage(AVATAR_WIDTH, AVATAR_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
@@ -71,7 +86,7 @@ public class AvatarService {
             // Set font
             InputStream is = getClass().getClassLoader().getResourceAsStream("Lato-Black.ttf");
             Font font = Font.createFont(Font.TRUETYPE_FONT, is);
-            g.setFont(font.deriveFont(Font.PLAIN, FONT_RATIO * IMAGE_HEIGHT));
+            g.setFont(font.deriveFont(Font.PLAIN, FONT_RATIO * AVATAR_HEIGHT));
 
             // Set colors
             g.setColor(getBackgroundColor(initial));
@@ -106,24 +121,68 @@ public class AvatarService {
         return COLORS[i];
     }
 
-    // DEBUG ONLY
-    //    public void setAvatar(Long userId) throws IOException {
-    //
-    //        User user = userRepository.findOne(userId);
-    //        if (user != null) {
-    //            Resource resource = new ClassPathResource("avatar.jpg");
-    //            InputStream in = resource.getInputStream();
-    //
-    //            Avatar avatar = new Avatar();
-    //            avatar.setMimeType(MediaType.IMAGE_JPEG_VALUE);
-    //            avatar.setData(StreamUtils.copyToByteArray(in));
-    //            avatarRepository.save(avatar);
-    //
-    //            user.setAvatar(avatar);
-    //            userRepository.save(user);
-    //
-    //            log.debug("Dummy avatar generated");
-    //        }
-    //    }
+    public void setAvatar(User user, byte[] data, MediaType contentType) {
+        data = resizeAvatar(data, contentType);
 
+        Avatar avatar = user.getAvatar();
+        if (avatar == null) {
+            avatar = new Avatar();
+        }
+        avatar.setMimeType(contentType.getType() + "/" + contentType.getSubtype());
+        avatar.setData(data);
+        avatarRepository.save(avatar);
+
+        user.setAvatar(avatar);
+        userRepository.save(user);
+    }
+
+    private byte[] resizeAvatar(byte[] data, MediaType contentType) {
+        BufferedImage image;
+        try {
+            // Convert to image
+            image = ImageIO.read(new ByteArrayInputStream(data));
+
+            // Scale to dimension bounds maintaining aspect ratio
+            if (image.getHeight() > IMAGE_RESIZE_DIMENSION || image.getWidth() > IMAGE_RESIZE_DIMENSION) {
+                image = Scalr.resize(image, Method.ULTRA_QUALITY, IMAGE_RESIZE_DIMENSION);
+            }
+
+            int imgW = image.getWidth();
+            int imgH = image.getHeight();
+
+            // Pad to create square image
+            if (imgW != imgH) {
+                BufferedImage newImage = new BufferedImage(IMAGE_RESIZE_DIMENSION, IMAGE_RESIZE_DIMENSION, image.getType());
+                Graphics g = newImage.getGraphics();
+                g.setColor(Color.BLACK);
+                g.fillRect(0, 0, newImage.getWidth(), newImage.getHeight());
+                if (imgW > imgH) {
+                    g.drawImage(image, 0, (IMAGE_RESIZE_DIMENSION - imgH) / 2, null);
+                } else {
+                    g.drawImage(image, (IMAGE_RESIZE_DIMENSION - imgW) / 2, 0, null);
+                }
+                g.dispose();
+
+                image.flush();
+                image = newImage;
+            }
+
+            // Convert back to byte array
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(image, contentType.getSubtype(), baos);
+            image.flush();
+            return baos.toByteArray();
+        } catch (IOException e) {
+        }
+        return null;
+    }
+
+    public void deleteAvatar(User user) {
+        Avatar avatar = user.getAvatar();
+        if (avatar != null) {
+            user.setAvatar(null);
+            userRepository.save(user);
+            avatarRepository.delete(avatar);
+        }
+    }
 }

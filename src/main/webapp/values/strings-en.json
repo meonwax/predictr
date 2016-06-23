@@ -152,7 +152,16 @@
         "oldPassword": "Old password",
         "newPassword": "New password",
         "newPasswordConfirm": "New password (confirmation)",
-        "updatePassword": "Change password"
+        "updatePassword": "Change password",
+        "image": "Image",
+        "uploadAvatarHere": "Change avatar",
+        "avatarMaxSize": "Only JPG and PNG allowed. The file size must not exceed 200 kB.",
+        "avatarError": "Uploading image failed.",
+        "avatarOk": "Image uploaded and set as avatar.",
+        "uploadAvatar": "Upload",
+        "deleteAvatar": "Delete",
+        "deleteAvatarError": "Deleting avatar failed.",
+        "deleteAvatarOk": "Avatar deleted."
     },
     "admin": {
         "title": "Administration",
