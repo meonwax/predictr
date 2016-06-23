@@ -117,7 +117,8 @@
         "title": "Ladder",
         "overall": "Overall",
         "jackpot": "Jackpot",
-        "jackpotDescription": "The jackpot is <strong>{{jackpot}} €</strong> and will be disbursed to the winner at the end of the tournament."
+        "jackpotDescription": "The jackpot is <strong>{{jackpot}} €</strong> and will be disbursed to the winner at the end of the tournament.",
+        "progress": "after {{amountFinished}} of {{amountAll}} games"
     },
     "questions": {
         "title": "Special questions",

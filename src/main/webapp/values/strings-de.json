@@ -117,7 +117,8 @@
         "title": "Rangliste",
         "overall": "Gesamt",
         "jackpot": "Jackpot",
-        "jackpotDescription": "Im Jackpot befinden sich <strong>{{jackpot}} €</strong>, die bei Turnierende komplett an den Sieger ausgezahlt werden."
+        "jackpotDescription": "Im Jackpot befinden sich <strong>{{jackpot}} €</strong>, die bei Turnierende komplett an den Sieger ausgezahlt werden.",
+        "progress": "nach {{amountFinished}} von {{amountAll}} Spielen"
     },
     "questions": {
         "title": "Spezialfragen",
