@@ -71,7 +71,43 @@ public class AvatarService {
     @Autowired
     private UserRepository userRepository;
 
-    public Avatar generateGenericAvatar(User user) {
+    public Avatar getAvatar(Long userId) {
+        User user = userRepository.findOne(userId);
+        if (user != null) {
+            Avatar avatar = user.getAvatar();
+            if (avatar == null) {
+                avatar = generateGenericAvatar(user);
+            }
+            return avatar;
+        }
+        return null;
+    }
+
+    public void setAvatar(User user, byte[] data, MediaType contentType) {
+        data = resizeAvatar(data, contentType);
+
+        Avatar avatar = user.getAvatar();
+        if (avatar == null) {
+            avatar = new Avatar();
+        }
+        avatar.setMimeType(contentType.getType() + "/" + contentType.getSubtype());
+        avatar.setData(data);
+        avatarRepository.save(avatar);
+
+        user.setAvatar(avatar);
+        userRepository.save(user);
+    }
+
+    public void deleteAvatar(User user) {
+        Avatar avatar = user.getAvatar();
+        if (avatar != null) {
+            user.setAvatar(null);
+            userRepository.save(user);
+            avatarRepository.delete(avatar);
+        }
+    }
+
+    private Avatar generateGenericAvatar(User user) {
 
         // User's initial character
         char initial = user.getName().toUpperCase().charAt(0);
@@ -121,21 +157,6 @@ public class AvatarService {
         return COLORS[i];
     }
 
-    public void setAvatar(User user, byte[] data, MediaType contentType) {
-        data = resizeAvatar(data, contentType);
-
-        Avatar avatar = user.getAvatar();
-        if (avatar == null) {
-            avatar = new Avatar();
-        }
-        avatar.setMimeType(contentType.getType() + "/" + contentType.getSubtype());
-        avatar.setData(data);
-        avatarRepository.save(avatar);
-
-        user.setAvatar(avatar);
-        userRepository.save(user);
-    }
-
     private byte[] resizeAvatar(byte[] data, MediaType contentType) {
         BufferedImage image;
         try {
@@ -175,14 +196,5 @@ public class AvatarService {
         } catch (IOException e) {
         }
         return null;
-    }
-
-    public void deleteAvatar(User user) {
-        Avatar avatar = user.getAvatar();
-        if (avatar != null) {
-            user.setAvatar(null);
-            userRepository.save(user);
-            avatarRepository.delete(avatar);
-        }
     }
 }
