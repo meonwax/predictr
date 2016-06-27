@@ -23,6 +23,6 @@ public class TeamController {
     @RequestMapping(value = "/teams", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Secured(User.ROLE_ADMIN)
     public List<Team> getAll() {
-        return teamRepository.findAll();
+        return teamRepository.findAllByOrderById();
     }
 }
