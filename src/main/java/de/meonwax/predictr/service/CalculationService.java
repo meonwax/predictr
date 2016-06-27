@@ -28,10 +28,6 @@ public class CalculationService {
 
     public int getPoints(User user) {
 
-//        if (true) {
-//            return new Random().nextInt(10);
-//        }
-
         int points = 0;
 
         List<Bet> bets = betRepository.findByUserAndGameKickoffTimeBefore(user, ZonedDateTime.now());
@@ -82,14 +78,13 @@ public class CalculationService {
      * Calculate points for a special question/answer
      */
     public int calculate(Answer answer) {
-
         String userAnswer = answer.getAnswer();
         String correctAnswer = answer.getQuestion().getCorrectAnswer();
-
-        // TODO: Implement this check in a JPA custom query
         if (Utils.allNotNull(userAnswer, correctAnswer)) {
-            if (userAnswer.toLowerCase().trim().equals(correctAnswer.toLowerCase())) {
-                return answer.getQuestion().getPoints();
+            for (String s : correctAnswer.split(",")) {
+                if (userAnswer.toLowerCase().trim().contains(s.toLowerCase())) {
+                    return answer.getQuestion().getPoints();
+                }
             }
         }
         return 0;
