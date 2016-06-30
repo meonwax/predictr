@@ -93,7 +93,7 @@ $ladder-avatar-height: 2.3em;
   outline-color: $state-danger-text;
 }
 #bets input {
-  width: 4em;
+  max-width: 4em;
   text-align: center;
 }
 
