@@ -20,8 +20,6 @@ public class Settings {
 
     private String adminEmail;
 
-    private Boolean registrationEnabled;
-
     private Boolean showImportantMessage;
 
     private List<String> pagesBlacklist;
@@ -67,14 +65,6 @@ public class Settings {
 
     public void setAdminEmail(String adminEmail) {
         this.adminEmail = adminEmail;
-    }
-
-    public Boolean getRegistrationEnabled() {
-        return registrationEnabled;
-    }
-
-    public void setRegistrationEnabled(Boolean registrationEnabled) {
-        this.registrationEnabled = registrationEnabled;
     }
 
     public Boolean getShowImportantMessage() {
