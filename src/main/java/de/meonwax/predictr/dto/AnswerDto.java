@@ -16,6 +16,8 @@ public class AnswerDto {
 
     private User user;
 
+    private String cssClass;
+
     public Question getQuestion() {
         return question;
     }
@@ -38,6 +40,14 @@ public class AnswerDto {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getCssClass() {
+        return cssClass;
+    }
+
+    public void setCssClass(String cssClass) {
+        this.cssClass = cssClass;
     }
 
     @Override

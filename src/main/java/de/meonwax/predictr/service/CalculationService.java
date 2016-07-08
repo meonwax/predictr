@@ -82,7 +82,7 @@ public class CalculationService {
         String correctAnswer = answer.getQuestion().getCorrectAnswer();
         if (Utils.allNotNull(userAnswer, correctAnswer)) {
             for (String s : correctAnswer.split(",")) {
-                if (userAnswer.toLowerCase().trim().contains(s.toLowerCase())) {
+                if (userAnswer.toLowerCase().trim().contains(s.trim().toLowerCase())) {
                     return answer.getQuestion().getPoints();
                 }
             }
@@ -100,6 +100,14 @@ public class CalculationService {
         }
         if (points == settings.getPoints().getTendency()) {
             return "warning";
+        }
+        return null;
+    }
+
+    public String getCssClass(Answer answer) {
+        int points = calculate(answer);
+        if (points == answer.getQuestion().getPoints()) {
+            return "success bold";
         }
         return null;
     }

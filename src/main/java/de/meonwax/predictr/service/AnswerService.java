@@ -25,6 +25,9 @@ public class AnswerService {
     @Autowired
     private QuestionRepository questionRepository;
 
+    @Autowired
+    private CalculationService calculationService;
+
     public void update(User user, List<AnswerDto> answerDtos) {
         List<Answer> answers = new ArrayList<>();
         for (AnswerDto answerDto : answerDtos) {
@@ -62,6 +65,7 @@ public class AnswerService {
                 AnswerDto dto = new AnswerDto();
                 dto.setUser(answer.getUser());
                 dto.setAnswer(answer.getAnswer());
+                dto.setCssClass(calculationService.getCssClass(answer));
                 result.add(dto);
             }
         }
