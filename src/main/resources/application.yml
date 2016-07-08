@@ -19,7 +19,7 @@ server:
 predictr:
     owner: John Doe
     title: Predictr
-    version: 4.2.1
+    version: 4.2.2
     rememberMeKey: 8604aa56a02e3dc7b191859ef5952fe49fd1f128
     adminEmail: admin@example.com
     showImportantMessage: true
