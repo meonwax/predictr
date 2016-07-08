@@ -75,7 +75,9 @@ public class CalculationService {
     }
 
     /**
-     * Calculate points for a special question/answer
+     * Calculate points for a special question/answer.
+     * The correct answer can be comma-separated to allow different notations and small typos.
+     * Only the first element will be displayed in the client.
      */
     public int calculate(Answer answer) {
         String userAnswer = answer.getAnswer();

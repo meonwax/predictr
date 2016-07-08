@@ -95,4 +95,9 @@ public class Question implements Serializable {
     public void setAnswers(Set<Answer> answers) {
         this.answers = answers;
     }
+
+    // Artificial value for displaying only the first element in the client
+    public String getCorrectAnswerSimplified() {
+        return correctAnswer != null ? correctAnswer.split(",")[0] : null;
+    }
 }
