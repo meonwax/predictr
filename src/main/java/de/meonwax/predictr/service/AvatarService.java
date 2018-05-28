@@ -1,29 +1,23 @@
 package de.meonwax.predictr.service;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.imageio.ImageIO;
-
+import de.meonwax.predictr.domain.Avatar;
+import de.meonwax.predictr.domain.User;
+import de.meonwax.predictr.repository.AvatarRepository;
+import de.meonwax.predictr.repository.UserRepository;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
-import de.meonwax.predictr.domain.Avatar;
-import de.meonwax.predictr.domain.User;
-import de.meonwax.predictr.repository.AvatarRepository;
-import de.meonwax.predictr.repository.UserRepository;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
 
 @Service
 public class AvatarService {
@@ -34,33 +28,33 @@ public class AvatarService {
     private final static int IMAGE_RESIZE_DIMENSION = 128;
 
     // Predefined colors inspired by https://github.com/judesfernando/initial.js
-    private final static Color[] COLORS = new Color[] {
-            new Color(0x1abc9c),
-            new Color(0x16a085),
-            new Color(0xf1c40f),
-            new Color(0xf39c12),
-            new Color(0x2ecc71),
-            new Color(0x27ae60),
-            new Color(0xe67e22),
-            new Color(0xd35400),
-            new Color(0x3498db),
-            new Color(0x2980b9),
-            new Color(0xe74c3c),
-            new Color(0xc0392b),
-            new Color(0x9b59b6),
-            new Color(0x8e44ad),
-            new Color(0xbdc3c7),
-            new Color(0x34495e),
-            new Color(0x2c3e50),
-            new Color(0x95a5a6),
-            new Color(0x7f8c8d),
-            new Color(0xec87bf),
-            new Color(0xd870ad),
-            new Color(0xf69785),
-            new Color(0x9ba37e),
-            new Color(0xb49255),
-            new Color(0xb49255),
-            new Color(0xa94136)
+    private final static Color[] COLORS = new Color[]{
+        new Color(0x1abc9c),
+        new Color(0x16a085),
+        new Color(0xf1c40f),
+        new Color(0xf39c12),
+        new Color(0x2ecc71),
+        new Color(0x27ae60),
+        new Color(0xe67e22),
+        new Color(0xd35400),
+        new Color(0x3498db),
+        new Color(0x2980b9),
+        new Color(0xe74c3c),
+        new Color(0xc0392b),
+        new Color(0x9b59b6),
+        new Color(0x8e44ad),
+        new Color(0xbdc3c7),
+        new Color(0x34495e),
+        new Color(0x2c3e50),
+        new Color(0x95a5a6),
+        new Color(0x7f8c8d),
+        new Color(0xec87bf),
+        new Color(0xd870ad),
+        new Color(0xf69785),
+        new Color(0x9ba37e),
+        new Color(0xb49255),
+        new Color(0xb49255),
+        new Color(0xa94136)
     };
 
     private final static float FONT_RATIO = .7f;
@@ -71,16 +65,16 @@ public class AvatarService {
     @Autowired
     private UserRepository userRepository;
 
-    public Avatar getAvatar(Long userId) {
-        User user = userRepository.findOne(userId);
-        if (user != null) {
-            Avatar avatar = user.getAvatar();
-            if (avatar == null) {
-                avatar = generateGenericAvatar(user);
-            }
-            return avatar;
-        }
-        return null;
+    public Optional<Avatar> getAvatar(Long userId) {
+        return userRepository.findById(userId)
+            .map(user -> {
+                Avatar avatar = user.getAvatar();
+                if (avatar == null) {
+                    avatar = generateGenericAvatar(user);
+                }
+                return Optional.of(avatar);
+            })
+            .orElse(Optional.empty());
     }
 
     public void setAvatar(User user, byte[] data, MediaType contentType) {

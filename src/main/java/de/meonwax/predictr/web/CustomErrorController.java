@@ -1,13 +1,9 @@
 package de.meonwax.predictr.web;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.time.ZonedDateTime;
-
-import javax.servlet.http.HttpServletRequest;
-
+import de.meonwax.predictr.service.MailService;
+import de.meonwax.predictr.settings.Settings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ErrorController;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import de.meonwax.predictr.service.MailService;
-import de.meonwax.predictr.settings.Settings;
+import javax.servlet.http.HttpServletRequest;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.time.ZonedDateTime;
 
 @Controller
 @RequestMapping("error")

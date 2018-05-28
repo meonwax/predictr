@@ -3,6 +3,12 @@
 .classpath
 .settings/
 
+# IntelliJ
+.idea
+*.iws
+*.iml
+*.ipr
+
 # Third party libraries
 node_modules/
 src/main/webapp/lib/
@@ -12,9 +18,6 @@ target/
 .sass-cache/
 .tmp/
 src/main/webapp/dist/
-
-# Legacy code
-2014/
 
 # Others
 TODO.md

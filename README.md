@@ -1,7 +1,7 @@
 # Predictr
 
 A football prediction game.  
-Data for UEFA EURO 2016 included.
+Data for 2018 FIFA World Cup included.
 
 ## Requirements
 

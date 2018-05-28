@@ -1,12 +1,10 @@
 package de.meonwax.predictr.security;
 
-import java.security.SecureRandom;
-import java.time.ZonedDateTime;
-import java.util.Arrays;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import de.meonwax.predictr.domain.RememberMeToken;
+import de.meonwax.predictr.domain.User;
+import de.meonwax.predictr.repository.RememberMeTokenRepository;
+import de.meonwax.predictr.repository.UserRepository;
+import de.meonwax.predictr.settings.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.CookieTheftException;
 import org.springframework.security.web.authentication.rememberme.InvalidCookieException;
@@ -23,11 +20,13 @@ import org.springframework.security.web.authentication.rememberme.RememberMeAuth
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.meonwax.predictr.domain.RememberMeToken;
-import de.meonwax.predictr.domain.User;
-import de.meonwax.predictr.repository.RememberMeTokenRepository;
-import de.meonwax.predictr.repository.UserRepository;
-import de.meonwax.predictr.settings.Settings;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.security.SecureRandom;
+import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Optional;
 
 /**
  * Custom implementation of Spring Security's RememberMeServices inspired by the implementation at https://github.com/jhipster
@@ -140,44 +139,44 @@ public class CustomPersistentRememberMeServices extends AbstractRememberMeServic
         }
         String presentedSeries = cookieTokens[0];
         String presentedToken = cookieTokens[1];
-        RememberMeToken token = rememberMeTokenRepository.findOne(presentedSeries);
+        Optional<RememberMeToken> token = rememberMeTokenRepository.findById(presentedSeries);
 
-        if (token == null) {
+        if (!token.isPresent()) {
             // No series match, so we can't authenticate using this cookie
             throw new RememberMeAuthenticationException("No persistent token found for series id: " + presentedSeries);
         }
 
         // We have a match for this user/series combination
-        log.debug("presentedToken={} / tokenValue={}", presentedToken, token.getValue());
-        if (!presentedToken.equals(token.getValue())) {
+        log.debug("presentedToken={} / tokenValue={}", presentedToken, token.get().getValue());
+        if (!presentedToken.equals(token.get().getValue())) {
             // Token doesn't match series value. Delete this session and throw an exception.
-            rememberMeTokenRepository.delete(token);
+            rememberMeTokenRepository.delete(token.get());
             throw new CookieTheftException("Invalid remember-me token (Series/token) mismatch. Implies previous cookie theft attack.");
         }
 
-        if (token.getDate().plusDays(TOKEN_VALIDITY_DAYS).isBefore(ZonedDateTime.now())) {
-            rememberMeTokenRepository.delete(token);
+        if (token.get().getDate().plusDays(TOKEN_VALIDITY_DAYS).isBefore(ZonedDateTime.now())) {
+            rememberMeTokenRepository.delete(token.get());
             throw new RememberMeAuthenticationException("Remember-me login has expired");
         }
 
-        log.info("User " + token.getUser().getEmail() + " logged in using RememberMeToken");
+        log.info("User " + token.get().getUser().getEmail() + " logged in using RememberMeToken");
 
-        return token;
+        return token.get();
     }
 
     private String generateTokenData() {
         byte[] newToken = new byte[DEFAULT_TOKEN_LENGTH];
         random.nextBytes(newToken);
-        return new String(Base64.encode(newToken));
+        return Base64.getEncoder().encodeToString(newToken);
     }
 
     private String generateSeriesData() {
         byte[] newSeries = new byte[DEFAULT_SERIES_LENGTH];
         random.nextBytes(newSeries);
-        return new String(Base64.encode(newSeries));
+        return Base64.getEncoder().encodeToString(newSeries);
     }
 
     private void addCookie(RememberMeToken token, HttpServletRequest request, HttpServletResponse response) {
-        setCookie(new String[] { token.getSeries(), token.getValue() }, TOKEN_VALIDITY_SECONDS, request, response);
+        setCookie(new String[]{token.getSeries(), token.getValue()}, TOKEN_VALIDITY_SECONDS, request, response);
     }
 }

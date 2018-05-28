@@ -1,20 +1,19 @@
 package de.meonwax.predictr.service;
 
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import de.meonwax.predictr.domain.Answer;
 import de.meonwax.predictr.domain.Question;
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.AnswerDto;
 import de.meonwax.predictr.repository.AnswerRepository;
 import de.meonwax.predictr.repository.QuestionRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AnswerService {
@@ -31,35 +30,36 @@ public class AnswerService {
     public void update(User user, List<AnswerDto> answerDtos) {
         List<Answer> answers = new ArrayList<>();
         for (AnswerDto answerDto : answerDtos) {
-            Question question = questionRepository.findOne(answerDto.getQuestion().getId());
-            if (question != null) {
-                // Prevent saving if deadline has already passed
-                if (question.getDeadline().isAfter(ZonedDateTime.now())) {
-                    Answer answer = answerRepository.findOneByUserAndQuestion(user, question);
-                    if (answer == null) {
-                        answer = new Answer();
+            questionRepository.findById(answerDto.getQuestion().getId())
+                .ifPresent(question -> {
+                    // Prevent saving if deadline has already passed
+                    if (question.getDeadline().isAfter(ZonedDateTime.now())) {
+                        Answer answer = answerRepository.findOneByUserAndQuestion(user, question);
+                        if (answer == null) {
+                            answer = new Answer();
+                        }
+                        BeanUtils.copyProperties(answerDto, answer);
+                        answer.setUser(user);
+                        answers.add(answer);
                     }
-                    BeanUtils.copyProperties(answerDto, answer);
-                    answer.setUser(user);
-                    answers.add(answer);
-                }
-            }
+                });
+
+            answerRepository.saveAll(answers);
         }
-        answerRepository.save(answers);
     }
 
     public Optional<List<AnswerDto>> getOther(User ownUser, Long questionId) {
 
-        Question question = questionRepository.findOne(questionId);
+        Optional<Question> question = questionRepository.findById(questionId);
 
         // Only return data if deadline has already passed
-        if (question == null || question.getDeadline().isAfter(ZonedDateTime.now())) {
+        if (!question.isPresent() || question.get().getDeadline().isAfter(ZonedDateTime.now())) {
             return Optional.empty();
         }
 
         // Build the result
         List<AnswerDto> result = new ArrayList<>();
-        for (Answer answer : question.getAnswers()) {
+        for (Answer answer : question.get().getAnswers()) {
             // Filter out own user
             if (!answer.getUser().equals(ownUser)) {
                 AnswerDto dto = new AnswerDto();

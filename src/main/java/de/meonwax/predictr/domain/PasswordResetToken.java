@@ -1,14 +1,9 @@
 package de.meonwax.predictr.domain;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.UUID;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity
 public class PasswordResetToken implements Serializable {
@@ -27,7 +22,7 @@ public class PasswordResetToken implements Serializable {
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, nullable = false)

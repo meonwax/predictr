@@ -1,20 +1,19 @@
 package de.meonwax.predictr.service;
 
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import de.meonwax.predictr.domain.Bet;
 import de.meonwax.predictr.domain.Game;
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.BetDto;
 import de.meonwax.predictr.repository.BetRepository;
 import de.meonwax.predictr.repository.GameRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BetService {
@@ -31,11 +30,11 @@ public class BetService {
     public void update(User user, List<BetDto> betDtos) {
         List<Bet> bets = new ArrayList<>();
         for (BetDto betDto : betDtos) {
-            Game game = gameRepository.findOne(betDto.getGame().getId());
-            if (game != null) {
+            Optional<Game> game = gameRepository.findById(betDto.getGame().getId());
+            if (game.isPresent()) {
                 // Prevent saving if game has already started
-                if (game.getKickoffTime().isAfter(ZonedDateTime.now())) {
-                    Bet bet = betRepository.findOneByUserAndGame(user, game);
+                if (game.get().getKickoffTime().isAfter(ZonedDateTime.now())) {
+                    Bet bet = betRepository.findOneByUserAndGame(user, game.get());
                     if (bet == null) {
                         bet = new Bet();
                     }
@@ -45,21 +44,21 @@ public class BetService {
                 }
             }
         }
-        betRepository.save(bets);
+        betRepository.saveAll(bets);
     }
 
     public Optional<List<BetDto>> getOther(User ownUser, Long gameId) {
 
-        Game game = gameRepository.findOne(gameId);
+        Optional<Game> game = gameRepository.findById(gameId);
 
         // Only return data if game has already started
-        if (game == null || game.getKickoffTime().isAfter(ZonedDateTime.now())) {
+        if (!game.isPresent() || game.get().getKickoffTime().isAfter(ZonedDateTime.now())) {
             return Optional.empty();
         }
 
         // Build the result
         List<BetDto> result = new ArrayList<>();
-        for (Bet bet : game.getBets()) {
+        for (Bet bet : game.get().getBets()) {
             // Filter out own user
             if (!bet.getUser().equals(ownUser)) {
                 BetDto dto = new BetDto();

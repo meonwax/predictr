@@ -1,18 +1,5 @@
 package de.meonwax.predictr.service;
 
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-
 import de.meonwax.predictr.domain.Bet;
 import de.meonwax.predictr.domain.Game;
 import de.meonwax.predictr.domain.Group;
@@ -20,6 +7,13 @@ import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.GameDto;
 import de.meonwax.predictr.repository.GameRepository;
 import de.meonwax.predictr.repository.GroupRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import java.time.ZonedDateTime;
+import java.util.*;
 
 @Service
 public class GameService {
@@ -40,18 +34,17 @@ public class GameService {
     public void update(List<GameDto> gameDtos) {
         List<Game> games = new ArrayList<>();
         for (GameDto gameDto : gameDtos) {
-            Game game = gameRepository.findOne(gameDto.getId());
-            if (game == null) {
-                game = new Game();
-            }
+            Game game = gameRepository
+                .findById(gameDto.getId())
+                .orElseGet(Game::new);
             BeanUtils.copyProperties(gameDto, game);
             games.add(game);
         }
-        gameRepository.save(games);
+        gameRepository.saveAll(games);
     }
 
     public List<Game> getUpcoming() {
-        return gameRepository.findByKickoffTimeAfterOrderByKickoffTime(new PageRequest(0, 5), ZonedDateTime.now());
+        return gameRepository.findByKickoffTimeAfterOrderByKickoffTime(PageRequest.of(0, 5), ZonedDateTime.now());
     }
 
     public List<Game> getRunning() {
@@ -86,10 +79,10 @@ public class GameService {
                         // Calculate points
                         game.setPointsEarned(calculationService.calculate(usersBet));
                         // Set only user's bet to result
-                        game.setBets(new HashSet<Bet>(Arrays.asList(usersBet)));
+                        game.setBets(new HashSet<>(Collections.singletonList(usersBet)));
                     } else {
                         // Delete all bets from result
-                        game.setBets(new HashSet<Bet>());
+                        game.setBets(new HashSet<>());
                     }
                 }
             }
