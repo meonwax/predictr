@@ -1,7 +1,7 @@
 package de.meonwax.predictr.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.meonwax.predictr.util.Utils;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,6 +9,7 @@ import java.time.ZonedDateTime;
 import java.util.Set;
 
 @Entity
+@ToString
 public class Game {
 
     @Id
@@ -131,10 +132,5 @@ public class Game {
 
     public void setBets(Set<Bet> bets) {
         this.bets = bets;
-    }
-
-    @Override
-    public String toString() {
-        return Utils.jsonSerialize(this, true);
     }
 }

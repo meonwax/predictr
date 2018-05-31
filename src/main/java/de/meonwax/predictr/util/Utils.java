@@ -1,7 +1,5 @@
 package de.meonwax.predictr.util;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,22 +22,6 @@ public abstract class Utils {
             }
         }
         return true;
-    }
-
-    /**
-     * Serialize any Java object to a String
-     */
-    public static String jsonSerialize(Object object, boolean ignoreNullFields) {
-        ObjectMapper mapper = new ObjectMapper();
-        if (ignoreNullFields) {
-            mapper.setSerializationInclusion(Include.NON_NULL);
-        }
-        try {
-            return mapper.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     /**

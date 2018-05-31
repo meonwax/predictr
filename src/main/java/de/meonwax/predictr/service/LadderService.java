@@ -45,9 +45,13 @@ public class LadderService {
         int previousPoints = 0;
         int position = 1;
 
-        for (SortedContainer<Integer, User>.Entry e : entryList) {
-            int points = e.getKey();
-            ladder.add(new RankDto(e.getValue(), points, previousPoints != points ? position : null));
+        for (SortedContainer<Integer, User>.Entry entry : entryList) {
+            int points = entry.getKey();
+            ladder.add(RankDto.builder()
+                .user(entry.getValue())
+                .points(points)
+                .points(previousPoints != points ? position : null)
+                .build());
             previousPoints = points;
             position++;
         }
