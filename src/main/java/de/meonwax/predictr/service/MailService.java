@@ -42,7 +42,7 @@ public class MailService {
         try {
             mailSender.send(message);
         } catch (MailException e) {
-            LOGGER.error("Error sending mail: " + e.getMessage());
+            LOGGER.error("Error sending mail: {}", e.getMessage());
             return false;
         }
         return true;

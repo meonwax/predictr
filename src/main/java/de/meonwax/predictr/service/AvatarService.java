@@ -7,6 +7,8 @@ import de.meonwax.predictr.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,8 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class AvatarService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AvatarService.class);
 
     private final static int AVATAR_WIDTH = 64;
     private final static int AVATAR_HEIGHT = 64;
@@ -187,6 +191,7 @@ public class AvatarService {
             image.flush();
             return baos.toByteArray();
         } catch (IOException e) {
+            LOGGER.warn("Error resizing avatar: {}", e.getMessage());
         }
         return null;
     }

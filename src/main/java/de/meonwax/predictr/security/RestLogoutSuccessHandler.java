@@ -18,7 +18,7 @@ public class RestLogoutSuccessHandler extends AbstractAuthenticationTargetUrlReq
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         if (authentication != null) {
-            LOGGER.info("User logged out: " + authentication.getName());
+            LOGGER.info("User logged out: {}", authentication.getName());
         }
         response.setStatus(HttpServletResponse.SC_OK);
     }

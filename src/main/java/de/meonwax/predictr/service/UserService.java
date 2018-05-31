@@ -52,7 +52,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         if (email.length() > 0) {
-            LOGGER.debug("Querying user with email " + email + " from database");
+            LOGGER.debug("Querying user with email {} from database", email);
             User user = userRepository.findOneByEmailIgnoringCase(email);
             if (user != null) {
                 return user;
@@ -82,7 +82,7 @@ public class UserService implements UserDetailsService {
             userRepository.save(user);
             return true;
         } catch (Exception e) {
-            LOGGER.error("Error creating new user: " + e.getMessage());
+            LOGGER.error("Error creating new user: {}", e.getMessage());
         }
         return false;
     }
@@ -111,7 +111,7 @@ public class UserService implements UserDetailsService {
 
     public boolean requestPasswordReset(String email, String baseUrl) {
 
-        LOGGER.info("Requesting password reset for email: " + email);
+        LOGGER.info("Requesting password reset for email: {}", email);
 
         // Check for existing user
         User user = userRepository.findOneByEmailIgnoringCase(email);
@@ -171,7 +171,7 @@ public class UserService implements UserDetailsService {
         passwordResetTokenRepository.delete(passwordResetToken);
 
         // Generate a new password and apply it
-        LOGGER.info("Generating new password for user " + email);
+        LOGGER.info("Generating new password for user {}", email);
         String newPassword = PasswortGenerator.generate(16);
         changePassword(newPassword, user);
 

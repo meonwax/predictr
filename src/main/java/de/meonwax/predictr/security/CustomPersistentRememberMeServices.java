@@ -156,7 +156,7 @@ public class CustomPersistentRememberMeServices extends AbstractRememberMeServic
             throw new RememberMeAuthenticationException("Remember-me login has expired");
         }
 
-        LOGGER.info("User " + token.get().getUser().getEmail() + " logged in using RememberMeToken");
+        LOGGER.info("User {} logged in using RememberMeToken", token.get().getUser().getEmail());
 
         return token.get();
     }

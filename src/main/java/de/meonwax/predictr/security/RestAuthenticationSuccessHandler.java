@@ -25,7 +25,7 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
         String email = authentication != null ? authentication.getName() : "unknown";
-        LOGGER.info("User logged in: " + email);
+        LOGGER.info("User logged in: {}", email);
 
         clearAuthenticationAttributes(request);
 
