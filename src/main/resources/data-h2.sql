@@ -1,5 +1,7 @@
 --
--- Euro 2016 data
+-- World Cup 2018 data
+--
+-- all timestamps in UTC
 --
 INSERT INTO `groups` (`id`, `priority`) VALUES
   ('a', 0),
@@ -8,115 +10,139 @@ INSERT INTO `groups` (`id`, `priority`) VALUES
   ('d', 3),
   ('e', 4),
   ('f', 5),
-  ('8', 6),
-  ('4', 7),
-  ('2', 8),
-  ('1', 9);
+  ('g', 6),
+  ('h', 7),
+  ('8', 8),
+  ('4', 9),
+  ('2', 10),
+  ('3', 11),
+  ('1', 12);
 
 INSERT INTO `team` (`id`, `group_id`) VALUES
-  ('alb', 'a'),
-  ('fra', 'a'),
-  ('rou', 'a'),
-  ('sui', 'a'),
-  ('eng', 'b'),
-  ('rus', 'b'),
-  ('svk', 'b'),
-  ('wal', 'b'),
-  ('ger', 'c'),
-  ('nir', 'c'),
-  ('pol', 'c'),
-  ('ukr', 'c'),
+  ('rus', 'a'),
+  ('ksa', 'a'),
+  ('egy', 'a'),
+  ('uru', 'a'),
+  ('por', 'b'),
+  ('esp', 'b'),
+  ('mar', 'b'),
+  ('irn', 'b'),
+  ('fra', 'c'),
+  ('aus', 'c'),
+  ('per', 'c'),
+  ('den', 'c'),
+  ('arg', 'd'),
+  ('isl', 'd'),
   ('cro', 'd'),
-  ('cze', 'd'),
-  ('esp', 'd'),
-  ('tur', 'd'),
-  ('bel', 'e'),
-  ('ita', 'e'),
-  ('irl', 'e'),
-  ('swe', 'e'),
-  ('aut', 'f'),
-  ('hun', 'f'),
-  ('isl', 'f'),
-  ('por', 'f');
+  ('nga', 'd'),
+  ('bra', 'e'),
+  ('sui', 'e'),
+  ('crc', 'e'),
+  ('srb', 'e'),
+  ('ger', 'f'),
+  ('mex', 'f'),
+  ('swe', 'f'),
+  ('kor', 'f'),
+  ('bel', 'g'),
+  ('pan', 'g'),
+  ('tun', 'g'),
+  ('eng', 'g'),
+  ('pol', 'h'),
+  ('sen', 'h'),
+  ('col', 'h'),
+  ('jpn', 'h');
 
 INSERT INTO `locations` (`id`, `stadium`, `city`) VALUES
-  ('sd', 'Stade de France', 'Saint-Denis'),
-  ('le', 'Stade Bollaert-Delelis', 'Lens'),
-  ('bo', 'Nouveau Stade de Bordeaux', 'Bordeaux'),
-  ('ma', 'Stade Vélodrome', 'Marseille'),
-  ('pa', 'Parc des Princes', 'Paris'),
-  ('ni', 'Allianz Riviera', 'Nice'),
-  ('li', 'Grand Stade Lille Métropole', 'Lille'),
-  ('to', 'Stadium Municipal', 'Toulouse'),
-  ('ly', 'Stade de Lyon', 'Lyon'),
-  ('se', 'Geoffroy-Guichard', 'Saint-Etienne');
+  (1, 'Luzhniki Stadium', 'Moscow'),
+  (2, 'Otkrytiye Arena', 'Moscow'),
+  (3, 'Krestovsky Stadium', 'Saint Petersburg'),
+  (4, 'Kaliningrad Stadium', 'Kaliningrad'),
+  (5, 'Kazan Arena', 'Kazan'),
+  (6, 'Nizhny Novgorod Stadium', 'Nizhny Novgorod'),
+  (7, 'Cosmos Arena', 'Samara'),
+  (8, 'Volgograd Arena', 'Volgograd'),
+  (9, 'Mordovia Arena', 'Saransk'),
+  (10, 'Rostov Arena', 'Rostov-on-Don'),
+  (11, 'Fisht Olympic Stadium', 'Sochi'),
+  (12, 'Central Stadium', 'Yekaterinburg');
 
-INSERT INTO `game` (`id`, `kickoff_time`, `score_away`, `score_home`, `group_id`, `location_id`, `team_away_id`, `team_home_id`) VALUES
-  -- Matchday 1
-  (1, '2016-06-10 21:00:00', 1, 2, 'a', 'sd', 'rou', 'fra'),
-  (2, '2016-06-11 15:00:00', 1, 0, 'a', 'le', 'sui', 'alb'),
-  (3, '2016-06-11 18:00:00', 1, 2, 'b', 'bo', 'svk', 'wal'),
-  (4, '2016-06-11 21:00:00', 1, 1, 'b', 'ma', 'rus', 'eng'),
-  (5, '2016-06-12 15:00:00', 1, 0, 'd', 'pa', 'cro', 'tur'),
-  (6, '2016-06-12 18:00:00', 0, 1, 'c', 'ni', 'nir', 'pol'),
-  (7, '2016-06-12 21:00:00', 0, 2, 'c', 'li', 'ukr', 'ger'),
-  (8, '2016-06-13 15:00:00', 0, 1, 'd', 'to', 'cze', 'esp'),
-  (9, '2016-06-13 18:00:00', 1, 1, 'e', 'sd', 'swe', 'irl'),
-  (10, '2016-06-13 21:00:00', 2, 0, 'e', 'ly', 'ita', 'bel'),
-  (11, '2016-06-14 18:00:00', 2, 0, 'f', 'bo', 'hun', 'aut'),
-  (12, '2016-06-14 21:00:00', 1, 1, 'f', 'se', 'isl', 'por'),
+INSERT INTO `game` (`id`, `kickoff_time`, `group_id`, `location_id`, `team_home_id`, `team_away_id`) VALUES
+  (1, '2018-06-14 15:00:00', 'a', 1, 'rus', 'ksa'),
+  (2, '2018-06-15 12:00:00', 'a', 12, 'egy', 'uru'),
+  (17, '2018-06-19 18:00:00', 'a', 3, 'rus', 'egy'),
+  (18, '2018-06-20 15:00:00', 'a', 10, 'uru', 'ksa'),
+  (33, '2018-06-25 14:00:00', 'a', 7, 'uru', 'rus'),
+  (34, '2018-06-25 14:00:00', 'a', 8, 'ksa', 'egy'),
 
-  -- Matchday 2
-  (13, '2016-06-15 15:00:00', 2, 1, 'b', 'li', 'svk', 'rus'),
-  (14, '2016-06-15 18:00:00', 1, 1, 'a', 'pa', 'sui', 'rou'),
-  (15, '2016-06-15 21:00:00', 0, 2, 'a', 'ma', 'alb', 'fra'),
-  (16, '2016-06-16 15:00:00', 1, 2, 'b', 'le', 'wal', 'eng'),
-  (17, '2016-06-16 18:00:00', 2, 0, 'c', 'ly', 'nir', 'ukr'),
-  (18, '2016-06-16 21:00:00', 0, 0, 'c', 'sd', 'pol', 'ger'),
-  (19, '2016-06-17 15:00:00', 0, 1, 'e', 'to', 'swe', 'ita'),
-  (20, '2016-06-17 18:00:00', 2, 2, 'd', 'se', 'cro', 'cze'),
-  (21, '2016-06-17 21:00:00', 0, 3, 'd', 'ni', 'tur', 'esp'),
-  (22, '2016-06-18 15:00:00', 0, 3, 'e', 'bo', 'irl', 'bel'),
-  (23, '2016-06-18 18:00:00', 1, 1, 'f', 'ma', 'hun', 'isl'),
-  (24, '2016-06-18 21:00:00', 0, 0, 'f', 'pa', 'aut', 'por'),
+  (3, '2018-06-15 18:00:00', 'b', 11, 'por', 'esp'),
+  (4, '2018-06-15 15:00:00', 'b', 3, 'mar', 'irn'),
+  (19, '2018-06-20 12:00:00', 'b', 1, 'por', 'mar'),
+  (20, '2018-06-20 18:00:00', 'b', 5, 'irn', 'esp'),
+  (35, '2018-06-25 18:00:00', 'b', 9, 'irn', 'por'),
+  (36, '2018-06-25 18:00:00', 'b', 4, 'esp', 'mar'),
 
-  -- Matchday 3
-  (25, '2016-06-19 21:00:00', 0, 0, 'a', 'li', 'fra', 'sui'),
-  (26, '2016-06-19 21:00:00', 1, 0, 'a', 'ly', 'alb', 'rou'),
-  (27, '2016-06-20 21:00:00', 0, 0, 'b', 'se', 'eng', 'svk'),
-  (28, '2016-06-20 21:00:00', 3, 0, 'b', 'to', 'wal', 'rus'),
-  (29, '2016-06-21 18:00:00', null, null, 'c', 'pa', 'ger', 'nir'),
-  (30, '2016-06-21 18:00:00', null, null, 'c', 'ma', 'pol', 'ukr'),
-  (31, '2016-06-21 21:00:00', null, null, 'd', 'bo', 'esp', 'cro'),
-  (32, '2016-06-21 21:00:00', null, null, 'd', 'le', 'tur', 'cze'),
-  (33, '2016-06-22 18:00:00', null, null, 'f', 'sd', 'aut', 'isl'),
-  (34, '2016-06-22 18:00:00', null, null, 'f', 'ly', 'por', 'hun'),
-  (35, '2016-06-22 21:00:00', null, null, 'e', 'ni', 'bel', 'swe'),
-  (36, '2016-06-22 21:00:00', null, null, 'e', 'li', 'irl', 'ita'),
+  (5, '2018-06-16 10:00:00', 'c', 5, 'fra', 'aus'),
+  (6, '2018-06-16 16:00:00', 'c', 9, 'per', 'den'),
+  (21, '2018-06-21 15:00:00', 'c', 12, 'fra', 'per'),
+  (22, '2018-06-21 12:00:00', 'c', 7, 'den', 'aus'),
+  (37, '2018-06-26 14:00:00', 'c', 1, 'den', 'fra'),
+  (38, '2018-06-26 15:00:00', 'c', 11, 'aus', 'per'),
 
-  -- Round of 16 (eighth-finals)
-  (37, '2016-06-25 15:00:00', null, null, '8', 'se', null, null),
-  (38, '2016-06-25 18:00:00', null, null, '8', 'pa', null, null),
-  (39, '2016-06-25 21:00:00', null, null, '8', 'le', null, null),
-  (40, '2016-06-26 15:00:00', null, null, '8', 'ly', null, null),
-  (41, '2016-06-26 18:00:00', null, null, '8', 'li', null, null),
-  (42, '2016-06-26 21:00:00', null, null, '8', 'to', null, null),
-  (43, '2016-06-27 18:00:00', null, null, '8', 'sd', null, null),
-  (44, '2016-06-27 21:00:00', null, null, '8', 'ni', null, null),
+  (7, '2018-06-16 13:00:00', 'd', 2, 'arg', 'isl'),
+  (8, '2018-06-16 19:00:00', 'd', 4, 'cro', 'nga'),
+  (23, '2018-06-21 18:00:00', 'd', 6, 'arg', 'cro'),
+  (24, '2018-06-22 15:00:00', 'd', 8, 'nga', 'isl'),
+  (39, '2018-06-26 18:00:00', 'd', 3, 'nga', 'arg'),
+  (40, '2018-06-26 18:00:00', 'd', 10, 'isl', 'cro'),
 
-  -- Quarter-finals
-  (45, '2016-06-30 21:00:00', null, null, '4', 'ma', null, null),
-  (46, '2016-07-01 21:00:00', null, null, '4', 'li', null, null),
-  (47, '2016-07-02 21:00:00', null, null, '4', 'bo', null, null),
-  (48, '2016-07-03 21:00:00', null, null, '4', 'sd', null, null),
+  (9, '2018-06-17 18:00:00', 'e', 10, 'bra', 'sui'),
+  (10, '2018-06-17 12:00:00', 'e', 7, 'crc', 'srb'),
+  (25, '2018-06-22 12:00:00', 'e', 3, 'bra', 'crc'),
+  (26, '2018-06-22 18:00:00', 'e', 4, 'srb', 'sui'),
+  (41, '2018-06-27 18:00:00', 'e', 2, 'srb', 'bra'),
+  (42, '2018-06-27 18:00:00', 'e', 6, 'sui', 'crc'),
 
-  -- Semi-finals
-  (49, '2016-07-06 21:00:00', null, null, '2', 'ly', null, null),
-  (50, '2016-07-07 21:00:00', null, null, '2', 'ma', null, null),
+  (11, '2018-06-17 15:00:00', 'f', 1, 'ger', 'mex'),
+  (12, '2018-06-18 12:00:00', 'f', 6, 'swe', 'kor'),
+  (27, '2018-06-23 18:00:00', 'f', 11, 'ger', 'swe'),
+  (28, '2018-06-23 15:00:00', 'f', 10, 'kor', 'mex'),
+  (43, '2018-06-27 14:00:00', 'f', 5, 'kor', 'ger'),
+  (44, '2018-06-27 14:00:00', 'f', 12, 'mex', 'swe'),
 
-  -- Final
-  (51, '2016-07-10 21:00:00', null, null, '1', 'sd', null, null);
+  (13, '2018-06-18 15:00:00', 'g', 11, 'bel', 'pan'),
+  (14, '2018-06-18 18:00:00', 'g', 8, 'tun', 'eng'),
+  (29, '2018-06-23 12:00:00', 'g', 2, 'bel', 'tun'),
+  (30, '2018-06-24 12:00:00', 'g', 6, 'eng', 'pan'),
+  (45, '2018-06-28 18:00:00', 'g', 4, 'eng', 'bel'),
+  (46, '2018-06-28 18:00:00', 'g', 9, 'pan', 'tun'),
 
+  (15, '2018-06-19 15:00:00', 'h', 2, 'pol', 'sen'),
+  (16, '2018-06-19 12:00:00', 'h', 9, 'col', 'jpn'),
+  (31, '2018-06-24 15:00:00', 'h', 5, 'pol', 'col'),
+  (32, '2018-06-24 18:00:00', 'h', 12, 'jpn', 'sen'),
+  (47, '2018-06-28 14:00:00', 'h', 8, 'jpn', 'pol'),
+  (48, '2018-06-28 14:00:00', 'h', 7, 'sen', 'col'),
+
+  (49, '2018-06-30 14:00:00', '8', 11, null, null),
+  (50, '2018-06-30 18:00:00', '8', 5, null, null),
+  (51, '2018-07-01 14:00:00', '8', 1, null, null),
+  (52, '2018-07-01 18:00:00', '8', 6, null, null),
+  (53, '2018-07-02 14:00:00', '8', 7, null, null),
+  (54, '2018-07-02 18:00:00', '8', 10, null, null),
+  (55, '2018-07-03 14:00:00', '8', 3, null, null),
+  (56, '2018-07-03 18:00:00', '8', 2, null, null),
+
+  (57, '2018-07-06 14:00:00', '4', 6, null, null),
+  (58, '2018-07-06 18:00:00', '4', 5, null, null),
+  (59, '2018-07-07 18:00:00', '4', 11, null, null),
+  (60, '2018-07-07 14:00:00', '4', 7, null, null),
+
+  (61, '2018-07-10 18:00:00', '2', 3, null, null),
+  (62, '2018-07-11 18:00:00', '2', 1, null, null),
+
+  (63, '2018-07-14 14:00:00', '3', 3, null, null),
+
+  (64, '2018-07-15 15:00:00', '1', 1, null, null);
 
 --
 -- Dummy data for development
@@ -124,10 +150,10 @@ INSERT INTO `game` (`id`, `kickoff_time`, `score_away`, `score_home`, `group_id`
 
 -- Password: 123vorbei
 INSERT INTO `user` (`password`, `name`, `email`, `role`, `wager`, `created_date`, `last_modified_date`, `avatar_id`) VALUES
-  ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Admin', 'admin@example.com', 'ROLE_ADMIN', 0, '2015-02-01', '2015-02-01', NULL),
-  ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Sid Rowland', 'sid@example.com', 'ROLE_USER', 5, '2016-01-03', '2016-01-05', NULL),
-  ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Paula Marsh', 'paula@example.com', 'ROLE_USER', 5, '2016-03-21', '2016-04-01', NULL),
-  ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Johanna Silva', 'johanna@example.com', 'ROLE_USER', 0, '2015-10-11', '2015-12-24', NULL);
+  ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Admin', 'admin@example.com', 'ROLE_ADMIN', 0, '2016-02-01', '2016-02-01', NULL),
+  ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Sid Rowland', 'sid@example.com', 'ROLE_USER', 5, '2018-01-03', '2018-01-05', NULL),
+  ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Paula Marsh', 'paula@example.com', 'ROLE_USER', 5, '2018-03-21', '2018-04-01', NULL),
+  ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Johanna Silva', 'johanna@example.com', 'ROLE_USER', 0, '2017-10-11', '2017-12-24', NULL);
 
 INSERT INTO `shout` (`date`, `user_id`, `message`) VALUES
   ('2015-07-15 22:19:15', 2, 'Nulla aliquet porttitor lacus luctus'),
@@ -143,17 +169,17 @@ INSERT INTO `shout` (`date`, `user_id`, `message`) VALUES
   ('2014-07-15 14:34:46', 4, 'Semper feugiat nibh sed pulvinar proin gravida hendrerit lectus'),
   ('2014-07-15 12:19:10', 3, 'Fermentum odio eu feugiat pretium nibh ipsum consequat'),
   ('2014-07-15 12:18:44', 3, 'Convallis a cras semper'),
-  ('2014-07-14 17:40:52', 3, 'Yes'),
+  ('2014-07-14 17:40:52', 3, 'Nope'),
   ('2014-07-14 09:33:06', 1, 'Orci sagittis eu volutpat odio facilisis mauris sit amet :)'),
   ('2014-07-14 01:22:40', 3, 'Dolor sed viverra ipsum.'),
   ('2014-06-17 22:35:59', 2, 'Blandit volutpat maecenas volutpat blandit aliquam etiam erat'),
   ('2014-05-26 22:28:52', 4, 'Vitae suscipit tellus mauris a diam maecenas sed enim');
 
 INSERT INTO `question` (`question`, `deadline`, `points`) VALUES
-  ('Which team will win the championship?', '2016-06-10 19:00:00', 7),
-  ('Which player will be the top goalscorer?', '2016-06-10 19:00:00', 7),
-  ('Who will be voted the player of the tournament?', '2016-06-10 19:00:00', 7),
-  ('Which referee will be assigned for the final?', '2016-06-25 13:00:00', 5);
+  ('Which team will win the championship?', '2018-06-14 17:00:00', 7),
+  ('Which player will be the top goalscorer?', '2018-06-14 17:00:00', 7),
+  ('Who will be voted the player of the tournament?', '2018-06-14 17:00:00', 7),
+  ('Which referee will be assigned for the final?', '2018-06-30 16:00:00', 5);
 
 INSERT INTO `bet` (`user_id`, `game_id`, `score_home`, `score_away` ) VALUES
   (1, 1, 1, 2),
