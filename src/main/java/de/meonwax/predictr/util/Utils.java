@@ -1,40 +1,8 @@
 package de.meonwax.predictr.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 public abstract class Utils {
-
-    /**
-     * Check if all objects in the array are not {@code null}s.
-     * If any object is {@code null} or the array is {@code null}, {@code false} is returned.
-     * If all objects in array are not {@code null} or the array is empty (contains no elements), {@code true} is returned.
-     */
-    public static boolean allNotNull(final Object... objects) {
-        if (objects == null) {
-            return false;
-        }
-        for (final Object o : objects) {
-            if (o == null) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Deserialize JSON content to a given result type
-     */
-    public static <T> T jsonDeserialize(String json, Class<T> type) {
-        try {
-            return new ObjectMapper().readValue(json, type);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     /**
      * Get the base URL to this application for use in external requests (e.g. mails)

@@ -6,12 +6,13 @@ import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.repository.AnswerRepository;
 import de.meonwax.predictr.repository.BetRepository;
 import de.meonwax.predictr.settings.Settings;
-import de.meonwax.predictr.util.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -52,7 +53,7 @@ public class CalculationService {
         Integer resultScoreAway = bet.getGame().getScoreAway();
 
         // TODO: Implement this check in a JPA custom query
-        if (Utils.allNotNull(betScoreHome, betScoreAway, resultScoreHome, resultScoreAway)) {
+        if (Stream.of(betScoreHome, betScoreAway, resultScoreHome, resultScoreAway).allMatch(Objects::nonNull)) {
 
             if (betScoreHome.equals(resultScoreHome) && betScoreAway.equals(resultScoreAway)) {
                 return settings.getPoints().getResult();
@@ -79,7 +80,7 @@ public class CalculationService {
     public int calculate(Answer answer) {
         String userAnswer = answer.getAnswer();
         String correctAnswer = answer.getQuestion().getCorrectAnswer();
-        if (Utils.allNotNull(userAnswer, correctAnswer)) {
+        if (Stream.of(userAnswer, correctAnswer).allMatch(Objects::nonNull)) {
             for (String s : correctAnswer.split(",")) {
                 if (userAnswer.toLowerCase().trim().contains(s.trim().toLowerCase())) {
                     return answer.getQuestion().getPoints();

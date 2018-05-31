@@ -10,7 +10,6 @@ import de.meonwax.predictr.repository.PasswordResetTokenRepository;
 import de.meonwax.predictr.repository.UserRepository;
 import de.meonwax.predictr.settings.Settings;
 import de.meonwax.predictr.util.PasswortGenerator;
-import de.meonwax.predictr.util.Utils;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +24,8 @@ import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -152,7 +153,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findOneByEmailIgnoringCase(email);
 
         // Check for correct params
-        if (!Utils.allNotNull(passwordResetToken, user)) {
+        if (Stream.of(passwordResetToken, user).anyMatch(Objects::isNull)) {
             throw new PasswordResetException("Email or token not found.");
         }
 
