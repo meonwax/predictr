@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -20,9 +19,7 @@ import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class User implements Serializable, UserDetails {
-
-    private static final long serialVersionUID = 1L;
+public class User implements UserDetails {
 
     public final static String ROLE_ADMIN = "ROLE_ADMIN";
     public final static String ROLE_USER = "ROLE_USER";

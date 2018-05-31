@@ -1,14 +1,11 @@
 package de.meonwax.predictr.util;
 
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpServletRequest;
-
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 
 public abstract class Utils {
 
@@ -51,10 +48,6 @@ public abstract class Utils {
     public static <T> T jsonDeserialize(String json, Class<T> type) {
         try {
             return new ObjectMapper().readValue(json, type);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

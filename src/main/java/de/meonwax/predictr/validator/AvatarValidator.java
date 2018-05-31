@@ -8,7 +8,7 @@ import org.springframework.validation.Validator;
 public class AvatarValidator implements Validator {
 
     private final static int UPLOAD_MAX_SIZE = 200 * 1024;
-    public final static String[] ALLOWED_MIME_TYPES = new String[] { "image/png", "image/jpeg" };
+    public final static String[] ALLOWED_MIME_TYPES = new String[]{"image/png", "image/jpeg"};
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -18,14 +18,8 @@ public class AvatarValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         byte[] data = (byte[]) target;
-        if (data == null) {
-            errors.reject("no_data");
-            return;
-        }
-
         if (data.length > UPLOAD_MAX_SIZE) {
             errors.reject("max_size_exceed");
-            return;
         }
     }
 }

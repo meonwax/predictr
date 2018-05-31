@@ -1,5 +1,6 @@
 package de.meonwax.predictr.service;
 
+import de.meonwax.predictr.settings.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,10 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
-import de.meonwax.predictr.settings.Settings;
-
 @Service
 public class MailService {
 
-    private final Logger log = LoggerFactory.getLogger(MailService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailService.class);
 
     @Autowired
     private JavaMailSenderImpl mailSender;
@@ -44,7 +43,7 @@ public class MailService {
         try {
             mailSender.send(message);
         } catch (MailException e) {
-            log.error("Error sending mail: " + e.getMessage());
+            LOGGER.error("Error sending mail: " + e.getMessage());
             return false;
         }
         return true;

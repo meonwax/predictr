@@ -1,14 +1,11 @@
 package de.meonwax.predictr.domain;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
-public class PasswordResetToken implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class PasswordResetToken {
 
     private static final int EXPIRATION_IN_MINUTES = 60 * 24;
 

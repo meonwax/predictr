@@ -8,5 +8,5 @@ import de.meonwax.predictr.domain.Shout;
 
 public interface ShoutRepository extends JpaRepository<Shout, Long> {
 
-    public Page<Shout> findAllByOrderByDateDesc(Pageable pageable);
+    Page<Shout> findAllByOrderByDateDesc(Pageable pageable);
 }

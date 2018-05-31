@@ -1,20 +1,5 @@
 package de.meonwax.predictr.service;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.net.URLEncoder;
-import java.time.ZonedDateTime;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import de.meonwax.predictr.domain.PasswordResetToken;
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.PasswordDto;
@@ -26,11 +11,25 @@ import de.meonwax.predictr.repository.UserRepository;
 import de.meonwax.predictr.settings.Settings;
 import de.meonwax.predictr.util.PasswortGenerator;
 import de.meonwax.predictr.util.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     // TODO: Externalize into templates
     private final static String REQUEST_TITLE = "Password reset request";
@@ -57,7 +56,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         if (email.length() > 0) {
-            log.debug("Querying user with email " + email + " from database");
+            LOGGER.debug("Querying user with email " + email + " from database");
             User user = userRepository.findOneByEmailIgnoringCase(email);
             if (user != null) {
                 return user;
@@ -87,7 +86,7 @@ public class UserService implements UserDetailsService {
             userRepository.save(user);
             return true;
         } catch (Exception e) {
-            log.error("Error creating new user: " + e.getMessage());
+            LOGGER.error("Error creating new user: " + e.getMessage());
         }
         return false;
     }
@@ -116,12 +115,12 @@ public class UserService implements UserDetailsService {
 
     public boolean requestPasswordReset(String email, String baseUrl) {
 
-        log.info("Requesting password reset for email: " + email);
+        LOGGER.info("Requesting password reset for email: " + email);
 
         // Check for existing user
         User user = userRepository.findOneByEmailIgnoringCase(email);
         if (user == null) {
-            log.error("Failed: user not found.");
+            LOGGER.error("Failed: user not found.");
             return false;
         }
 
@@ -146,7 +145,7 @@ public class UserService implements UserDetailsService {
 
         // Send URL to user
         if (mailService.send(email, settings.getTitle() + ": " + REQUEST_TITLE, String.format(REQUEST_MESSAGE, user.getName(), url, settings.getOwner()))) {
-            log.info("Mail sent.");
+            LOGGER.info("Mail sent.");
         }
         return true;
     }
@@ -176,13 +175,13 @@ public class UserService implements UserDetailsService {
         passwordResetTokenRepository.delete(passwordResetToken);
 
         // Generate a new password and apply it
-        log.info("Generating new password for user " + email);
+        LOGGER.info("Generating new password for user " + email);
         String newPassword = PasswortGenerator.generate(16);
         changePassword(newPassword, user);
 
         // Send password to user
         if (mailService.send(email, settings.getTitle() + ": " + CONFIRMATION_TITLE, String.format(CONFIRMATION_MESSAGE, user.getName(), newPassword, settings.getOwner()))) {
-            log.info("Mail sent.");
+            LOGGER.info("Mail sent.");
         }
     }
 }

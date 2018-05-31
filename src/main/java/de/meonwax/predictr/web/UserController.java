@@ -1,10 +1,14 @@
 package de.meonwax.predictr.web;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+import de.meonwax.predictr.domain.User;
+import de.meonwax.predictr.dto.PasswordDto;
+import de.meonwax.predictr.dto.UserDataDto;
+import de.meonwax.predictr.dto.UserDto;
+import de.meonwax.predictr.exception.PasswordResetException;
+import de.meonwax.predictr.service.MailService;
+import de.meonwax.predictr.service.UserService;
+import de.meonwax.predictr.settings.Settings;
+import de.meonwax.predictr.util.Utils;
 import org.hibernate.validator.constraints.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,27 +19,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import de.meonwax.predictr.domain.User;
-import de.meonwax.predictr.dto.PasswordDto;
-import de.meonwax.predictr.dto.UserDataDto;
-import de.meonwax.predictr.dto.UserDto;
-import de.meonwax.predictr.exception.PasswordResetException;
-import de.meonwax.predictr.service.MailService;
-import de.meonwax.predictr.service.UserService;
-import de.meonwax.predictr.settings.Settings;
-import de.meonwax.predictr.util.Utils;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api")
 public class UserController {
 
-    private final Logger log = LoggerFactory.getLogger(UserController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -50,7 +44,7 @@ public class UserController {
     public ResponseEntity<Void> register(@Valid @RequestBody UserDto userDto) {
         if (userService.registerUser(userDto)) {
             String msg = "User registered: " + userDto.toString();
-            log.info(msg);
+            LOGGER.info(msg);
             if (mailService.isEnabled()) {
                 mailService.send(settings.getAdminEmail(), settings.getTitle() + ": New user registered", msg);
             }

@@ -1,24 +1,9 @@
 package de.meonwax.predictr.config;
 
-import org.h2.server.web.WebServlet;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @Configuration
-@EnableJpaAuditing()
+@EnableJpaAuditing
 public class DatabaseConfiguration {
-
-    /**
-     * Remap access to the H2 console
-     */
-    @Profile("!production")
-    @Bean
-    public ServletRegistrationBean h2servletRegistration() {
-        ServletRegistrationBean registration = new ServletRegistrationBean(new WebServlet());
-        registration.addUrlMappings("/console/*");
-        return registration;
-    }
 }

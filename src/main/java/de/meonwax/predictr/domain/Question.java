@@ -2,14 +2,11 @@ package de.meonwax.predictr.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
 @Entity
-public class Question implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

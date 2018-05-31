@@ -1,24 +1,15 @@
 package de.meonwax.predictr.domain;
 
-import java.io.Serializable;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 // Unfortunately 'group' is a reserved word in H2 database
 @Table(name = "groups")
-public class Group implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Group {
 
     @Id
     private String id;

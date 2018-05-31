@@ -34,8 +34,7 @@ public final class SortedContainer<K extends Comparable<? super K>, V> {
         List<V> list = treeMap.get(key);
         if (list != null) {
             list.add(value);
-        }
-        else {
+        } else {
             list = new ArrayList<>();
             list.add(value);
             treeMap.put(key, list);

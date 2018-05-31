@@ -1,19 +1,15 @@
 package de.meonwax.predictr.domain;
 
-import java.io.Serializable;
-import java.time.ZonedDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.ZonedDateTime;
 
 @Entity
-public class RememberMeToken implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class RememberMeToken {
 
     @Id
     private String series;

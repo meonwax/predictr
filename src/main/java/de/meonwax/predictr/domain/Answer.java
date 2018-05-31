@@ -4,12 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @Entity
-public class Answer implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Answer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

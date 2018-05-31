@@ -41,7 +41,7 @@ public class CustomPersistentRememberMeServices extends AbstractRememberMeServic
     private final static int DEFAULT_SERIES_LENGTH = 16;
     private final static int DEFAULT_TOKEN_LENGTH = 16;
 
-    private final Logger log = LoggerFactory.getLogger(CustomPersistentRememberMeServices.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomPersistentRememberMeServices.class);
 
     @Autowired
     private RememberMeTokenRepository rememberMeTokenRepository;
@@ -65,7 +65,7 @@ public class CustomPersistentRememberMeServices extends AbstractRememberMeServic
         String email = token.getUser().getEmail();
 
         // Token also matches, so login is valid. Update the token date, keeping the *same* series number.
-        log.debug("Refreshing persistent login token for user '{}', series '{}'", email, token.getSeries());
+        LOGGER.debug("Refreshing persistent login token for user '{}', series '{}'", email, token.getSeries());
         token.setDate(ZonedDateTime.now());
 
         // Do not actually update the token value to circumvent a possible CookieTheftException when requests from client come in to quickly.
@@ -78,7 +78,7 @@ public class CustomPersistentRememberMeServices extends AbstractRememberMeServic
             rememberMeTokenRepository.saveAndFlush(token);
             addCookie(token, request, response);
         } catch (DataAccessException e) {
-            log.error("Failed to update token: ", e);
+            LOGGER.error("Failed to update token: ", e);
             throw new RememberMeAuthenticationException("Autologin failed due to data access problem", e);
         }
         return getUserDetailsService().loadUserByUsername(email);
@@ -87,7 +87,7 @@ public class CustomPersistentRememberMeServices extends AbstractRememberMeServic
     @Override
     protected void onLoginSuccess(HttpServletRequest request, HttpServletResponse response, Authentication successfulAuthentication) {
         String email = successfulAuthentication.getName();
-        log.debug("Creating new persistent login for user {}", email);
+        LOGGER.debug("Creating new persistent login for user {}", email);
         User user = userRepository.findOneByEmailIgnoringCase(email);
         RememberMeToken token;
         if (user != null) {
@@ -103,7 +103,7 @@ public class CustomPersistentRememberMeServices extends AbstractRememberMeServic
             rememberMeTokenRepository.saveAndFlush(token);
             addCookie(token, request, response);
         } catch (DataAccessException e) {
-            log.error("Failed to save persistent token ", e);
+            LOGGER.error("Failed to save persistent token ", e);
         }
     }
 
@@ -122,9 +122,9 @@ public class CustomPersistentRememberMeServices extends AbstractRememberMeServic
                 RememberMeToken token = getRememberMeToken(cookieTokens);
                 rememberMeTokenRepository.delete(token);
             } catch (InvalidCookieException e) {
-                log.info("Invalid cookie, no persistent token could be deleted");
+                LOGGER.info("Invalid cookie, no persistent token could be deleted");
             } catch (RememberMeAuthenticationException e) {
-                log.debug("No persistent token found, so no token could be deleted");
+                LOGGER.debug("No persistent token found, so no token could be deleted");
             }
         }
         super.logout(request, response, authentication);
@@ -147,7 +147,7 @@ public class CustomPersistentRememberMeServices extends AbstractRememberMeServic
         }
 
         // We have a match for this user/series combination
-        log.debug("presentedToken={} / tokenValue={}", presentedToken, token.get().getValue());
+        LOGGER.debug("presentedToken={} / tokenValue={}", presentedToken, token.get().getValue());
         if (!presentedToken.equals(token.get().getValue())) {
             // Token doesn't match series value. Delete this session and throw an exception.
             rememberMeTokenRepository.delete(token.get());
@@ -159,7 +159,7 @@ public class CustomPersistentRememberMeServices extends AbstractRememberMeServic
             throw new RememberMeAuthenticationException("Remember-me login has expired");
         }
 
-        log.info("User " + token.get().getUser().getEmail() + " logged in using RememberMeToken");
+        LOGGER.info("User " + token.get().getUser().getEmail() + " logged in using RememberMeToken");
 
         return token.get();
     }

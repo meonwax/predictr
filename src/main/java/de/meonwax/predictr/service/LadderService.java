@@ -1,17 +1,16 @@
 package de.meonwax.predictr.service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.RankDto;
 import de.meonwax.predictr.repository.UserRepository;
 import de.meonwax.predictr.util.SortedContainer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class LadderService {
@@ -38,7 +37,7 @@ public class LadderService {
 
     private List<RankDto> createLadder(SortedContainer<Integer, User> sortedUsers) {
 
-        List<RankDto> ladder = new ArrayList<RankDto>();
+        List<RankDto> ladder = new ArrayList<>();
 
         // Sort entries descending
         List<SortedContainer<Integer, User>.Entry> entryList = sortedUsers.entryList();

@@ -1,12 +1,7 @@
 package de.meonwax.predictr.security;
 
-import java.io.IOException;
-import java.time.ZonedDateTime;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import de.meonwax.predictr.domain.User;
+import de.meonwax.predictr.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,22 +9,23 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import de.meonwax.predictr.domain.User;
-import de.meonwax.predictr.repository.UserRepository;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.time.ZonedDateTime;
 
 @Component
 public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final Logger log = LoggerFactory.getLogger(RestAuthenticationSuccessHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestAuthenticationSuccessHandler.class);
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
         String email = authentication != null ? authentication.getName() : "unknown";
-        log.info("User logged in: " + email);
+        LOGGER.info("User logged in: " + email);
 
         clearAuthenticationAttributes(request);
 

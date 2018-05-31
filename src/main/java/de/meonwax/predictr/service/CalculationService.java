@@ -1,11 +1,5 @@
 package de.meonwax.predictr.service;
 
-import java.time.ZonedDateTime;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import de.meonwax.predictr.domain.Answer;
 import de.meonwax.predictr.domain.Bet;
 import de.meonwax.predictr.domain.User;
@@ -13,6 +7,11 @@ import de.meonwax.predictr.repository.AnswerRepository;
 import de.meonwax.predictr.repository.BetRepository;
 import de.meonwax.predictr.settings.Settings;
 import de.meonwax.predictr.util.Utils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @Service
 public class CalculationService {
@@ -26,7 +25,7 @@ public class CalculationService {
     @Autowired
     private AnswerRepository answerRepository;
 
-    public int getPoints(User user) {
+    int getPoints(User user) {
 
         int points = 0;
 
@@ -92,7 +91,7 @@ public class CalculationService {
         return 0;
     }
 
-    public String getCssClass(Bet bet) {
+    String getCssClass(Bet bet) {
         int points = calculate(bet);
         if (points == settings.getPoints().getResult()) {
             return "success bold";
@@ -106,7 +105,7 @@ public class CalculationService {
         return null;
     }
 
-    public String getCssClass(Answer answer) {
+    String getCssClass(Answer answer) {
         int points = calculate(answer);
         if (points == answer.getQuestion().getPoints()) {
             return "success bold";

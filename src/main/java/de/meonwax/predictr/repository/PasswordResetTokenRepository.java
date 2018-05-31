@@ -1,10 +1,9 @@
 package de.meonwax.predictr.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import de.meonwax.predictr.domain.PasswordResetToken;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PasswordResetTokenRepository extends JpaRepository<PasswordResetToken, Long> {
 
-    public PasswordResetToken findOneByValue(String value);
+    PasswordResetToken findOneByValue(String value);
 }

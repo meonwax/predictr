@@ -4,13 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "game_id"}))
-public class Bet implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Bet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,25 +1,15 @@
 package de.meonwax.predictr.domain;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.meonwax.predictr.util.Utils;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import de.meonwax.predictr.util.Utils;
-
 @Entity
-public class Game implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Game {
 
     @Id
     private Long id;

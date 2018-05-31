@@ -2,13 +2,10 @@ package de.meonwax.predictr.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 @Entity
-public class Shout implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Shout {
 
     public Shout() {
     }

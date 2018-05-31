@@ -5,14 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @Entity
 // Unfortunately 'location' is a reserved word in H2 database
 @Table(name = "locations")
-public class Location implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Location {
 
     @Id
     private Long id;
