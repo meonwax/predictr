@@ -1,24 +1,23 @@
 package de.meonwax.predictr.web;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import de.meonwax.predictr.domain.Group;
+import de.meonwax.predictr.domain.User;
+import de.meonwax.predictr.service.GameService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.meonwax.predictr.domain.Group;
-import de.meonwax.predictr.domain.User;
-import de.meonwax.predictr.service.GameService;
+import java.util.List;
 
 @RestController
 @RequestMapping("api")
+@AllArgsConstructor
 public class GroupController {
 
-    @Autowired
-    private GameService gameService;
+    private final GameService gameService;
 
     @RequestMapping(value = "/groups", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Group> getAll(@AuthenticationPrincipal User user) {

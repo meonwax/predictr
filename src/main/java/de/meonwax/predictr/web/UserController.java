@@ -9,10 +9,10 @@ import de.meonwax.predictr.service.MailService;
 import de.meonwax.predictr.service.UserService;
 import de.meonwax.predictr.settings.Settings;
 import de.meonwax.predictr.util.Utils;
+import lombok.AllArgsConstructor;
 import org.hibernate.validator.constraints.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,18 +27,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api")
+@AllArgsConstructor
 public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private MailService mailService;
+    private final MailService mailService;
 
-    @Autowired
-    private Settings settings;
+    private final Settings settings;
 
     @RequestMapping(value = "/users/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> register(@Valid @RequestBody UserDto userDto) {

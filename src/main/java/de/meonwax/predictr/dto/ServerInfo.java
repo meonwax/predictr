@@ -1,25 +1,18 @@
 package de.meonwax.predictr.dto;
 
-import java.io.Serializable;
+import de.meonwax.predictr.settings.Points;
+import de.meonwax.predictr.settings.Settings;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
+
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import de.meonwax.predictr.settings.Points;
-import de.meonwax.predictr.settings.Settings;
-
 @Component
-public class ServerInfo implements Serializable {
+@AllArgsConstructor
+public class ServerInfo {
 
-    private static final long serialVersionUID = 1L;
-
-    @Autowired
-    private Settings settings;
-
-    public ServerInfo() {
-    }
+    private final Settings settings;
 
     public ZonedDateTime getTime() {
         return ZonedDateTime.now();

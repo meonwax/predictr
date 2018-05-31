@@ -7,8 +7,8 @@ import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.GameDto;
 import de.meonwax.predictr.repository.GameRepository;
 import de.meonwax.predictr.repository.GroupRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +16,14 @@ import java.time.ZonedDateTime;
 import java.util.*;
 
 @Service
+@AllArgsConstructor
 public class GameService {
 
-    @Autowired
-    private GameRepository gameRepository;
+    private final GameRepository gameRepository;
 
-    @Autowired
-    private GroupRepository groupRepository;
+    private final GroupRepository groupRepository;
 
-    @Autowired
-    private CalculationService calculationService;
+    private final CalculationService calculationService;
 
     public List<Game> getAll() {
         return gameRepository.findAll();

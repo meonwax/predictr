@@ -1,11 +1,10 @@
 package de.meonwax.predictr.web;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import de.meonwax.predictr.domain.Game;
+import de.meonwax.predictr.domain.User;
+import de.meonwax.predictr.dto.GameDto;
+import de.meonwax.predictr.service.GameService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -14,17 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.meonwax.predictr.domain.Game;
-import de.meonwax.predictr.domain.User;
-import de.meonwax.predictr.dto.GameDto;
-import de.meonwax.predictr.service.GameService;
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api")
+@AllArgsConstructor
 public class GameController {
 
-    @Autowired
-    GameService gameService;
+    private final GameService gameService;
 
     @RequestMapping(value = "/games", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Secured(User.ROLE_ADMIN)

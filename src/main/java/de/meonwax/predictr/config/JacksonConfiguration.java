@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class JacksonConfiguration {
 
     @Bean
-    public ObjectMapper getObjectMapper() {
+    public ObjectMapper objectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
         mapper.setSerializationInclusion(Include.NON_NULL);

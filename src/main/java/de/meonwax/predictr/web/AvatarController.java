@@ -3,7 +3,7 @@ package de.meonwax.predictr.web;
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.service.AvatarService;
 import de.meonwax.predictr.validator.AvatarValidator;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +18,12 @@ import java.util.Arrays;
 
 @RestController
 @RequestMapping("api")
+@AllArgsConstructor
 public class AvatarController {
 
-    @Autowired
-    private AvatarService avatarService;
+    private final AvatarService avatarService;
 
-    @Autowired
-    private AvatarValidator avatarValidator;
+    private final AvatarValidator avatarValidator;
 
     @InitBinder
     protected void initAvatarBinder(WebDataBinder binder) {

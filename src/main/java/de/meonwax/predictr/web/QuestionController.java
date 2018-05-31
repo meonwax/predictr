@@ -1,10 +1,10 @@
 package de.meonwax.predictr.web;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import de.meonwax.predictr.domain.Question;
+import de.meonwax.predictr.domain.User;
+import de.meonwax.predictr.dto.QuestionDto;
+import de.meonwax.predictr.service.QuestionService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -14,17 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.meonwax.predictr.domain.Question;
-import de.meonwax.predictr.domain.User;
-import de.meonwax.predictr.dto.QuestionDto;
-import de.meonwax.predictr.service.QuestionService;
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api")
+@AllArgsConstructor
 public class QuestionController {
 
-    @Autowired
-    private QuestionService questionService;
+    private final QuestionService questionService;
 
     @RequestMapping(value = "/questions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Question> getAll(@AuthenticationPrincipal User user) {

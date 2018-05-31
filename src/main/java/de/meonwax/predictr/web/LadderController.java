@@ -1,30 +1,28 @@
 package de.meonwax.predictr.web;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import de.meonwax.predictr.dto.RankDto;
+import de.meonwax.predictr.repository.UserRepository;
+import de.meonwax.predictr.service.LadderService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.meonwax.predictr.dto.RankDto;
-import de.meonwax.predictr.repository.UserRepository;
-import de.meonwax.predictr.service.LadderService;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api")
+@AllArgsConstructor
 public class LadderController {
 
-    @Autowired
-    private LadderService ladderService;
+    private final LadderService ladderService;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @RequestMapping(value = "/ladder", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RankDto> getAll(@RequestParam(value = "jackpot_only", required = false, defaultValue = "0") Boolean jackpotOnly) {

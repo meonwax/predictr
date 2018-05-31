@@ -7,23 +7,21 @@ import de.meonwax.predictr.repository.AnswerRepository;
 import de.meonwax.predictr.repository.BetRepository;
 import de.meonwax.predictr.settings.Settings;
 import de.meonwax.predictr.util.Utils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class CalculationService {
 
-    @Autowired
-    private Settings settings;
+    private final Settings settings;
 
-    @Autowired
-    private BetRepository betRepository;
+    private final BetRepository betRepository;
 
-    @Autowired
-    private AnswerRepository answerRepository;
+    private final AnswerRepository answerRepository;
 
     int getPoints(User user) {
 

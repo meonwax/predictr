@@ -1,12 +1,8 @@
 package de.meonwax.predictr.dto;
 
-import java.io.Serializable;
-
 import de.meonwax.predictr.domain.User;
 
-public class RankDto implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class RankDto {
 
     private User user;
 

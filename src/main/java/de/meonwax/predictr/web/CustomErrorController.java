@@ -2,7 +2,7 @@ package de.meonwax.predictr.web;
 
 import de.meonwax.predictr.service.MailService;
 import de.meonwax.predictr.settings.Settings;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,13 +18,12 @@ import java.time.ZonedDateTime;
 
 @Controller
 @RequestMapping("error")
+@AllArgsConstructor
 public class CustomErrorController implements ErrorController {
 
-    @Autowired
-    private MailService mailService;
+    private final MailService mailService;
 
-    @Autowired
-    private Settings settings;
+    private final Settings settings;
 
     @Override
     public String getErrorPath() {

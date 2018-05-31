@@ -4,9 +4,9 @@ import de.meonwax.predictr.domain.Avatar;
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.repository.AvatarRepository;
 import de.meonwax.predictr.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class AvatarService {
 
     private final static int AVATAR_WIDTH = 64;
@@ -59,11 +60,9 @@ public class AvatarService {
 
     private final static float FONT_RATIO = .7f;
 
-    @Autowired
-    private AvatarRepository avatarRepository;
+    private final AvatarRepository avatarRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public Optional<Avatar> getAvatar(Long userId) {
         return userRepository.findById(userId)

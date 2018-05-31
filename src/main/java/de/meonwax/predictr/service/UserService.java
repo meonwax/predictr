@@ -11,9 +11,9 @@ import de.meonwax.predictr.repository.UserRepository;
 import de.meonwax.predictr.settings.Settings;
 import de.meonwax.predictr.util.PasswortGenerator;
 import de.meonwax.predictr.util.Utils;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,31 +27,27 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UserService implements UserDetailsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     // TODO: Externalize into templates
-    private final static String REQUEST_TITLE = "Password reset request";
-    private final static String REQUEST_MESSAGE = "Dear %s,\n\nA password reset has been triggered.\nPlease go to %s to reset your password.\nThis link will only be valid for 24 hours.\n\nRegards,\n\n%s";
+    private static final String REQUEST_TITLE = "Password reset request";
+    private static final String REQUEST_MESSAGE = "Dear %s,\n\nA password reset has been triggered.\nPlease go to %s to reset your password.\nThis link will only be valid for 24 hours.\n\nRegards,\n\n%s";
 
-    private final static String CONFIRMATION_TITLE = "Password reset confirmation";
-    private final static String CONFIRMATION_MESSAGE = "Dear %s,\n\nYour password has been reset to:\n%s\n\nPlease login now and change it on the 'Settings' page.\n\nRegards,\n\n%s";
+    private static final String CONFIRMATION_TITLE = "Password reset confirmation";
+    private static final String CONFIRMATION_MESSAGE = "Dear %s,\n\nYour password has been reset to:\n%s\n\nPlease login now and change it on the 'Settings' page.\n\nRegards,\n\n%s";
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordResetTokenRepository passwordResetTokenRepository;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
-    @Autowired
-    private MailService mailService;
+    private final MailService mailService;
 
-    @Autowired
-    private Settings settings;
+    private final Settings settings;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

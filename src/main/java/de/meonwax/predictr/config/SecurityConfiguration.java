@@ -5,52 +5,38 @@ import de.meonwax.predictr.security.RestAuthenticationFailureHandler;
 import de.meonwax.predictr.security.RestAuthenticationSuccessHandler;
 import de.meonwax.predictr.security.RestLogoutSuccessHandler;
 import de.meonwax.predictr.service.UserService;
-import de.meonwax.predictr.settings.Settings;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.RememberMeServices;
 
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true)
 //@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+@AllArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private RestAuthenticationEntryPoint authenticationEntryPoint;
+    private final RestAuthenticationEntryPoint authenticationEntryPoint;
 
-    @Autowired
-    private RestAuthenticationSuccessHandler authenticationSuccessHandler;
+    private final RestAuthenticationSuccessHandler authenticationSuccessHandler;
 
-    @Autowired
-    private RestAuthenticationFailureHandler authenticationFailureHandler;
+    private final RestAuthenticationFailureHandler authenticationFailureHandler;
 
-    @Autowired
-    private RestLogoutSuccessHandler logoutSuccessHandler;
+    private final RestLogoutSuccessHandler logoutSuccessHandler;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private RememberMeServices rememberMeServices;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private Settings settings;
+//    private final RememberMeServices rememberMeServices;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    private final Settings settings;
 
-    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
 
     @Override

@@ -6,8 +6,8 @@ import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.AnswerDto;
 import de.meonwax.predictr.repository.AnswerRepository;
 import de.meonwax.predictr.repository.QuestionRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -16,16 +16,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class AnswerService {
 
-    @Autowired
-    private AnswerRepository answerRepository;
+    private final AnswerRepository answerRepository;
 
-    @Autowired
-    private QuestionRepository questionRepository;
+    private final QuestionRepository questionRepository;
 
-    @Autowired
-    private CalculationService calculationService;
+    private final CalculationService calculationService;
 
     public void update(User user, List<AnswerDto> answerDtos) {
         List<Answer> answers = new ArrayList<>();

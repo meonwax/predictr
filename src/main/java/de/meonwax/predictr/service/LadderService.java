@@ -4,7 +4,7 @@ import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.RankDto;
 import de.meonwax.predictr.repository.UserRepository;
 import de.meonwax.predictr.util.SortedContainer;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,13 +13,12 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class LadderService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private CalculationService calculateService;
+    private final CalculationService calculateService;
 
     public List<RankDto> getLadder(boolean jackpotOnly) {
         SortedContainer<Integer, User> sortedUsers = getSortedUsers(jackpotOnly);

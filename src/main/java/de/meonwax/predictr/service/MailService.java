@@ -1,9 +1,9 @@
 package de.meonwax.predictr.service;
 
 import de.meonwax.predictr.settings.Settings;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -11,12 +11,12 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class MailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailService.class);
 
-    @Autowired
-    private JavaMailSenderImpl mailSender;
+    private final JavaMailSenderImpl mailSender;
 
     @Value("${spring.mail.host}")
     private String mailHost;
@@ -24,8 +24,7 @@ public class MailService {
     @Value("${spring.mail.tls}")
     private Boolean tls;
 
-    @Autowired
-    private Settings settings;
+    private final Settings settings;
 
     public boolean isEnabled() {
         return mailHost != null && mailHost.length() > 0;

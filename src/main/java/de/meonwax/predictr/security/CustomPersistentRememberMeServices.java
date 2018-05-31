@@ -7,7 +7,6 @@ import de.meonwax.predictr.repository.UserRepository;
 import de.meonwax.predictr.settings.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,26 +34,24 @@ import java.util.Optional;
 public class CustomPersistentRememberMeServices extends AbstractRememberMeServices {
 
     // Token is valid for two weeks
-    private final static int TOKEN_VALIDITY_DAYS = 14;
-    private final static int TOKEN_VALIDITY_SECONDS = 60 * 60 * 24 * TOKEN_VALIDITY_DAYS;
+    private static final int TOKEN_VALIDITY_DAYS = 14;
+    private static final int TOKEN_VALIDITY_SECONDS = 60 * 60 * 24 * TOKEN_VALIDITY_DAYS;
 
-    private final static int DEFAULT_SERIES_LENGTH = 16;
-    private final static int DEFAULT_TOKEN_LENGTH = 16;
+    private static final int DEFAULT_SERIES_LENGTH = 16;
+    private static final int DEFAULT_TOKEN_LENGTH = 16;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomPersistentRememberMeServices.class);
 
-    @Autowired
-    private RememberMeTokenRepository rememberMeTokenRepository;
+    private final RememberMeTokenRepository rememberMeTokenRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     private SecureRandom random;
 
-    @Autowired
-    public CustomPersistentRememberMeServices(Settings settings, UserDetailsService userDetailsService) {
+    public CustomPersistentRememberMeServices(Settings settings, UserDetailsService userDetailsService, RememberMeTokenRepository rememberMeTokenRepository, UserRepository userRepository) {
         super(settings.getRememberMeKey(), userDetailsService);
-        random = new SecureRandom();
+        this.rememberMeTokenRepository = rememberMeTokenRepository;
+        this.userRepository = userRepository;
     }
 
     @Override

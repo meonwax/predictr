@@ -5,8 +5,8 @@ import de.meonwax.predictr.domain.Question;
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.QuestionDto;
 import de.meonwax.predictr.repository.QuestionRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,13 +15,12 @@ import java.util.HashSet;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class QuestionService {
 
-    @Autowired
-    private QuestionRepository questionRepository;
+    private final QuestionRepository questionRepository;
 
-    @Autowired
-    private CalculationService calculationService;
+    private final CalculationService calculationService;
 
     public void update(List<QuestionDto> questionDtos) {
         List<Question> questions = new ArrayList<>();
