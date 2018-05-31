@@ -52,7 +52,7 @@ INSERT INTO `team` (`id`, `group_id`) VALUES
   ('col', 'h'),
   ('jpn', 'h');
 
-INSERT INTO `locations` (`id`, `stadium`, `city`) VALUES
+INSERT INTO `venue` (`id`, `stadium`, `city`) VALUES
   (1, 'Luzhniki Stadium', 'Moscow'),
   (2, 'Otkrytiye Arena', 'Moscow'),
   (3, 'Krestovsky Stadium', 'Saint Petersburg'),
@@ -66,7 +66,7 @@ INSERT INTO `locations` (`id`, `stadium`, `city`) VALUES
   (11, 'Fisht Olympic Stadium', 'Sochi'),
   (12, 'Central Stadium', 'Yekaterinburg');
 
-INSERT INTO `game` (`id`, `kickoff_time`, `group_id`, `location_id`, `team_home_id`, `team_away_id`) VALUES
+INSERT INTO `game` (`id`, `kickoff_time`, `group_id`, `venue_id`, `team_home_id`, `team_away_id`) VALUES
   (1, '2018-06-14 15:00:00', 'a', 1, 'rus', 'ksa'),
   (2, '2018-06-15 12:00:00', 'a', 12, 'egy', 'uru'),
   (17, '2018-06-19 18:00:00', 'a', 3, 'rus', 'egy'),

@@ -3,13 +3,10 @@ package de.meonwax.predictr.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-// Unfortunately 'location' is a reserved word in H2 database
-@Table(name = "locations")
-public class Location {
+public class Venue {
 
     @Id
     private Long id;

@@ -25,7 +25,7 @@ public class Game {
 
     @NotNull
     @ManyToOne(optional = false)
-    private Location location;
+    private Venue venue;
 
     @ManyToOne
     private Team teamHome;
@@ -69,12 +69,12 @@ public class Game {
         this.group = group;
     }
 
-    public Location getLocation() {
-        return location;
+    public Venue getVenue() {
+        return venue;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setVenue(Venue venue) {
+        this.venue = venue;
     }
 
     public Team getTeamHome() {
