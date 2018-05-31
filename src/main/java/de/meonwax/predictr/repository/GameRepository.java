@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import de.meonwax.predictr.domain.Game;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface GameRepository extends JpaRepository<Game, Long> {
 
     List<Game> findByKickoffTimeAfterOrderByKickoffTime(Pageable pageable, ZonedDateTime dateTime);

@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import de.meonwax.predictr.domain.Answer;
 import de.meonwax.predictr.domain.Question;
 import de.meonwax.predictr.domain.User;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     List<Answer> findByUserAndQuestionDeadlineBefore(User user, ZonedDateTime dateTime);

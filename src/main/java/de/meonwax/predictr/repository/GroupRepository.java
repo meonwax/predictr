@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import de.meonwax.predictr.domain.Group;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface GroupRepository extends JpaRepository<Group, String> {
 
     @Query("SELECT DISTINCT g FROM Group g LEFT JOIN FETCH g.games games ORDER BY g.priority ASC")
