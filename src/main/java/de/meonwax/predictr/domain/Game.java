@@ -5,7 +5,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Set;
 
 @Entity
@@ -17,7 +17,7 @@ public class Game {
 
     @NotNull
     @Column(nullable = false)
-    private ZonedDateTime kickoffTime;
+    private Instant kickoffTime;
 
     @NotNull
     @ManyToOne(optional = false)
@@ -54,11 +54,11 @@ public class Game {
         this.id = id;
     }
 
-    public ZonedDateTime getKickoffTime() {
+    public Instant getKickoffTime() {
         return kickoffTime;
     }
 
-    public void setKickoffTime(ZonedDateTime kickoffTime) {
+    public void setKickoffTime(Instant kickoffTime) {
         this.kickoffTime = kickoffTime;
     }
 

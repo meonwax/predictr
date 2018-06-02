@@ -9,7 +9,7 @@ import de.meonwax.predictr.settings.Settings;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -28,12 +28,12 @@ public class CalculationService {
 
         int points = 0;
 
-        List<Bet> bets = betRepository.findByUserAndGameKickoffTimeBefore(user, ZonedDateTime.now());
+        List<Bet> bets = betRepository.findByUserAndGameKickoffTimeBefore(user, Instant.now());
         for (Bet bet : bets) {
             points += calculate(bet);
         }
 
-        List<Answer> answers = answerRepository.findByUserAndQuestionDeadlineBefore(user, ZonedDateTime.now());
+        List<Answer> answers = answerRepository.findByUserAndQuestionDeadlineBefore(user, Instant.now());
         for (Answer answer : answers) {
             points += calculate(answer);
         }

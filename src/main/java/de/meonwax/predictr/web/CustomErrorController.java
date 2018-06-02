@@ -76,10 +76,10 @@ public class CustomErrorController implements ErrorController {
         }
 
         // Construct mail
-        String receipent = settings.getAdminEmail();
+        String recipient = settings.getAdminEmail();
         String subject = settings.getTitle() + ": " + exceptionName + " thrown";
         String text = ZonedDateTime.now() + "\n\n" + exceptionDump;
 
-        mailService.send(receipent, subject, text);
+        mailService.send(recipient, subject, text);
     }
 }

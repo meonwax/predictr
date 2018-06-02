@@ -12,7 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -42,11 +42,11 @@ public class GameService {
     }
 
     public List<Game> getUpcoming() {
-        return gameRepository.findByKickoffTimeAfterOrderByKickoffTime(PageRequest.of(0, 5), ZonedDateTime.now());
+        return gameRepository.findByKickoffTimeAfterOrderByKickoffTime(PageRequest.of(0, 5), Instant.now());
     }
 
     public List<Game> getRunning() {
-        return gameRepository.findByKickoffTimeBeforeAndScoreHomeIsNullAndScoreAwayIsNullOrderByKickoffTime(ZonedDateTime.now());
+        return gameRepository.findByKickoffTimeBeforeAndScoreHomeIsNullAndScoreAwayIsNullOrderByKickoffTime(Instant.now());
     }
 
     public Map<String, Long> getProgress() {

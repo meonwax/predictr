@@ -12,7 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
@@ -31,13 +31,13 @@ public class User implements UserDetails {
     @CreatedDate
     @NotNull
     @Column(nullable = false)
-    private ZonedDateTime createdDate = ZonedDateTime.now();
+    private Instant createdDate = Instant.now();
 
     @NotNull
     @Column(nullable = false)
-    private ZonedDateTime lastModifiedDate = ZonedDateTime.now();
+    private Instant lastModifiedDate = Instant.now();
 
-    private ZonedDateTime lastLoginDate;
+    private Instant lastLoginDate;
 
     @NotNull
     @Email
@@ -96,27 +96,27 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public ZonedDateTime getCreatedDate() {
+    public Instant getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(ZonedDateTime createdDate) {
+    public void setCreatedDate(Instant createdDate) {
         this.createdDate = createdDate;
     }
 
-    public ZonedDateTime getLastModifiedDate() {
+    public Instant getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+    public void setLastModifiedDate(Instant lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public ZonedDateTime getLastLoginDate() {
+    public Instant getLastLoginDate() {
         return lastLoginDate;
     }
 
-    public void setLastLoginDate(ZonedDateTime lastLoginDate) {
+    public void setLastLoginDate(Instant lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
     }
 

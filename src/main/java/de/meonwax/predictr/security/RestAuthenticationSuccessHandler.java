@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 @Component
 @AllArgsConstructor
@@ -32,7 +32,7 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         // Update last login time
         User user = userRepository.findOneByEmailIgnoringCase(email);
         if (user != null) {
-            user.setLastLoginDate(ZonedDateTime.now());
+            user.setLastLoginDate(Instant.now());
             userRepository.save(user);
         }
     }

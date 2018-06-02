@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +31,7 @@ public class AnswerService {
             questionRepository.findById(answerDto.getQuestion().getId())
                 .ifPresent(question -> {
                     // Prevent saving if deadline has already passed
-                    if (question.getDeadline().isAfter(ZonedDateTime.now())) {
+                    if (question.getDeadline().isAfter(Instant.now())) {
                         Answer answer = answerRepository.findOneByUserAndQuestion(user, question);
                         if (answer == null) {
                             answer = new Answer();
@@ -51,7 +51,7 @@ public class AnswerService {
         Optional<Question> question = questionRepository.findById(questionId);
 
         // Only return data if deadline has already passed
-        if (!question.isPresent() || question.get().getDeadline().isAfter(ZonedDateTime.now())) {
+        if (!question.isPresent() || question.get().getDeadline().isAfter(Instant.now())) {
             return Optional.empty();
         }
 

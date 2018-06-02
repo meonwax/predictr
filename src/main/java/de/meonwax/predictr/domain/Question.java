@@ -2,7 +2,7 @@ package de.meonwax.predictr.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Set;
 
 @Entity
@@ -17,7 +17,7 @@ public class Question {
     private String question;
     @NotNull
     @Column(nullable = false)
-    private ZonedDateTime deadline;
+    private Instant deadline;
 
     @NotNull
     @Column(nullable = false)
@@ -47,11 +47,11 @@ public class Question {
         this.question = question;
     }
 
-    public ZonedDateTime getDeadline() {
+    public Instant getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(ZonedDateTime date) {
+    public void setDeadline(Instant date) {
         this.deadline = date;
     }
 

@@ -2,7 +2,7 @@ package de.meonwax.predictr.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 @Entity
 public class Shout {
@@ -10,7 +10,7 @@ public class Shout {
     public Shout() {
     }
 
-    public Shout(ZonedDateTime date, String message, User user) {
+    public Shout(Instant date, String message, User user) {
         this.date = date;
         this.message = message;
         this.user = user;
@@ -22,7 +22,7 @@ public class Shout {
 
     @NotNull
     @Column(nullable = false)
-    private ZonedDateTime date;
+    private Instant date;
 
     @NotNull
     @Column(nullable = false)
@@ -40,11 +40,11 @@ public class Shout {
         this.id = id;
     }
 
-    public ZonedDateTime getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -91,7 +92,7 @@ public class UserService implements UserDetailsService {
     public User updateUser(UserDataDto userDataDto, User user) {
         user.setName(userDataDto.getName());
         user.setPreferredLanguage(userDataDto.getPreferredLanguage());
-        user.setLastModifiedDate(ZonedDateTime.now());
+        user.setLastModifiedDate(Instant.now());
         userRepository.save(user);
         return user;
     }
@@ -106,7 +107,7 @@ public class UserService implements UserDetailsService {
 
     private void changePassword(String newPassword, User user) {
         user.setPassword(passwordEncoder.encode(newPassword));
-        user.setLastModifiedDate(ZonedDateTime.now());
+        user.setLastModifiedDate(Instant.now());
         userRepository.save(user);
     }
 

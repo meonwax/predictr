@@ -3,7 +3,7 @@ package de.meonwax.predictr.dto;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 @Data
 public class QuestionDto {
@@ -15,7 +15,7 @@ public class QuestionDto {
     private String question;
 
     @NotNull
-    private ZonedDateTime deadline;
+    private Instant deadline;
 
     @NotNull
     private Integer points;
