@@ -60,3 +60,7 @@ Data for 2018 FIFA World Cup included.
 * Upgrade the created user to an admin setting the field `role` to `ROLE_ADMIN`.
 
 * You can now [log in](http://localhost:8080/#/login) using the admin user.
+
+## Credits
+
+Logo image [Soccer ball and Russian flag on green grass](https://www.flickr.com/photos/30478819@N08/41620156324/) by Marco Verch
