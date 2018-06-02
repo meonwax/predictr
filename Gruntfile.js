@@ -5,8 +5,8 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     dirs: {
-      app: 'src/main/webapp',
-      dist: 'src/main/webapp/dist',
+      app: 'src/main/resources/static',
+      dist: 'src/main/resources/static/dist',
       scss: 'src/main/scss',
       sprites: 'src/main/sprites'
     },

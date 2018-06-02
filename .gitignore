@@ -11,15 +11,15 @@
 
 # Third party libraries
 node_modules/
-src/main/webapp/lib/
+src/main/resources/static/lib/
 
 # Build
 target/
 .sass-cache/
 .tmp/
-src/main/webapp/dist/
+src/main/resources/static/dist/
 
 # Others
 TODO.md
-src/main/webapp/css/
-src/main/webapp/images/sprites/
+src/main/resources/static/css/
+src/main/resources/static/images/sprites/
