@@ -8,6 +8,7 @@ spring:
         password:
         protocol: smtp
         tls: false
+        senderHost:
 
 logging.level.de.meonwax.predictr: DEBUG
 
@@ -15,6 +16,7 @@ server:
     error.whitelabel.enabled: false
     port: 8080
     address: 127.0.0.1
+    use-forward-headers: true
 
 predictr:
     owner: John Doe
@@ -36,6 +38,8 @@ predictr:
         tendency: 2
         tendencySpread: 3
 ---
+
+server.address: 0.0.0.0 # Mandatory to be accessible within a Docker container
 
 spring:
     profiles: production
