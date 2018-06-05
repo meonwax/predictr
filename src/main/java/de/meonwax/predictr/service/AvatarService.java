@@ -15,10 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Optional;
 
 @Service
@@ -31,6 +28,9 @@ public class AvatarService {
     private final static int AVATAR_HEIGHT = 64;
 
     private final static int IMAGE_RESIZE_DIMENSION = 128;
+
+    private final static String FONT_FILE = "Lato-Black.ttf";
+    private final static float FONT_RATIO = .7f;
 
     // Predefined colors inspired by https://github.com/judesfernando/initial.js
     private final static Color[] COLORS = new Color[]{
@@ -61,8 +61,6 @@ public class AvatarService {
         new Color(0xb49255),
         new Color(0xa94136)
     };
-
-    private final static float FONT_RATIO = .7f;
 
     private final AvatarRepository avatarRepository;
 
@@ -117,7 +115,7 @@ public class AvatarService {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             // Set font
-            InputStream is = getClass().getClassLoader().getResourceAsStream("Lato-Black.ttf");
+            InputStream is = new BufferedInputStream(getClass().getClassLoader().getResourceAsStream(FONT_FILE));
             Font font = Font.createFont(Font.TRUETYPE_FONT, is);
             g.setFont(font.deriveFont(Font.PLAIN, FONT_RATIO * AVATAR_HEIGHT));
 
