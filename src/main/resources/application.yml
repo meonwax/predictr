@@ -22,7 +22,7 @@ predictr:
     owner: John Doe
     title: Predictr
     version: 5.0.0
-    rememberMeKey: 8604aa56a02e3dc7b191859ef5952fe49fd1f128
+    rememberMeKey: 8604aa56a02e3dc7b191859ef5952fe49fd1f128 # 20 byte random key
     adminEmail: admin@example.com
     showImportantMessage: true
     # Uncomment any pages to hide them in the navigation
