@@ -1,6 +1,6 @@
 ### Für das Tippspiel gelten folgende Regeln
 
-- Es wird immer das Ergebnis nach 90 Minuten (Gruppenspiele) bzw. das Ergebnis nach möglicher Verlängerung (Finalspiele) getippt.  
+- Es wird immer das Ergebnis nach 90 Minuten (Gruppenspiele) bzw. das Ergebnis nach eventueller Verlängerung (Finalspiele) getippt.  
 Ein mögliches Elfmeterschießen ist für die Tippabgabe nicht relevant.
 
 - Die Punkte werden wie folgt vergeben:
