@@ -23,6 +23,7 @@
     <lombok.version>1.16.22</lombok.version>
     <imgscalr.version>4.2</imgscalr.version>
     <jaxb-api.version>2.3.0</jaxb-api.version>
+    <dockerfile-maven-plugin.version>1.4.3</dockerfile-maven-plugin.version>
   </properties>
 
   <dependencies>
@@ -157,10 +158,53 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
+        <groupId>com.spotify</groupId>
+        <artifactId>dockerfile-maven-plugin</artifactId>
+        <version>${dockerfile-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>build-and-tag-latest</id>
+            <phase>none</phase>
+            <goals>
+              <goal>build</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>tag-version</id>
+            <phase>none</phase>
+            <goals>
+              <goal>tag</goal>
+            </goals>
+            <configuration>
+              <tag>${project.version}</tag>
+            </configuration>
+          </execution>
+          <execution>
+            <id>push-latest</id>
+            <phase>none</phase>
+            <goals>
+              <goal>push</goal>
+            </goals>
+            <configuration>
+              <tag>latest</tag>
+            </configuration>
+          </execution>
+          <execution>
+            <id>push-version</id>
+            <phase>none</phase>
+            <goals>
+              <goal>push</goal>
+            </goals>
+            <configuration>
+              <tag>${project.version}</tag>
+            </configuration>
+          </execution>
+        </executions>
         <configuration>
-          <warSourceDirectory>src/main/webapp/dist</warSourceDirectory>
+          <repository>meonwax/predictr</repository>
+          <buildArgs>
+            <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+          </buildArgs>
         </configuration>
       </plugin>
 
