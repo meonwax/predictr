@@ -10,7 +10,6 @@ import de.meonwax.predictr.service.UserService;
 import de.meonwax.predictr.settings.Settings;
 import de.meonwax.predictr.util.Utils;
 import lombok.AllArgsConstructor;
-import org.hibernate.validator.constraints.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import java.util.List;
 
 @RestController
