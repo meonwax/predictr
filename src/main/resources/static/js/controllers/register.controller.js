@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('predictrApp')
-  .controller('RegisterCtrl', function($rootScope, $scope, $location, $translate, toastr, User, Authentication) {
+  .controller('RegisterCtrl', function($rootScope, $scope, $location, $translate, toastr, User, amMoment, Authentication) {
 
     // Redirect if already logged in
     if( $rootScope.account && $rootScope.account.id) {
@@ -26,6 +26,11 @@ angular.module('predictrApp')
           .then(function() {
             $scope.sending = false;
             $scope.error = false;
+            User.account().get(function(user) {
+              $translate.use(user.preferredLanguage);
+              amMoment.changeLocale(user.preferredLanguage);
+              $rootScope.account = user;
+            });
             $location.path('');
           }, function(error) {
             $scope.focusInput = true;
