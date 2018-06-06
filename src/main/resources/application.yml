@@ -15,13 +15,12 @@ logging.level.de.meonwax.predictr: DEBUG
 server:
     error.whitelabel.enabled: false
     port: 8080
-    address: 127.0.0.1
     use-forward-headers: true
 
 predictr:
     owner: John Doe
     title: Predictr
-    version: 5.0.0
+    version: 5.0.2
     rememberMeKey: 8604aa56a02e3dc7b191859ef5952fe49fd1f128 # 20 byte random key
     adminEmail: admin@example.com
     showImportantMessage: true
