@@ -2,10 +2,10 @@ package de.meonwax.predictr.service;
 
 import de.meonwax.predictr.domain.Answer;
 import de.meonwax.predictr.domain.Bet;
+import de.meonwax.predictr.domain.Config;
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.repository.AnswerRepository;
 import de.meonwax.predictr.repository.BetRepository;
-import de.meonwax.predictr.settings.Settings;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 public class CalculationService {
 
-    private final Settings settings;
+    private final ConfigService configService;
 
     private final BetRepository betRepository;
 
@@ -55,18 +55,20 @@ public class CalculationService {
         // TODO: Implement this check in a JPA custom query
         if (Stream.of(betScoreHome, betScoreAway, resultScoreHome, resultScoreAway).allMatch(Objects::nonNull)) {
 
+            Config config = configService.getConfig();
+
             if (betScoreHome.equals(resultScoreHome) && betScoreAway.equals(resultScoreAway)) {
-                return settings.getPoints().getResult();
+                return config.getPointsResult();
             }
 
             int betSpread = betScoreHome - betScoreAway;
             int resultSpread = resultScoreHome - resultScoreAway;
             if (betSpread == resultSpread) {
-                return settings.getPoints().getTendencySpread();
+                return config.getPointsTendencySpread();
             }
 
             if (betSpread * resultSpread > 0) {
-                return settings.getPoints().getTendency();
+                return config.getPointsTendency();
             }
         }
         return 0;
@@ -91,14 +93,15 @@ public class CalculationService {
     }
 
     String getCssClass(Bet bet) {
+        Config config = configService.getConfig();
         int points = calculate(bet);
-        if (points == settings.getPoints().getResult()) {
+        if (points == config.getPointsResult()) {
             return "success bold";
         }
-        if (points == settings.getPoints().getTendencySpread()) {
+        if (points == config.getPointsTendencySpread()) {
             return "info";
         }
-        if (points == settings.getPoints().getTendency()) {
+        if (points == config.getPointsTendency()) {
             return "warning";
         }
         return null;

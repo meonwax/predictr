@@ -1,13 +1,14 @@
 package de.meonwax.predictr.web;
 
+import de.meonwax.predictr.domain.Config;
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.PasswordDto;
 import de.meonwax.predictr.dto.UserDataDto;
 import de.meonwax.predictr.dto.UserDto;
 import de.meonwax.predictr.exception.PasswordResetException;
+import de.meonwax.predictr.service.ConfigService;
 import de.meonwax.predictr.service.MailService;
 import de.meonwax.predictr.service.UserService;
-import de.meonwax.predictr.settings.Settings;
 import de.meonwax.predictr.util.Utils;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ public class UserController {
 
     private final MailService mailService;
 
-    private final Settings settings;
+    private final ConfigService configService;
 
     @RequestMapping(value = "/users/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> register(@Valid @RequestBody UserDto userDto) {
@@ -44,7 +45,8 @@ public class UserController {
             String msg = "User registered: " + userDto.toString();
             LOGGER.info(msg);
             if (mailService.isEnabled()) {
-                mailService.send(settings.getAdminEmail(), settings.getTitle() + ": New user registered", msg);
+                Config config = configService.getConfig();
+                mailService.send(config.getAdminEmail(), config.getTitle() + ": New user registered", msg);
             }
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }

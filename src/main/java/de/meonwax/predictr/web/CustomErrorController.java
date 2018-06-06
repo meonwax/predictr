@@ -1,7 +1,8 @@
 package de.meonwax.predictr.web;
 
+import de.meonwax.predictr.domain.Config;
+import de.meonwax.predictr.service.ConfigService;
 import de.meonwax.predictr.service.MailService;
-import de.meonwax.predictr.settings.Settings;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class CustomErrorController implements ErrorController {
 
     private final MailService mailService;
 
-    private final Settings settings;
+    private final ConfigService configService;
 
     @Override
     public String getErrorPath() {
@@ -76,8 +77,9 @@ public class CustomErrorController implements ErrorController {
         }
 
         // Construct mail
-        String recipient = settings.getAdminEmail();
-        String subject = settings.getTitle() + ": " + exceptionName + " thrown";
+        Config config = configService.getConfig();
+        String recipient = config.getAdminEmail();
+        String subject = config.getTitle() + ": " + exceptionName + " thrown";
         String text = ZonedDateTime.now() + "\n\n" + exceptionDump;
 
         mailService.send(recipient, subject, text);

@@ -18,12 +18,8 @@ server:
     use-forward-headers: true
 
 predictr:
-    owner: John Doe
-    title: Predictr
-    version: 5.0.2
+    version: 5.0.3
     rememberMeKey: 8604aa56a02e3dc7b191859ef5952fe49fd1f128 # 20 byte random key
-    adminEmail: admin@example.com
-    showImportantMessage: true
     # Uncomment any pages to hide them in the navigation
     pagesBlacklist:
         #- bets
@@ -32,10 +28,6 @@ predictr:
         #- rules
         #- shoutbox
         #- settings
-    points:
-        result: 5
-        tendency: 2
-        tendencySpread: 3
 ---
 
 server.address: 0.0.0.0 # Mandatory to be accessible within a Docker container

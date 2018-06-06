@@ -1,6 +1,5 @@
 package de.meonwax.predictr.service;
 
-import de.meonwax.predictr.settings.Settings;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +32,7 @@ public class MailService {
     @Value("${spring.mail.tls}")
     private Boolean tls;
 
-    private final Settings settings;
+    private final ConfigService configService;
 
     public boolean isEnabled() {
         return !StringUtils.isEmpty(mailHost);
@@ -52,7 +51,7 @@ public class MailService {
             properties.setProperty("mail.smtp.localhost", senderHost);
         }
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(settings.getAdminEmail());
+        message.setFrom(configService.getConfig().getAdminEmail());
         message.setTo(recipient);
         message.setSubject(subject);
         message.setText(text);

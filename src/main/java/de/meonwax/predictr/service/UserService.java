@@ -1,5 +1,6 @@
 package de.meonwax.predictr.service;
 
+import de.meonwax.predictr.domain.Config;
 import de.meonwax.predictr.domain.PasswordResetToken;
 import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.dto.PasswordDto;
@@ -8,7 +9,6 @@ import de.meonwax.predictr.dto.UserDto;
 import de.meonwax.predictr.exception.PasswordResetException;
 import de.meonwax.predictr.repository.PasswordResetTokenRepository;
 import de.meonwax.predictr.repository.UserRepository;
-import de.meonwax.predictr.settings.Settings;
 import de.meonwax.predictr.util.PasswortGenerator;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -47,7 +47,7 @@ public class UserService implements UserDetailsService {
 
     private final MailService mailService;
 
-    private final Settings settings;
+    private final ConfigService configService;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -142,7 +142,8 @@ public class UserService implements UserDetailsService {
         }
 
         // Send URL to user
-        if (mailService.send(email, settings.getTitle() + ": " + REQUEST_TITLE, String.format(REQUEST_MESSAGE, user.getName(), url, settings.getOwner()))) {
+        Config config = configService.getConfig();
+        if (mailService.send(email, config.getTitle() + ": " + REQUEST_TITLE, String.format(REQUEST_MESSAGE, user.getName(), url, config.getOwner()))) {
             LOGGER.info("Mail sent.");
         }
         return true;
@@ -178,7 +179,8 @@ public class UserService implements UserDetailsService {
         changePassword(newPassword, user);
 
         // Send password to user
-        if (mailService.send(email, settings.getTitle() + ": " + CONFIRMATION_TITLE, String.format(CONFIRMATION_MESSAGE, user.getName(), newPassword, settings.getOwner()))) {
+        Config config = configService.getConfig();
+        if (mailService.send(email, config.getTitle() + ": " + CONFIRMATION_TITLE, String.format(CONFIRMATION_MESSAGE, user.getName(), newPassword, config.getOwner()))) {
             LOGGER.info("Mail sent.");
         }
     }
