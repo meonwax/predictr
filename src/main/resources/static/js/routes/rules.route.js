@@ -7,12 +7,12 @@ angular.module('predictrApp')
       controller: 'RulesCtrl',
       activeTab: 'rules',
       resolve: {
-        rules: function($rootScope, $q, $http, $translate) {
+        rules: function($rootScope, $q, $translate, ServerInfo) {
           $rootScope.loading = true;
           var deferred = $q.defer();
           var currentLanguage = $translate.use() || $translate.preferredLanguage();
-          $http.get('values/rules-' + currentLanguage + '.md').then(function(response) {
-            deferred.resolve(response.data);
+          ServerInfo.get().get(function(serverInfo) {
+            deferred.resolve(serverInfo.rules[currentLanguage]);
           });
           return deferred.promise;
         }

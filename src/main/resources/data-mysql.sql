@@ -143,3 +143,94 @@ INSERT IGNORE INTO `game` (`id`, `kickoff_time`, `group_id`, `venue_id`, `team_h
   (63, '2018-07-14 14:00:00', '3', 3, null, null),
 
   (64, '2018-07-15 15:00:00', '1', 1, null, null);
+
+--
+-- Default configuration
+--
+INSERT INTO `config` (`id`, `title`, `owner`, `admin_email`, `show_important_message`, `points_result`, `points_tendency`, `points_tendency_spread`) VALUES
+  (1, 'Predictr', 'John Doe', 'admin@example.com', true, 5, 2, 3);
+
+UPDATE `config` SET
+  `rules_de` =
+'### Für das Tippspiel gelten folgende Regeln
+
+ - Es wird immer das Ergebnis nach 90 Minuten (Gruppenspiele) bzw. das Ergebnis nach eventueller Verlängerung (Finalspiele) getippt.
+ Ein mögliches Elfmeterschießen ist für die Tippabgabe nicht relevant.
+
+ - Die Punkte werden wie folgt vergeben:
+   - **Richtiges Ergebnis: {{pointsResult}} Punkte**
+   - **Richtige Tordifferenz bei richtiger Tendenz: {{pointsTendencySpread}} Punkte**
+   - **Richtige Tendenz: {{pointsTendency}} Punkte**
+
+
+ - Die erreichbaren Punkte für die Spezialfragen sind jeweils angegeben.
+ Wer am Ende des Turniers die meisten Punkte erreicht hat, gewinnt das Tippspiel. Tipper mit gleicher Punktzahl teilen sich den entsprechenden Ranglistenplatz.
+
+ - Jeder Tipp muss vor Anpfiff eines jeweiligen Spiels abgegeben werden und ist bis dahin beliebig oft änderbar.
+ Die Anstoßzeiten sind im Spielplan angegeben.
+ Nach Anpfiff ist die Tippabgabe für dieses Spiel gesperrt.
+
+ - **Die Antworten auf die Spezialfragen müssen vor Ablauf der Deadline (Zeitpunkt in der Tabelle angegeben) abgegeben werden.**
+ Danach ist die Antwortabgabe gesperrt. Bitte achtet auf die richtige Schreibweise.
+
+ - Maßgeblich ist die unten angegebene Serverzeit.
+ Alle Zeiten sind in Mitteleuropäischer Sommerzeit (MESZ) angegeben.
+
+ - Eine Punktevergabe erfolgt, sobald das offizielle Ergebnis des Spiels in die Datenbank eingetragen wurde.
+ Dies geschieht möglichst zeitnah, kleinere Verzögerungen sind jedoch nicht auszuschließen.
+
+ - Bei einem festen Einsatz von **5 €** kann um den **Jackpot** mitgespielt werden.
+ In einer separaten Rangliste werden die Spieler gelistet, die **vor Beginn** des Turniers 5 € in den Jackpot eingezahlt haben.
+ Der Sieger der Jackpot-Rangliste erhält den kompletten Jackpot. Bei gleicher Punktzahl wird der Gewinn entsprechend aufgeteilt.
+ Der Einsatz muss bis zum Beginn des Turniers per Überweisung oder persönlich hinterlegt werden.
+ Für die Teilnahme am Jackpotspiel bitte eine E-Mail an <a href="mailto:{{adminEmail}}">{{adminEmail}}</a> senden.
+
+ - **Das letzte Wort hat der Betreiber des Tippspiels.**
+
+ Fragen oder Unklarheiten bitte in der Shoutbox ansprechen. Ebenso auftretende Programmfehler.
+
+ Viel Spaß beim Tippen und Mitfiebern wünscht Euch
+
+ {{owner}}',
+   `rules_en` =
+'### Rules for the prediction game
+
+- Always bet on the match result after 90 minutes (group matches) or on the result after extra time (finals).
+A potential penalty shootout will be ignored.
+
+- How many points do I get?
+  - **Correct result: {{pointsResult}} points**
+  - **Correct goal difference with correct trend: {{pointsTendencySpread}} points**
+  - **Correct Trend: {{pointsTendency}} points**
+
+
+- Points for additional questions: See the respective question.
+To win the prediction game you need to have the most points at the end of the tournament. Multiple players with identical score will share the respective ranking position.
+
+- Each guess must be placed before kick-off of the respective match. You may change your guesses until this deadline.
+For match dates and times see the integrated schedule.
+After kickoff, your guess for the relevant match will be locked.
+
+- **Deadlines for additional questions: See date and time specified with each question**
+After this deadline, your guess will be locked. Please ensure a correct spelling to avoid invalid guesses.
+
+- Reference time is this server''s time specified below.
+All time indications refer to Central European Summer Time (CEST).
+
+- Score calculation executes when the official final score of a match has been entered into the database.
+This will be done as soon as possible but minor delays may occur.
+
+- With a fixed wager of **5 €** you can play for the **jackpot**.
+Jackpot players are listed in a separate ranking.
+The winner of the jackpot ranking receives the complete jackpot. Multiple players with identical maximum score will share the jackpot.
+The wager must be payed **before tournament starts** by bank transfer or personal deposit.
+For your jackpot bet participation send an email to <a href="mailto:{{adminEmail}}">{{adminEmail}}</a>.
+
+- **The operator of this game will have the last word in any dispute.**
+
+Please contact us via shoutbox if you have any questions or find bugs.
+
+Happy betting!
+
+{{owner}}'
+  WHERE `id` = 1;
