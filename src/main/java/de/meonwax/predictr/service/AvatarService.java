@@ -113,9 +113,8 @@ public class AvatarService {
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
+        try (InputStream is = new BufferedInputStream(getClass().getClassLoader().getResourceAsStream(FONT_FILE))) {
             // Set font
-            InputStream is = new BufferedInputStream(getClass().getClassLoader().getResourceAsStream(FONT_FILE));
             Font font = Font.createFont(Font.TRUETYPE_FONT, is);
             g.setFont(font.deriveFont(Font.PLAIN, FONT_RATIO * AVATAR_HEIGHT));
 
