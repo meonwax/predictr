@@ -21,20 +21,12 @@ public class LadderService {
     private final CalculationService calculateService;
 
     public List<RankDto> getLadder(boolean jackpotOnly) {
-        SortedContainer<Integer, User> sortedUsers = getSortedUsers(jackpotOnly);
-        return createLadder(sortedUsers);
-    }
 
-    private SortedContainer<Integer, User> getSortedUsers(boolean jackpotOnly) {
         List<User> users = jackpotOnly ? userRepository.findByWagerGreaterThan(BigDecimal.ZERO) : userRepository.findAll();
         SortedContainer<Integer, User> sortedUsers = new SortedContainer<>();
         for (User user : users) {
             sortedUsers.put(calculateService.getPoints(user), user);
         }
-        return sortedUsers;
-    }
-
-    private List<RankDto> createLadder(SortedContainer<Integer, User> sortedUsers) {
 
         List<RankDto> ladder = new ArrayList<>();
 
@@ -50,7 +42,7 @@ public class LadderService {
             ladder.add(RankDto.builder()
                 .user(entry.getValue())
                 .points(points)
-                .points(previousPoints != points ? position : null)
+                .position(previousPoints != points ? position : null)
                 .build());
             previousPoints = points;
             position++;
