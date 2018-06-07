@@ -3,8 +3,8 @@
 angular.module('predictrApp')
   .filter('myDate', function($filter, $translate) {
     return function(timestamp) {
-      let dateString = $filter('amDateFormat')(timestamp * 1000, 'lll z');
-      return timezoneTranslator($translate, dateString);
+      var date = $filter('amDateFormat')(timestamp * 1000, 'lll z');
+      return timezoneTranslator($translate, date);
     };
   })
   .filter('myDateShort', function($filter) {
@@ -14,15 +14,15 @@ angular.module('predictrApp')
   })
   .filter('myDateLong', function($filter, $translate) {
     return function(timestamp) {
-      let dateString = $filter('amDateFormat')(timestamp * 1000, 'll LTS z');
-      return timezoneTranslator($translate, dateString);
+      var date = $filter('amDateFormat')(timestamp * 1000, 'll LTS z');
+      return timezoneTranslator($translate, date);
     };
   })
   .filter('playTime', function() {
     return function(timestamp) {
-      let diffSeconds = Date.now() / 1000 - timestamp;
-      let diffMinutes = Math.floor(diffSeconds / 60);
-      let diffHours = Math.floor(diffMinutes / 60);
+      var diffSeconds = Date.now() / 1000 - timestamp;
+      var diffMinutes = Math.floor(diffSeconds / 60);
+      var diffHours = Math.floor(diffMinutes / 60);
       return diffHours + ':' + ('0' + (diffMinutes - diffHours * 60)).slice(-2) + 'h';
     };
   })
@@ -37,11 +37,11 @@ angular.module('predictrApp')
     };
   });
 
-let timezoneTranslator = function($translate, dateString) {
+var timezoneTranslator = function($translate, date) {
   switch($translate.use()) {
     case 'de':
-      return dateString.replace(new RegExp("CEST", 'g'), "MESZ");
+      return date.replace(new RegExp("CEST", 'g'), "MESZ");
     default:
-      return dateString;
+      return date;
   }
 };
