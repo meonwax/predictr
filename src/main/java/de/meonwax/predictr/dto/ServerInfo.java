@@ -6,7 +6,8 @@ import de.meonwax.predictr.settings.Settings;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.ZonedDateTime;
+import java.time.Clock;
+import java.time.Instant;
 import java.util.List;
 
 @Component
@@ -17,8 +18,10 @@ public class ServerInfo {
 
     private final ConfigService configService;
 
-    public ZonedDateTime getTime() {
-        return ZonedDateTime.now();
+    private final Clock clock;
+
+    public Instant getTime() {
+        return Instant.now(clock);
     }
 
     public String getVersion() {
