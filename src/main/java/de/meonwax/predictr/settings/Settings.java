@@ -11,8 +11,6 @@ import java.util.List;
 @Data
 public class Settings {
 
-    private String version;
-
     private String rememberMeKey;
 
     private List<String> pagesBlacklist;

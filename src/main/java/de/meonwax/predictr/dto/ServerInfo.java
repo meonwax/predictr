@@ -5,6 +5,7 @@ import de.meonwax.predictr.service.ConfigService;
 import de.meonwax.predictr.settings.Settings;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -25,7 +26,8 @@ public class ServerInfo {
     }
 
     public String getVersion() {
-        return settings.getVersion();
+        String version = getClass().getPackage().getImplementationVersion();
+        return StringUtils.isEmpty(version) ? "devel" : version;
     }
 
     public String getTitle() {
