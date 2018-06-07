@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.Clock;
 import java.time.Instant;
 
 @Component
@@ -20,6 +21,8 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
     private static final Logger LOGGER = LoggerFactory.getLogger(RestAuthenticationSuccessHandler.class);
 
     private final UserRepository userRepository;
+
+    private final Clock clock;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
@@ -32,7 +35,7 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         // Update last login time
         User user = userRepository.findOneByEmailIgnoringCase(email);
         if (user != null) {
-            user.setLastLoginDate(Instant.now());
+            user.setLastLoginDate(Instant.now(clock));
             userRepository.save(user);
         }
     }

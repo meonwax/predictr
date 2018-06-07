@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +26,15 @@ public class BetService {
 
     private final CalculationService calculationService;
 
+    private final Clock clock;
+
     public void update(User user, List<BetDto> betDtos) {
         List<Bet> bets = new ArrayList<>();
         for (BetDto betDto : betDtos) {
             Optional<Game> game = gameRepository.findById(betDto.getGame().getId());
             if (game.isPresent()) {
                 // Prevent saving if game has already started
-                if (game.get().getKickoffTime().isAfter(Instant.now())) {
+                if (game.get().getKickoffTime().isAfter(Instant.now(clock))) {
                     Bet bet = betRepository.findOneByUserAndGame(user, game.get());
                     if (bet == null) {
                         bet = new Bet();
@@ -50,7 +53,7 @@ public class BetService {
         Optional<Game> game = gameRepository.findById(gameId);
 
         // Only return data if game has already started
-        if (!game.isPresent() || game.get().getKickoffTime().isAfter(Instant.now())) {
+        if (!game.isPresent() || game.get().getKickoffTime().isAfter(Instant.now(clock))) {
             return Optional.empty();
         }
 

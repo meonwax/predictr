@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.*;
 
@@ -24,6 +25,8 @@ public class GameService {
     private final GroupRepository groupRepository;
 
     private final CalculationService calculationService;
+
+    private final Clock clock;
 
     public List<Game> getAll() {
         return gameRepository.findAll();
@@ -42,11 +45,11 @@ public class GameService {
     }
 
     public List<Game> getUpcoming() {
-        return gameRepository.findByKickoffTimeAfterOrderByKickoffTime(PageRequest.of(0, 5), Instant.now());
+        return gameRepository.findByKickoffTimeAfterOrderByKickoffTime(PageRequest.of(0, 5), Instant.now(clock));
     }
 
     public List<Game> getRunning() {
-        return gameRepository.findByKickoffTimeBeforeAndScoreHomeIsNullAndScoreAwayIsNullOrderByKickoffTime(Instant.now());
+        return gameRepository.findByKickoffTimeBeforeAndScoreHomeIsNullAndScoreAwayIsNullOrderByKickoffTime(Instant.now(clock));
     }
 
     public Map<String, Long> getProgress() {

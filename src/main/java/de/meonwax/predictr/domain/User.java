@@ -31,11 +31,11 @@ public class User implements UserDetails {
     @CreatedDate
     @NotNull
     @Column(nullable = false)
-    private Instant createdDate = Instant.now();
+    private Instant createdDate;
 
     @NotNull
     @Column(nullable = false)
-    private Instant lastModifiedDate = Instant.now();
+    private Instant lastModifiedDate;
 
     private Instant lastLoginDate;
 

@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +26,15 @@ public class AnswerService {
 
     private final CalculationService calculationService;
 
+    private final Clock clock;
+
     public void update(User user, List<AnswerDto> answerDtos) {
         List<Answer> answers = new ArrayList<>();
         for (AnswerDto answerDto : answerDtos) {
             questionRepository.findById(answerDto.getQuestion().getId())
                 .ifPresent(question -> {
                     // Prevent saving if deadline has already passed
-                    if (question.getDeadline().isAfter(Instant.now())) {
+                    if (question.getDeadline().isAfter(Instant.now(clock))) {
                         Answer answer = answerRepository.findOneByUserAndQuestion(user, question);
                         if (answer == null) {
                             answer = new Answer();
@@ -51,7 +54,7 @@ public class AnswerService {
         Optional<Question> question = questionRepository.findById(questionId);
 
         // Only return data if deadline has already passed
-        if (!question.isPresent() || question.get().getDeadline().isAfter(Instant.now())) {
+        if (!question.isPresent() || question.get().getDeadline().isAfter(Instant.now(clock))) {
             return Optional.empty();
         }
 

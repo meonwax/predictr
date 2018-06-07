@@ -9,6 +9,7 @@ import de.meonwax.predictr.repository.BetRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
@@ -24,16 +25,18 @@ public class CalculationService {
 
     private final AnswerRepository answerRepository;
 
+    private final Clock clock;
+
     int getPoints(User user) {
 
         int points = 0;
 
-        List<Bet> bets = betRepository.findByUserAndGameKickoffTimeBefore(user, Instant.now());
+        List<Bet> bets = betRepository.findByUserAndGameKickoffTimeBefore(user, Instant.now(clock));
         for (Bet bet : bets) {
             points += calculate(bet);
         }
 
-        List<Answer> answers = answerRepository.findByUserAndQuestionDeadlineBefore(user, Instant.now());
+        List<Answer> answers = answerRepository.findByUserAndQuestionDeadlineBefore(user, Instant.now(clock));
         for (Answer answer : answers) {
             points += calculate(answer);
         }
@@ -52,7 +55,6 @@ public class CalculationService {
         Integer resultScoreHome = bet.getGame().getScoreHome();
         Integer resultScoreAway = bet.getGame().getScoreAway();
 
-        // TODO: Implement this check in a JPA custom query
         if (Stream.of(betScoreHome, betScoreAway, resultScoreHome, resultScoreAway).allMatch(Objects::nonNull)) {
 
             Config config = configService.getConfig();

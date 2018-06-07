@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.time.Clock;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -51,6 +52,8 @@ public class UserService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final Clock clock;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         if (email.length() > 0) {
@@ -74,6 +77,8 @@ public class UserService implements UserDetailsService {
 
     public boolean registerUser(UserDto userDto) {
         User user = new User();
+        user.setCreatedDate(Instant.now(clock));
+        user.setLastModifiedDate(Instant.now(clock));
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -92,7 +97,7 @@ public class UserService implements UserDetailsService {
     public User updateUser(UserDataDto userDataDto, User user) {
         user.setName(userDataDto.getName());
         user.setPreferredLanguage(userDataDto.getPreferredLanguage());
-        user.setLastModifiedDate(Instant.now());
+        user.setLastModifiedDate(Instant.now(clock));
         userRepository.save(user);
         return user;
     }
@@ -107,7 +112,7 @@ public class UserService implements UserDetailsService {
 
     private void changePassword(String newPassword, User user) {
         user.setPassword(passwordEncoder.encode(newPassword));
-        user.setLastModifiedDate(Instant.now());
+        user.setLastModifiedDate(Instant.now(clock));
         userRepository.save(user);
     }
 
