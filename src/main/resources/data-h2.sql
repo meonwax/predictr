@@ -53,18 +53,18 @@ INSERT INTO `team` (`id`, `group_id`) VALUES
   ('jpn', 'h');
 
 INSERT INTO `venue` (`id`, `stadium`, `city`) VALUES
-  (1, 'Luzhniki Stadium', 'Moscow'),
-  (2, 'Otkrytiye Arena', 'Moscow'),
-  (3, 'Krestovsky Stadium', 'Saint Petersburg'),
-  (4, 'Kaliningrad Stadium', 'Kaliningrad'),
-  (5, 'Kazan Arena', 'Kazan'),
-  (6, 'Nizhny Novgorod Stadium', 'Nizhny Novgorod'),
-  (7, 'Cosmos Arena', 'Samara'),
-  (8, 'Volgograd Arena', 'Volgograd'),
-  (9, 'Mordovia Arena', 'Saransk'),
-  (10, 'Rostov Arena', 'Rostov-on-Don'),
-  (11, 'Fisht Olympic Stadium', 'Sochi'),
-  (12, 'Central Stadium', 'Yekaterinburg');
+  (1, 'Luzhniki Stadium', 'mow'),
+  (2, 'Otkrytiye Arena', 'mow'),
+  (3, 'Krestovsky Stadium', 'led'),
+  (4, 'Kaliningrad Stadium', 'kgd'),
+  (5, 'Kazan Arena', 'kzn'),
+  (6, 'Nizhny Novgorod Stadium', 'goj'),
+  (7, 'Cosmos Arena', 'kuf'),
+  (8, 'Volgograd Arena', 'vog'),
+  (9, 'Mordovia Arena', 'skx'),
+  (10, 'Rostov Arena', 'rvi'),
+  (11, 'Fisht Olympic Stadium', 'aer'),
+  (12, 'Central Stadium', 'svx');
 
 INSERT INTO `game` (`id`, `kickoff_time`, `group_id`, `venue_id`, `team_home_id`, `team_away_id`) VALUES
   (1, '2018-06-14 15:00:00', 'a', 1, 'rus', 'ksa'),

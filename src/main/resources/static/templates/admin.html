@@ -28,7 +28,7 @@
                 <tr ng-repeat="game in games">
                   <td class="vert-align">{{game.id}}</td>
                   <td class="vert-align">{{game.kickoffTime | myDate}}</td>
-                  <td class="vert-align">{{game.venue.city}}</td>
+                  <td class="vert-align" translate="city.{{game.venue.city}}"></td>
                   <td class="vert-align">
                     <select class="form-control" ng-if="!hasStarted(game)" ng-model="game.teamHome.id" ng-options="team.id as 'team.' + team.id | translate for team in teams">
                       <option value="">-</option>

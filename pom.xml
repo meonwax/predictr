@@ -5,7 +5,7 @@
 
   <groupId>de.meonwax</groupId>
   <artifactId>predictr</artifactId>
-  <version>5.0.5</version>
+  <version>5.0.6</version>
   <packaging>jar</packaging>
 
   <name>Predictr</name>
@@ -99,13 +99,16 @@
               <directory>node_modules</directory>
             </fileset>
             <fileset>
-              <directory>src/main/webapp/lib</directory>
+              <directory>src/main/resources/static/lib</directory>
             </fileset>
             <fileset>
               <directory>.sass-cache</directory>
             </fileset>
             <fileset>
-              <directory>src/main/webapp/css</directory>
+              <directory>src/main/resources/static/css</directory>
+            </fileset>
+            <fileset>
+              <directory>src/main/resources/static/dist</directory>
             </fileset>
           </filesets>
         </configuration>

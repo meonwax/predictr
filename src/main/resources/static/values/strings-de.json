@@ -67,6 +67,19 @@
         "col": "Kolumbien",
         "jpn": "Japan"
     },
+    "city": {
+        "mow": "Moskau",
+        "led": "Sankt Petersburg",
+        "kgd": "Kaliningrad",
+        "kzn": "Kasan",
+        "goj": "Nischni Nowgorod",
+        "kuf": "Samara",
+        "vog": "Wolgograd",
+        "skx": "Saransk",
+        "rvi": "Rostow am Don",
+        "aer": "Sotschi",
+        "svx": "Jekaterinburg"
+    },
     "login": {
         "title": "Login",
         "loginHere": "Bitte hier anmelden:",

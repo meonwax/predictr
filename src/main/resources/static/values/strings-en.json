@@ -67,6 +67,19 @@
         "col": "Colombia",
         "jpn": "Japan"
     },
+    "city": {
+        "mow": "Moscow",
+        "led": "Saint Petersburg",
+        "kgd": "Kaliningrad",
+        "kzn": "Kazan",
+        "goj": "Nizhny Novgorod",
+        "kuf": "Samara",
+        "vog": "Volgograd",
+        "skx": "Saransk",
+        "rvi": "Rostov-on-Don",
+        "aer": "Sochi",
+        "svx": "Yekaterinburg"
+    },
     "login": {
         "title": "Login",
         "loginHere": "Please sign in here:",
