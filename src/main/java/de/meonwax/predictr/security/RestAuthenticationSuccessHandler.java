@@ -1,6 +1,5 @@
 package de.meonwax.predictr.security;
 
-import de.meonwax.predictr.domain.User;
 import de.meonwax.predictr.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -33,10 +32,10 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         clearAuthenticationAttributes(request);
 
         // Update last login time
-        User user = userRepository.findOneByEmailIgnoringCase(email);
-        if (user != null) {
-            user.setLastLoginDate(Instant.now(clock));
-            userRepository.save(user);
-        }
+        userRepository.findOneByEmailIgnoringCase(email)
+            .ifPresent(user -> {
+                user.setLastLoginDate(Instant.now(clock));
+                userRepository.save(user);
+            });
     }
 }

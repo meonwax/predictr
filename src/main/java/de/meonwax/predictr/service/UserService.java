@@ -26,8 +26,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -58,16 +57,13 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         if (email.length() > 0) {
             LOGGER.debug("Querying user with email {} from database", email);
-            User user = userRepository.findOneByEmailIgnoringCase(email);
-            if (user != null) {
-                return user;
-            }
-            throw new UsernameNotFoundException("User with email address " + email + " not found");
+            return userRepository.findOneByEmailIgnoringCase(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User with email address " + email + " not found"));
         }
         throw new UsernameNotFoundException("No email address given for user query");
     }
 
-    public User getUser(String email) {
+    public Optional<User> getUser(String email) {
         return userRepository.findOneByEmailIgnoringCase(email);
     }
 
@@ -121,19 +117,19 @@ public class UserService implements UserDetailsService {
         LOGGER.info("Requesting password reset for email: {}", email);
 
         // Check for existing user
-        User user = userRepository.findOneByEmailIgnoringCase(email);
-        if (user == null) {
+        Optional<User> user = userRepository.findOneByEmailIgnoringCase(email);
+        if (!user.isPresent()) {
             LOGGER.error("Failed: user not found.");
             return false;
         }
 
         // Delete possibly existing tokens first
-        if (user.getPasswordResetToken() != null) {
-            passwordResetTokenRepository.delete(user.getPasswordResetToken());
+        if (user.get().getPasswordResetToken() != null) {
+            passwordResetTokenRepository.delete(user.get().getPasswordResetToken());
         }
 
         // Create new reset token
-        PasswordResetToken token = new PasswordResetToken(user);
+        PasswordResetToken token = new PasswordResetToken(user.get());
         passwordResetTokenRepository.save(token);
 
         // Build the confirm URL
@@ -148,7 +144,7 @@ public class UserService implements UserDetailsService {
 
         // Send URL to user
         Config config = configService.getConfig();
-        if (mailService.send(email, config.getTitle() + ": " + REQUEST_TITLE, String.format(REQUEST_MESSAGE, user.getName(), url, config.getOwner()))) {
+        if (mailService.send(email, config.getTitle() + ": " + REQUEST_TITLE, String.format(REQUEST_MESSAGE, user.get().getName(), url, config.getOwner()))) {
             LOGGER.info("Mail sent.");
         }
         return true;
@@ -156,13 +152,18 @@ public class UserService implements UserDetailsService {
 
     public void confirmPasswordReset(String email, String token) throws PasswordResetException {
 
-        PasswordResetToken passwordResetToken = passwordResetTokenRepository.findOneByValue(token);
-        User user = userRepository.findOneByEmailIgnoringCase(email);
+        Optional<PasswordResetToken> passwordResetTokenOptional = passwordResetTokenRepository.findOneByValue(token);
+        Optional<User> userOptional = userRepository.findOneByEmailIgnoringCase(email);
 
         // Check for correct params
-        if (Stream.of(passwordResetToken, user).anyMatch(Objects::isNull)) {
-            throw new PasswordResetException("Email or token not found.");
+        if (!passwordResetTokenOptional.isPresent()) {
+            throw new PasswordResetException("Token not found.");
         }
+        if (!userOptional.isPresent()) {
+            throw new PasswordResetException("Email not found.");
+        }
+        PasswordResetToken passwordResetToken = passwordResetTokenOptional.get();
+        User user = userOptional.get();
 
         // Check for correct user
         if (!passwordResetToken.getUser().equals(user)) {

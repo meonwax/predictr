@@ -61,7 +61,9 @@ public class UserController {
 
     @RequestMapping(value = "/users/account", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getAccount(@AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(userService.getUser(user.getEmail()));
+        return userService.getUser(user.getEmail())
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @RequestMapping(value = "/users/account", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

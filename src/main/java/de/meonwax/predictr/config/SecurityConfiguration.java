@@ -47,7 +47,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authenticated()
 
             .and().csrf().disable()
-            //.and().addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
 
             .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
 

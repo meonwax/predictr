@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
@@ -25,9 +26,9 @@ public class CustomPersistentTokenRepository implements PersistentTokenRepositor
     @Override
     public void createNewToken(PersistentRememberMeToken token) {
         RememberMeToken rememberMeToken = new RememberMeToken();
-        User user = userRepository.findOneByEmailIgnoringCase(token.getUsername());
-        if (user != null) {
-            rememberMeToken.setUser(user);
+        Optional<User> user = userRepository.findOneByEmailIgnoringCase(token.getUsername());
+        if (user.isPresent()) {
+            rememberMeToken.setUser(user.get());
             rememberMeToken.setSeries(token.getSeries());
             rememberMeToken.setValue(token.getTokenValue());
             rememberMeToken.setDate(token.getDate());
@@ -64,10 +65,11 @@ public class CustomPersistentTokenRepository implements PersistentTokenRepositor
     }
 
     @Override
+    @Transactional
     public void removeUserTokens(String username) {
-        User user = userRepository.findOneByEmailIgnoringCase(username);
-        if (user != null) {
-            rememberMeTokenRepository.deleteByUser(user);
+        Optional<User> user = userRepository.findOneByEmailIgnoringCase(username);
+        if (user.isPresent()) {
+            rememberMeTokenRepository.deleteByUser(user.get());
             log.debug("Remember-me token for user {} deleted.", username);
         } else {
             log.warn("Error deleting remember-me token. User {} not found in database.", username);

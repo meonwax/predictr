@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -18,5 +19,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT SUM(wager) FROM user", nativeQuery = true)
     BigDecimal getFullJackpot();
 
-    User findOneByEmailIgnoringCase(String email);
+    Optional<User> findOneByEmailIgnoringCase(String email);
 }
