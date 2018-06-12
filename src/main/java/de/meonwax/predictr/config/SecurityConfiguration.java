@@ -5,17 +5,16 @@ import de.meonwax.predictr.security.RestAuthenticationFailureHandler;
 import de.meonwax.predictr.security.RestAuthenticationSuccessHandler;
 import de.meonwax.predictr.security.RestLogoutSuccessHandler;
 import de.meonwax.predictr.service.UserService;
+import de.meonwax.predictr.settings.Settings;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-@Configuration
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
-//@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 @AllArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -27,17 +26,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final RestLogoutSuccessHandler logoutSuccessHandler;
 
+    private final PersistentTokenRepository tokenRepository;
+
     private final UserService userService;
 
-    private final PasswordEncoder passwordEncoder;
-
-//    private final RememberMeServices rememberMeServices;
-
-//    private final Settings settings;
-
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
-    }
+    private final Settings settings;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -70,11 +63,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .logoutUrl("/api/users/logout")
             .logoutSuccessHandler(logoutSuccessHandler)
             .clearAuthentication(false)
-            .deleteCookies("JSESSIONID");
+            .deleteCookies("JSESSIONID")
 
-//            .and().rememberMe()
-//            .rememberMeServices(rememberMeServices)
-//            .rememberMeParameter("remember-me")
-//            .key(settings.getRememberMeKey());
+            .and().rememberMe()
+            .rememberMeParameter("remember-me")
+            .tokenRepository(tokenRepository)
+            .key(settings.getRememberMeKey())
+            .userDetailsService(userService);
     }
 }

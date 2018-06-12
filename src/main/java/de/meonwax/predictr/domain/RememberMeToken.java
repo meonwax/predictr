@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Entity
 public class RememberMeToken {
@@ -17,7 +17,7 @@ public class RememberMeToken {
     @Column(unique = true, nullable = false)
     private String value;
 
-    private ZonedDateTime date;
+    private Date date;
 
     @ManyToOne
     @JsonIgnore
@@ -39,11 +39,11 @@ public class RememberMeToken {
         this.value = value;
     }
 
-    public ZonedDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

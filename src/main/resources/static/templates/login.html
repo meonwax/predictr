@@ -20,11 +20,11 @@
               <input type="password" class="form-control" tabindex="2" required placeholder="{{'login.password' | translate}}" ng-model="credentials.password">
             </div>
             <div class="checkbox">
-              <!--<label>-->
-                <!--<input type="checkbox" tabindex="3" ng-model="credentials.rememberMe">-->
-                <!--<span translate="login.rememberMe"></span>-->
-              <!--</label>-->
-              <!--<span class="hidden-xs">·</span>-->
+              <label>
+                <input type="checkbox" tabindex="3" ng-model="credentials.rememberMe">
+                <span translate="login.rememberMe"></span>
+              </label>
+              <span class="hidden-xs">·</span>
               <a class="hidden-xs" href="#/lostpwd" tabindex="5" translate="login.lostPassword"></a>
             </div>
             <button type="submit" class="btn btn-success" tabindex="4" ladda="sending" data-style="zoom-in" ng-disabled="form.$invalid">
