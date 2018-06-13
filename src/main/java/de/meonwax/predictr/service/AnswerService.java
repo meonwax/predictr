@@ -44,9 +44,8 @@ public class AnswerService {
                         answers.add(answer);
                     }
                 });
-
-            answerRepository.saveAll(answers);
         }
+        answerRepository.saveAll(answers);
     }
 
     public Optional<List<AnswerDto>> getOther(User ownUser, Long questionId) {
