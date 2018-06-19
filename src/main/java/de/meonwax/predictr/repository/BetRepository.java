@@ -8,11 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BetRepository extends JpaRepository<Bet, Long> {
 
     List<Bet> findByUserAndGameKickoffTimeBefore(User user, Instant dateTime);
 
-    Bet findOneByUserAndGame(User user, Game game);
+    Optional<Bet> findOneByUserAndGame(User user, Game game);
 }

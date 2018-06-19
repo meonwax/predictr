@@ -35,10 +35,9 @@ public class BetService {
             if (game.isPresent()) {
                 // Prevent saving if game has already started
                 if (game.get().getKickoffTime().isAfter(Instant.now(clock))) {
-                    Bet bet = betRepository.findOneByUserAndGame(user, game.get());
-                    if (bet == null) {
-                        bet = new Bet();
-                    }
+                    Bet bet = betRepository
+                        .findOneByUserAndGame(user, game.get())
+                        .orElse(new Bet());
                     BeanUtils.copyProperties(betDto, bet);
                     bet.setUser(user);
                     bets.add(bet);

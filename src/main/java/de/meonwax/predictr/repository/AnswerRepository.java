@@ -8,11 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     List<Answer> findByUserAndQuestionDeadlineBefore(User user, Instant dateTime);
 
-    Answer findOneByUserAndQuestion(User user, Question question);
+    Optional<Answer> findOneByUserAndQuestion(User user, Question question);
 }

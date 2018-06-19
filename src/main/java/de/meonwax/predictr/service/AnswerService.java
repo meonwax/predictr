@@ -35,10 +35,9 @@ public class AnswerService {
                 .ifPresent(question -> {
                     // Prevent saving if deadline has already passed
                     if (question.getDeadline().isAfter(Instant.now(clock))) {
-                        Answer answer = answerRepository.findOneByUserAndQuestion(user, question);
-                        if (answer == null) {
-                            answer = new Answer();
-                        }
+                        Answer answer = answerRepository
+                            .findOneByUserAndQuestion(user, question)
+                            .orElse(new Answer());
                         BeanUtils.copyProperties(answerDto, answer);
                         answer.setUser(user);
                         answers.add(answer);
