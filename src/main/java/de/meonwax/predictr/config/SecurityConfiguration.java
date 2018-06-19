@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -25,8 +24,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final RestAuthenticationFailureHandler authenticationFailureHandler;
 
     private final RestLogoutSuccessHandler logoutSuccessHandler;
-
-    private final PersistentTokenRepository tokenRepository;
 
     private final UserService userService;
 
@@ -66,7 +63,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
             .and().rememberMe()
             .rememberMeParameter("remember-me")
-            .tokenRepository(tokenRepository)
             .tokenValiditySeconds(60 * 60 * 24 * 7)
             .key(settings.getRememberMeKey())
             .userDetailsService(userService);

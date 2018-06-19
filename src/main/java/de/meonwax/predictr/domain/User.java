@@ -53,10 +53,6 @@ public class User implements UserDetails {
     @JsonIgnore
     private PasswordResetToken passwordResetToken;
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private Set<RememberMeToken> rememberMeTokens;
-
     @NotNull
     @Column(nullable = false)
     private String name;
@@ -143,14 +139,6 @@ public class User implements UserDetails {
 
     public void setPasswordResetToken(PasswordResetToken passwordResetToken) {
         this.passwordResetToken = passwordResetToken;
-    }
-
-    public Set<RememberMeToken> getRememberMeTokens() {
-        return rememberMeTokens;
-    }
-
-    public void setRememberMeTokens(Set<RememberMeToken> rememberMeTokens) {
-        this.rememberMeTokens = rememberMeTokens;
     }
 
     public String getName() {
