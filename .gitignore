@@ -11,15 +11,16 @@
 
 # Third party libraries
 node_modules/
-src/main/resources/static/lib/
+src/main/webapp/lib/
 
 # Build
 target/
 .sass-cache/
 .tmp/
-src/main/resources/static/dist/
+src/main/webapp/dist/
+src/main/webapp/css/
+src/main/webapp/images/sprites/
 
 # Others
 TODO.md
-src/main/resources/static/css/
-src/main/resources/static/images/sprites/
+package-lock.json

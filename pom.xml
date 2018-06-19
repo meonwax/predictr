@@ -5,7 +5,7 @@
 
   <groupId>de.meonwax</groupId>
   <artifactId>predictr</artifactId>
-  <version>5.0.6</version>
+  <version>5.0.8</version>
   <packaging>jar</packaging>
 
   <name>Predictr</name>
@@ -84,8 +84,8 @@
   </dependencies>
 
   <build>
-    <plugins>
 
+    <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
@@ -98,20 +98,29 @@
             <fileset>
               <directory>node_modules</directory>
             </fileset>
-            <fileset>
-              <directory>src/main/resources/static/lib</directory>
-            </fileset>
-            <fileset>
-              <directory>.sass-cache</directory>
-            </fileset>
-            <fileset>
-              <directory>src/main/resources/static/css</directory>
-            </fileset>
-            <fileset>
-              <directory>src/main/resources/static/dist</directory>
-            </fileset>
           </filesets>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/classes/static</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/webapp/dist</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
@@ -120,7 +129,7 @@
         <executions>
           <execution>
             <id>exec-npm-install</id>
-            <phase>prepare-package</phase>
+            <phase>generate-resources</phase>
             <configuration>
               <executable>npm</executable>
               <arguments>
@@ -133,7 +142,7 @@
           </execution>
           <execution>
             <id>exec-bower-install</id>
-            <phase>prepare-package</phase>
+            <phase>generate-resources</phase>
             <configuration>
               <executable>bower</executable>
               <arguments>
@@ -146,11 +155,24 @@
           </execution>
           <execution>
             <id>exec-grunt-build</id>
-            <phase>prepare-package</phase>
+            <phase>generate-resources</phase>
             <configuration>
               <executable>grunt</executable>
               <arguments>
                 <argument>build</argument>
+              </arguments>
+            </configuration>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>exec-grunt-clean</id>
+            <phase>pre-clean</phase>
+            <configuration>
+              <executable>grunt</executable>
+              <arguments>
+                <argument>clean</argument>
               </arguments>
             </configuration>
             <goals>
@@ -210,8 +232,7 @@
           </buildArgs>
         </configuration>
       </plugin>
-
     </plugins>
-  </build>
 
+  </build>
 </project>
