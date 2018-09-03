@@ -9,35 +9,48 @@ Data for 2018 FIFA World Cup included.
 
 * Install the required node modules globally:
 
-        npm install -g bower grunt-cli
+      npm install -g bower grunt-cli
 
 * For compiling SCSS to CSS, the RubyGem `sass` is also needed:
 
-        gem install sass
+      gem install sass
 
 
 ## Development
 
 * Install the project dependencies:
 
-        npm install
-        bower install
+      npm install
+      bower install
 
 * Run with development profile:
 
-        mvn spring-boot:run
+      mvn spring-boot:run
 
 * Open up a new terminal and launch the node web server:
 
-        grunt serve
+      grunt serve
 
 * Open [http://localhost:3000](http://localhost:3000) in a web browser.
 
 ## Production
 
-* Build the production war using Maven:
+To build the Docker image, be sure that local docker daemon is installed and running to build the image.
+Your shell user also needs to be a member of the `docker` group.
 
-        mvn clean package
+##### Login to registry (only needed once)
+
+      docker login docker.io
+      
+##### Build the image
+
+      mvn dockerfile:build
+      mvn dockerfile:tag@tag-version
+
+##### Push to docker registry
+
+      mvn dockerfile:push@push-latest
+      mvn dockerfile:push@push-version
 
 * For database tasks, i recommend using a database manipulating tool like [Adminer](https://www.adminer.org) or [phpMyAdmin](https://www.phpmyadmin.net).
 
@@ -45,15 +58,15 @@ Data for 2018 FIFA World Cup included.
 
 * Run with production profile (replace credentials):
 
-        java -jar target/predictr*.war \
-          --spring.profiles.active=production \
-          --spring.datasource.url=jdbc:mysql://dbhost/dbname \
-          --spring.datasource.username=dbuser \
-          --spring.datasource.password=dbpassword \
-          --spring.mail.host=mailserver \
-          --spring.mail.username=mailuser \
-          --spring.mail.password=mailpassword
-          --predictr.adminEmail=admin@example.com
+      java -jar target/predictr*.war \
+        --spring.profiles.active=production \
+        --spring.datasource.url=jdbc:mysql://dbhost/dbname \
+        --spring.datasource.username=dbuser \
+        --spring.datasource.password=dbpassword \
+        --spring.mail.host=mailserver \
+        --spring.mail.username=mailuser \
+        --spring.mail.password=mailpassword
+        --predictr.adminEmail=admin@example.com
 
 * Open [http://localhost:8080/#/register](http://localhost:8080/#/register) in a web browser and register a new user.
 
