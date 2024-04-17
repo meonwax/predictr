@@ -1,26 +1,15 @@
-# Eclipse
-.project
-.classpath
-.settings/
-
-# IntelliJ
+Thumbs.db
+.DS_Store
+.gradle
+build/
+target/
+out/
+.micronaut/
 .idea
-*.iws
 *.iml
 *.ipr
-
-# Third party libraries
-node_modules/
-src/main/webapp/lib/
-
-# Build
-target/
-.sass-cache/
-.tmp/
-src/main/webapp/dist/
-src/main/webapp/css/
-src/main/webapp/images/sprites/
-
-# Others
-TODO.md
-package-lock.json
+*.iws
+.project
+.settings
+.classpath
+.factorypath
