@@ -1,0 +1,20 @@
+micronaut:
+  application:
+    name: predictr
+  server:
+    port: 8081
+
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/predictr
+    username: predictr
+    password: s3cret
+    driverClassName: org.postgresql.Driver
+    dialect: POSTGRES
+    schema-generate: NONE
+
+liquibase:
+  enabled: true
+  datasources:
+    default:
+      change-log: 'classpath:db/liquibase-changelog.xml'

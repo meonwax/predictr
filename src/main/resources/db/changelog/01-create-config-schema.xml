@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet id="01" author="meonwax">
+    <createTable tableName="config">
+      <column name="id" type="bigserial">
+        <constraints nullable="false" unique="true" primaryKey="true"/>
+      </column>
+      <column name="title" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="owner" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="admin_email" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="show_important_message" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="points_result" type="int">
+        <constraints nullable="false"/>
+      </column>
+      <column name="points_tendency" type="int">
+        <constraints nullable="false"/>
+      </column>
+      <column name="points_tendency_spread" type="int">
+        <constraints nullable="false"/>
+      </column>
+      <column name="rules_en" type="text"/>
+      <column name="rules_de" type="text"/>
+    </createTable>
+  </changeSet>
+
+</databaseChangeLog>

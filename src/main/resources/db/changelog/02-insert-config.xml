@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet id="02" author="meonwax">
+    <insert tableName="config">
+      <column name="title">Predictr</column>
+      <column name="owner">John Doe</column>
+      <column name="admin_email">admin@example.com</column>
+      <column name="show_important_message">true</column>
+      <column name="points_result">5</column>
+      <column name="points_tendency">2</column>
+      <column name="points_tendency_spread">3</column>
+    </insert>
+  </changeSet>
+
+</databaseChangeLog>

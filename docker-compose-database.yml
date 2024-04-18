@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16.2-alpine
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: predictr
+      POSTGRES_PASSWORD: s3cret
+      POSTGRES_DB: predictr
+    ports:
+      - 5432:5432
+  adminer:
+    image: adminer:4.8.1-standalone
+    restart: always
+    ports:
+      - 9000:8080
