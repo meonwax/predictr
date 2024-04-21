@@ -1,7 +1,7 @@
 # Predictr
 
 A football prediction game.  
-Data for 2018 FIFA World Cup included.
+Data for UEFA Euro 2024 included.
 
 ## Requirements
 
@@ -76,4 +76,4 @@ Your shell user also needs to be a member of the `docker` group.
 
 ## Credits
 
-Logo image [Soccer ball and Russian flag on green grass](https://www.flickr.com/photos/30478819@N08/41620156324/) by Marco Verch
+Logo image [Euro 2024](https://www.flickr.com/photos/foto_db/53646360626/) by Tim Reckmann

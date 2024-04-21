@@ -19,7 +19,6 @@ target/
 .tmp/
 src/main/webapp/dist/
 src/main/webapp/css/
-src/main/webapp/images/sprites/
 
 # Others
 TODO.md

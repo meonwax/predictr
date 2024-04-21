@@ -1,154 +1,133 @@
 --
--- World Cup 2018 data
+-- Euro 2024 data
 --
 -- all timestamps in UTC
 --
-INSERT INTO `groups` (`id`, `priority`) VALUES
-  ('a', 0),
-  ('b', 1),
-  ('c', 2),
-  ('d', 3),
-  ('e', 4),
-  ('f', 5),
-  ('g', 6),
-  ('h', 7),
-  ('8', 8),
-  ('4', 9),
-  ('2', 10),
-  ('3', 11),
-  ('1', 12);
+INSERT INTO `groups` (`id`, `priority`)
+VALUES ('a', 0),
+       ('b', 1),
+       ('c', 2),
+       ('d', 3),
+       ('e', 4),
+       ('f', 5),
+       ('8', 6),
+       ('4', 7),
+       ('2', 8),
+       ('1', 9);
 
-INSERT INTO `team` (`id`, `group_id`) VALUES
-  ('rus', 'a'),
-  ('ksa', 'a'),
-  ('egy', 'a'),
-  ('uru', 'a'),
-  ('por', 'b'),
-  ('esp', 'b'),
-  ('mar', 'b'),
-  ('irn', 'b'),
-  ('fra', 'c'),
-  ('aus', 'c'),
-  ('per', 'c'),
-  ('den', 'c'),
-  ('arg', 'd'),
-  ('isl', 'd'),
-  ('cro', 'd'),
-  ('nga', 'd'),
-  ('bra', 'e'),
-  ('sui', 'e'),
-  ('crc', 'e'),
-  ('srb', 'e'),
-  ('ger', 'f'),
-  ('mex', 'f'),
-  ('swe', 'f'),
-  ('kor', 'f'),
-  ('bel', 'g'),
-  ('pan', 'g'),
-  ('tun', 'g'),
-  ('eng', 'g'),
-  ('pol', 'h'),
-  ('sen', 'h'),
-  ('col', 'h'),
-  ('jpn', 'h');
+INSERT INTO `team` (`id`, `group_id`)
+VALUES ('ger', 'a'),
+       ('sco', 'a'),
+       ('hun', 'a'),
+       ('sui', 'a'),
+       ('esp', 'b'),
+       ('cro', 'b'),
+       ('ita', 'b'),
+       ('alb', 'b'),
+       ('svn', 'c'),
+       ('den', 'c'),
+       ('srb', 'c'),
+       ('eng', 'c'),
+       ('pol', 'd'),
+       ('ned', 'd'),
+       ('aut', 'd'),
+       ('fra', 'd'),
+       ('bel', 'e'),
+       ('svk', 'e'),
+       ('rou', 'e'),
+       ('ukr', 'e'),
+       ('tur', 'f'),
+       ('geo', 'f'),
+       ('por', 'f'),
+       ('cze', 'f');
 
-INSERT INTO `venue` (`id`, `stadium`, `city`) VALUES
-  (1, 'Luzhniki Stadium', 'mow'),
-  (2, 'Otkrytiye Arena', 'mow'),
-  (3, 'Krestovsky Stadium', 'led'),
-  (4, 'Kaliningrad Stadium', 'kgd'),
-  (5, 'Kazan Arena', 'kzn'),
-  (6, 'Nizhny Novgorod Stadium', 'goj'),
-  (7, 'Cosmos Arena', 'kuf'),
-  (8, 'Volgograd Arena', 'vog'),
-  (9, 'Mordovia Arena', 'skx'),
-  (10, 'Rostov Arena', 'rvi'),
-  (11, 'Fisht Olympic Stadium', 'aer'),
-  (12, 'Central Stadium', 'svx');
+INSERT INTO `venue` (`id`, `stadium`, `city`)
+VALUES (1, 'Olympiastadion Berlin', 'ber'),
+       (2, 'BVB Stadion Dortmund', 'dor'),
+       (3, 'Düsseldorf Arena', 'dus'),
+       (4, 'Frankfurt Arena', 'fra'),
+       (5, 'Arena AufSchalke', 'gel'),
+       (6, 'Volksparkstadion Hamburg', 'ham'),
+       (7, 'Köln Stadion', 'col'),
+       (8, 'Leipzig Stadion', 'lzg'),
+       (9, 'München Fußball Arena', 'mun'),
+       (10, 'Stuttgart Arena', 'stu');
 
-INSERT INTO `game` (`id`, `kickoff_time`, `group_id`, `venue_id`, `team_home_id`, `team_away_id`) VALUES
-  (1, '2018-06-14 15:00:00', 'a', 1, 'rus', 'ksa'),
-  (2, '2018-06-15 12:00:00', 'a', 12, 'egy', 'uru'),
-  (17, '2018-06-19 18:00:00', 'a', 3, 'rus', 'egy'),
-  (18, '2018-06-20 15:00:00', 'a', 10, 'uru', 'ksa'),
-  (33, '2018-06-25 14:00:00', 'a', 7, 'uru', 'rus'),
-  (34, '2018-06-25 14:00:00', 'a', 8, 'ksa', 'egy'),
+INSERT INTO `game` (`id`, `kickoff_time`, `group_id`, `venue_id`, `team_home_id`, `team_away_id`)
+VALUES (1, '2024-06-14 19:00:00', 'a', 9, 'ger', 'sco'),
 
-  (3, '2018-06-15 18:00:00', 'b', 11, 'por', 'esp'),
-  (4, '2018-06-15 15:00:00', 'b', 3, 'mar', 'irn'),
-  (19, '2018-06-20 12:00:00', 'b', 1, 'por', 'mar'),
-  (20, '2018-06-20 18:00:00', 'b', 5, 'irn', 'esp'),
-  (35, '2018-06-25 18:00:00', 'b', 9, 'irn', 'por'),
-  (36, '2018-06-25 18:00:00', 'b', 4, 'esp', 'mar'),
+       (2, '2024-06-15 13:00:00', 'a', 7, 'hun', 'sui'),
+       (3, '2024-06-15 16:00:00', 'b', 1, 'esp', 'cro'),
+       (4, '2024-06-15 19:00:00', 'b', 3, 'ita', 'alb'),
 
-  (5, '2018-06-16 10:00:00', 'c', 5, 'fra', 'aus'),
-  (6, '2018-06-16 16:00:00', 'c', 9, 'per', 'den'),
-  (21, '2018-06-21 15:00:00', 'c', 12, 'fra', 'per'),
-  (22, '2018-06-21 12:00:00', 'c', 7, 'den', 'aus'),
-  (37, '2018-06-26 14:00:00', 'c', 1, 'den', 'fra'),
-  (38, '2018-06-26 15:00:00', 'c', 11, 'aus', 'per'),
+       (5, '2024-06-16 13:00:00', 'd', 6, 'pol', 'ned'),
+       (6, '2024-06-16 16:00:00', 'c', 10, 'svn', 'den'),
+       (7, '2024-06-16 19:00:00', 'c', 5, 'srb', 'eng'),
 
-  (7, '2018-06-16 13:00:00', 'd', 2, 'arg', 'isl'),
-  (8, '2018-06-16 19:00:00', 'd', 4, 'cro', 'nga'),
-  (23, '2018-06-21 18:00:00', 'd', 6, 'arg', 'cro'),
-  (24, '2018-06-22 15:00:00', 'd', 8, 'nga', 'isl'),
-  (39, '2018-06-26 18:00:00', 'd', 3, 'nga', 'arg'),
-  (40, '2018-06-26 18:00:00', 'd', 10, 'isl', 'cro'),
+       (8, '2024-06-17 13:00:00', 'e', 9, 'rou', 'ukr'),
+       (9, '2024-06-17 16:00:00', 'e', 4, 'bel', 'svk'),
+       (10, '2024-06-17 19:00:00', 'd', 3, 'aut', 'fra'),
 
-  (9, '2018-06-17 18:00:00', 'e', 10, 'bra', 'sui'),
-  (10, '2018-06-17 12:00:00', 'e', 7, 'crc', 'srb'),
-  (25, '2018-06-22 12:00:00', 'e', 3, 'bra', 'crc'),
-  (26, '2018-06-22 18:00:00', 'e', 4, 'srb', 'sui'),
-  (41, '2018-06-27 18:00:00', 'e', 2, 'srb', 'bra'),
-  (42, '2018-06-27 18:00:00', 'e', 6, 'sui', 'crc'),
+       (11, '2024-06-18 16:00:00', 'f', 1, 'tur', 'geo'),
+       (12, '2024-06-18 19:00:00', 'f', 6, 'por', 'cze'),
 
-  (11, '2018-06-17 15:00:00', 'f', 1, 'ger', 'mex'),
-  (12, '2018-06-18 12:00:00', 'f', 6, 'swe', 'kor'),
-  (27, '2018-06-23 18:00:00', 'f', 11, 'ger', 'swe'),
-  (28, '2018-06-23 15:00:00', 'f', 10, 'kor', 'mex'),
-  (43, '2018-06-27 14:00:00', 'f', 5, 'kor', 'ger'),
-  (44, '2018-06-27 14:00:00', 'f', 12, 'mex', 'swe'),
+       (13, '2024-06-19 13:00:00', 'b', 6, 'cro', 'alb'),
+       (14, '2024-06-19 16:00:00', 'a', 10, 'ger', 'hun'),
+       (15, '2024-06-19 19:00:00', 'a', 7, 'sco', 'sui'),
 
-  (13, '2018-06-18 15:00:00', 'g', 11, 'bel', 'pan'),
-  (14, '2018-06-18 18:00:00', 'g', 8, 'tun', 'eng'),
-  (29, '2018-06-23 12:00:00', 'g', 2, 'bel', 'tun'),
-  (30, '2018-06-24 12:00:00', 'g', 6, 'eng', 'pan'),
-  (45, '2018-06-28 18:00:00', 'g', 4, 'eng', 'bel'),
-  (46, '2018-06-28 18:00:00', 'g', 9, 'pan', 'tun'),
+       (16, '2024-06-20 13:00:00', 'c', 9, 'svn', 'srb'),
+       (17, '2024-06-20 16:00:00', 'c', 4, 'den', 'eng'),
+       (18, '2024-06-20 19:00:00', 'b', 5, 'esp', 'ita'),
 
-  (15, '2018-06-19 15:00:00', 'h', 2, 'pol', 'sen'),
-  (16, '2018-06-19 12:00:00', 'h', 9, 'col', 'jpn'),
-  (31, '2018-06-24 15:00:00', 'h', 5, 'pol', 'col'),
-  (32, '2018-06-24 18:00:00', 'h', 12, 'jpn', 'sen'),
-  (47, '2018-06-28 14:00:00', 'h', 8, 'jpn', 'pol'),
-  (48, '2018-06-28 14:00:00', 'h', 7, 'sen', 'col'),
+       (19, '2024-06-21 13:00:00', 'e', 3, 'svk', 'ukr'),
+       (20, '2024-06-21 16:00:00', 'd', 1, 'pol', 'aut'),
+       (21, '2024-06-21 19:00:00', 'd', 8, 'ned', 'fra'),
 
-  (49, '2018-06-30 14:00:00', '8', 11, null, null),
-  (50, '2018-06-30 18:00:00', '8', 5, null, null),
-  (51, '2018-07-01 14:00:00', '8', 1, null, null),
-  (52, '2018-07-01 18:00:00', '8', 6, null, null),
-  (53, '2018-07-02 14:00:00', '8', 7, null, null),
-  (54, '2018-07-02 18:00:00', '8', 10, null, null),
-  (55, '2018-07-03 14:00:00', '8', 3, null, null),
-  (56, '2018-07-03 18:00:00', '8', 2, null, null),
+       (22, '2024-06-22 13:00:00', 'f', 6, 'geo', 'cze'),
+       (23, '2024-06-22 16:00:00', 'f', 2, 'tur', 'por'),
+       (24, '2024-06-22 19:00:00', 'e', 7, 'bel', 'rou'),
 
-  (57, '2018-07-06 14:00:00', '4', 6, null, null),
-  (58, '2018-07-06 18:00:00', '4', 5, null, null),
-  (59, '2018-07-07 18:00:00', '4', 11, null, null),
-  (60, '2018-07-07 14:00:00', '4', 7, null, null),
+       (25, '2024-06-23 19:00:00', 'a', 4, 'sui', 'ger'),
+       (26, '2024-06-23 19:00:00', 'a', 10, 'sco', 'hun'),
 
-  (61, '2018-07-10 18:00:00', '2', 3, null, null),
-  (62, '2018-07-11 18:00:00', '2', 1, null, null),
+       (27, '2024-06-24 19:00:00', 'b', 8, 'cro', 'ita'),
+       (28, '2024-06-24 19:00:00', 'b', 3, 'alb', 'esp'),
 
-  (63, '2018-07-14 14:00:00', '3', 3, null, null),
+       (29, '2024-06-25 16:00:00', 'd', 1, 'ned', 'aut'),
+       (30, '2024-06-25 16:00:00', 'd', 2, 'fra', 'pol'),
+       (31, '2024-06-25 19:00:00', 'c', 7, 'eng', 'svn'),
+       (32, '2024-06-25 19:00:00', 'c', 9, 'den', 'srb'),
 
-  (64, '2018-07-15 15:00:00', '1', 1, null, null);
+       (33, '2024-06-26 16:00:00', 'e', 4, 'svk', 'rou'),
+       (34, '2024-06-26 16:00:00', 'e', 10, 'ukr', 'bel'),
+       (35, '2024-06-26 19:00:00', 'f', 6, 'cze', 'tur'),
+       (36, '2024-06-26 19:00:00', 'f', 5, 'geo', 'por'),
+
+       (37, '2024-06-29 16:00:00', '8', 1, null, null),
+       (38, '2024-06-29 19:00:00', '8', 2, null, null),
+       (39, '2024-06-30 16:00:00', '8', 5, null, null),
+       (40, '2024-06-30 19:00:00', '8', 7, null, null),
+       (41, '2024-07-01 16:00:00', '8', 3, null, null),
+       (42, '2024-07-01 19:00:00', '8', 4, null, null),
+       (43, '2024-07-02 16:00:00', '8', 9, null, null),
+       (44, '2024-07-02 19:00:00', '8', 8, null, null),
+
+       (45, '2024-07-05 16:00:00', '4', 10, null, null),
+       (46, '2024-07-05 19:00:00', '4', 6, null, null),
+       (47, '2024-07-06 16:00:00', '4', 3, null, null),
+       (48, '2024-07-06 19:00:00', '4', 1, null, null),
+
+       (49, '2024-07-09 19:00:00', '2', 9, null, null),
+       (50, '2024-07-10 19:00:00', '2', 2, null, null),
+
+       (51, '2024-07-14 19:00:00', '1', 1, null, null);
 
 --
 -- Default configuration
 --
-INSERT INTO `config` (`id`, `title`, `owner`, `admin_email`, `show_important_message`, `points_result`, `points_tendency`, `points_tendency_spread`) VALUES
-  (1, 'Predictr', 'John Doe', 'admin@example.com', true, 5, 2, 3);
+INSERT INTO `config` (`id`, `title`, `owner`, `admin_email`, `show_important_message`, `points_result`,
+                      `points_tendency`, `points_tendency_spread`)
+VALUES (1, 'Predictr', 'John Doe', 'admin@example.com', true, 5, 2, 3);
 
 UPDATE `config` SET
   `rules_de` =
@@ -240,49 +219,53 @@ Happy betting!
 --
 
 -- Password: 123vorbei
-INSERT INTO `user` (`password`, `name`, `email`, `role`, `wager`, `created_date`, `last_modified_date`, `avatar_id`) VALUES
-  ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Admin', 'admin@example.com', 'ROLE_ADMIN', 0, '2016-02-01', '2016-02-01', NULL),
-  ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Sid Rowland', 'sid@example.com', 'ROLE_USER', 5, '2018-01-03', '2018-01-05', NULL),
-  ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Paula Marsh', 'paula@example.com', 'ROLE_USER', 5, '2018-03-21', '2018-04-01', NULL),
-  ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Johanna Silva', 'johanna@example.com', 'ROLE_USER', 0, '2017-10-11', '2017-12-24', NULL);
+INSERT INTO `user` (`password`, `name`, `email`, `role`, `wager`, `created_date`, `last_modified_date`, `avatar_id`)
+VALUES ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Admin', 'admin@example.com', 'ROLE_ADMIN', 0,
+        '1970-01-01', '1970-01-01', NULL),
+       ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Sid Rowland', 'sid@example.com', 'ROLE_USER',
+        5, '2024-01-03', '2024-01-04', NULL),
+       ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Paula Marsh', 'paula@example.com', 'ROLE_USER',
+        5, '2024-03-21', '2024-04-15', NULL),
+       ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Johanna Silva', 'johanna@example.com',
+        'ROLE_USER', 0, '2023-10-11', '2023-12-24', NULL);
 
-INSERT INTO `shout` (`date`, `user_id`, `message`) VALUES
-  ('2015-07-15 22:19:15', 2, 'Nulla aliquet porttitor lacus luctus'),
-  ('2015-07-15 14:34:46', 4, 'Semper feugiat nibh sed pulvinar proin gravida hendrerit lectus'),
-  ('2015-07-15 12:19:10', 3, 'Fermentum odio eu feugiat pretium nibh ipsum consequat'),
-  ('2015-07-15 12:18:44', 3, 'Convallis a cras semper'),
-  ('2015-07-14 17:40:52', 3, 'Yes'),
-  ('2015-07-14 09:33:06', 1, 'Orci sagittis eu volutpat odio facilisis mauris sit amet :)'),
-  ('2015-07-14 01:22:40', 3, 'Dolor sed viverra ipsum.'),
-  ('2015-06-17 22:35:59', 2, 'Blandit volutpat maecenas volutpat blandit aliquam etiam erat'),
-  ('2015-05-26 22:28:52', 4, 'Vitae suscipit tellus mauris a diam maecenas sed enim'),
-  ('2014-07-15 22:19:15', 2, 'Nulla aliquet porttitor lacus luctus'),
-  ('2014-07-15 14:34:46', 4, 'Semper feugiat nibh sed pulvinar proin gravida hendrerit lectus'),
-  ('2014-07-15 12:19:10', 3, 'Fermentum odio eu feugiat pretium nibh ipsum consequat'),
-  ('2014-07-15 12:18:44', 3, 'Convallis a cras semper'),
-  ('2014-07-14 17:40:52', 3, 'Nope'),
-  ('2014-07-14 09:33:06', 1, 'Orci sagittis eu volutpat odio facilisis mauris sit amet :)'),
-  ('2014-07-14 01:22:40', 3, 'Dolor sed viverra ipsum.'),
-  ('2014-06-17 22:35:59', 2, 'Blandit volutpat maecenas volutpat blandit aliquam etiam erat'),
-  ('2014-05-26 22:28:52', 4, 'Vitae suscipit tellus mauris a diam maecenas sed enim');
+INSERT INTO `shout` (`date`, `user_id`, `message`)
+VALUES ('2015-07-15 22:19:15', 2, 'Nulla aliquet porttitor lacus luctus'),
+       ('2015-07-15 14:34:46', 4, 'Semper feugiat nibh sed pulvinar proin gravida hendrerit lectus'),
+       ('2015-07-15 12:19:10', 3, 'Fermentum odio eu feugiat pretium nibh ipsum consequat'),
+       ('2015-07-15 12:18:44', 3, 'Convallis a cras semper'),
+       ('2015-07-14 17:40:52', 3, 'Yes'),
+       ('2015-07-14 09:33:06', 1, 'Orci sagittis eu volutpat odio facilisis mauris sit amet :)'),
+       ('2015-07-14 01:22:40', 3, 'Dolor sed viverra ipsum.'),
+       ('2015-06-17 22:35:59', 2, 'Blandit volutpat maecenas volutpat blandit aliquam etiam erat'),
+       ('2015-05-26 22:28:52', 4, 'Vitae suscipit tellus mauris a diam maecenas sed enim'),
+       ('2014-07-15 22:19:15', 2, 'Nulla aliquet porttitor lacus luctus'),
+       ('2014-07-15 14:34:46', 4, 'Semper feugiat nibh sed pulvinar proin gravida hendrerit lectus'),
+       ('2014-07-15 12:19:10', 3, 'Fermentum odio eu feugiat pretium nibh ipsum consequat'),
+       ('2014-07-15 12:18:44', 3, 'Convallis a cras semper'),
+       ('2014-07-14 17:40:52', 3, 'Nope'),
+       ('2014-07-14 09:33:06', 1, 'Orci sagittis eu volutpat odio facilisis mauris sit amet :)'),
+       ('2014-07-14 01:22:40', 3, 'Dolor sed viverra ipsum.'),
+       ('2014-06-17 22:35:59', 2, 'Blandit volutpat maecenas volutpat blandit aliquam etiam erat'),
+       ('2014-05-26 22:28:52', 4, 'Vitae suscipit tellus mauris a diam maecenas sed enim');
 
-INSERT INTO `question` (`question`, `deadline`, `points`) VALUES
-  ('Which team will win the championship?', '2018-06-14 17:00:00', 7),
-  ('Which player will be the top goalscorer?', '2018-06-14 17:00:00', 7),
-  ('Who will be voted the player of the tournament?', '2018-06-14 17:00:00', 7),
-  ('Which referee will be assigned for the final?', '2018-06-30 16:00:00', 5);
+INSERT INTO `question` (`question`, `deadline`, `points`)
+VALUES ('Which team will win the championship?', '2024-06-14 19:00:00', 7),
+       ('Which player will be the top goalscorer?', '2024-06-14 19:00:00', 7),
+       ('Who will be voted the player of the tournament?', '2024-06-14 19:00:00', 7),
+       ('Which referee will be assigned for the final?', '2024-06-14 19:00:00', 5);
 
-INSERT INTO `bet` (`user_id`, `game_id`, `score_home`, `score_away` ) VALUES
-  (1, 1, 1, 2),
-  (1, 2, 0, 1),
-  (1, 3, 3, 0),
-  (2, 1, 0, 0),
-  (2, 2, 3, 2),
-  (2, 5, 1, 2),
-  (2, 14, 3, 1);
+INSERT INTO `bet` (`user_id`, `game_id`, `score_home`, `score_away`)
+VALUES (1, 1, 1, 2),
+       (1, 2, 0, 1),
+       (1, 3, 3, 0),
+       (2, 1, 0, 0),
+       (2, 2, 3, 2),
+       (2, 5, 1, 2),
+       (2, 14, 3, 1);
 
-INSERT INTO `answer` (`user_id`, `question_id`, `answer` ) VALUES
-  (1, 1, 'Germany'),
-  (1, 4, 'Jonas Eriksson'),
-  (3, 1, 'England'),
-  (3, 4, 'Felix Brych');
+INSERT INTO `answer` (`user_id`, `question_id`, `answer`)
+VALUES (1, 1, 'Germany'),
+       (1, 4, 'Jonas Eriksson'),
+       (3, 1, 'England'),
+       (3, 4, 'Felix Brych');
