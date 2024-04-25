@@ -58,14 +58,14 @@ Your shell user also needs to be a member of the `docker` group.
 
 * Run with production profile (replace credentials):
 
-      java -jar target/predictr*.war \
+      java -jar target/predictr*.jar \
         --spring.profiles.active=production \
         --spring.datasource.url=jdbc:mysql://dbhost/dbname \
         --spring.datasource.username=dbuser \
         --spring.datasource.password=dbpassword \
         --spring.mail.host=mailserver \
         --spring.mail.username=mailuser \
-        --spring.mail.password=mailpassword
+        --spring.mail.password=mailpassword \
         --predictr.adminEmail=admin@example.com
 
 * Open [http://localhost:8080/#/register](http://localhost:8080/#/register) in a web browser and register a new user.

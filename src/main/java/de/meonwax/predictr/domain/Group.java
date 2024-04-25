@@ -12,6 +12,7 @@ import java.util.Set;
 public class Group {
 
     @Id
+    @Column(length = 1)
     private String id;
 
     @NotNull

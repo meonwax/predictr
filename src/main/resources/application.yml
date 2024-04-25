@@ -29,20 +29,20 @@ predictr:
         #- settings
 ---
 
-server.address: 0.0.0.0 # Mandatory to be accessible within a Docker container
+server:
+    address: 0.0.0.0 # Mandatory to be accessible within a Docker container
+    use-forward-headers: true
 
 spring:
     profiles: production
     jpa.hibernate.ddl-auto: update
     datasource:
         platform: mysql
+        initialization-mode: always
         test-on-borrow: true
         validationQuery: SELECT 1
-        url: jdbc:mysql://localhost/predictr
+        url: jdbc:mysql://localhost/predictr?autoReconnect=true&useSSL=false
         username: predictr
         password: 123vorbei
 
 logging.level.de.meonwax.predictr: INFO
-
-server:
-    use-forward-headers: true
