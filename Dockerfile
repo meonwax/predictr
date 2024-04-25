@@ -1,6 +1,3 @@
-FROM openjdk:10.0.1-jdk-slim
-RUN apt-get update && apt-get install -y libtcnative-1 && rm -rf /var/lib/apt/lists/*
-VOLUME /tmp
-ARG JAR_FILE
-ADD /target/${JAR_FILE} app.jar
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar"]
+FROM eclipse-temurin:8-jre-jammy
+ADD target/predictr-*.jar app.jar
+ENTRYPOINT ["java", "-Xms128m", "-Xmx1024m", "-jar", "/app.jar"]
