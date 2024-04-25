@@ -1,48 +1,46 @@
 spring:
-    jpa.show_sql: false
-    datasource.platform: h2
-    mail:
-        host:
-        port: 25
-        username:
-        password:
-        protocol: smtp
-        tls: false
-        senderHost:
+  jpa.show_sql: false
+  datasource.platform: h2
+  mail:
+    host:
+    port: 25
+    username:
+    password:
+    protocol: smtp
+    tls: false
+    senderHost:
 
 logging.level.de.meonwax.predictr: DEBUG
 
 server:
-    error.whitelabel.enabled: false
-    port: 8080
-    use-forward-headers: true
+  error.whitelabel.enabled: false
+  port: 8080
+  use-forward-headers: true
 
 predictr:
-    rememberMeKey: 8604aa56a02e3dc7b191859ef5952fe49fd1f128 # 20 byte random key
-    # Uncomment any pages to hide them in the navigation
-    pagesBlacklist:
-        #- bets
-        #- ladder
-        #- questions
-        #- rules
-        #- shoutbox
-        #- settings
+  rememberMeKey: 7f4a2c3d1e0b7a8c9d0f1f2b3b4c7d6e9f8a9b0c # 20 byte random key
+  # Uncomment any pages to hide them in the navigation
+  pagesBlacklist:
+#    - bets
+#    - ladder
+#    - questions
+#    - rules
+#    - shoutbox
+#    - settings
 ---
 
 server:
-    address: 0.0.0.0 # Mandatory to be accessible within a Docker container
-    use-forward-headers: true
+  address: 0.0.0.0 # Mandatory to be accessible within a Docker container
+  use-forward-headers: true
 
 spring:
-    profiles: production
-    jpa.hibernate.ddl-auto: update
-    datasource:
-        platform: mysql
-        initialization-mode: always
-        test-on-borrow: true
-        validationQuery: SELECT 1
-        url: jdbc:mysql://localhost/predictr?autoReconnect=true&useSSL=false
-        username: predictr
-        password: 123vorbei
+  profiles: production
+  jpa.hibernate.ddl-auto: update
+  datasource:
+    platform: mysql
+    initialization-mode: always
+    url: jdbc:mysql://localhost/predictr?autoReconnect=true&useSSL=false
+    username: predictr
+    password: 123vorbei
 
 logging.level.de.meonwax.predictr: INFO
