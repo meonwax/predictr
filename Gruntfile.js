@@ -79,6 +79,7 @@ module.exports = function(grunt) {
           src: [
             '*.html',
             'images/**/*.{png,jpg,jpeg,gif}',
+            'flags/**/*.svg',
             'templates/*.html',
             'values/*.{json,md}',
             'favicon.ico',
