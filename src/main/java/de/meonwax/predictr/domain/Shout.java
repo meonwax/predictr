@@ -1,16 +1,17 @@
 package de.meonwax.predictr.domain;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
 @Data
-@NoArgsConstructor
 @Entity
 public class Shout {
+
+    public Shout() {
+    }
 
     public Shout(Instant date, String message, User user) {
         this.date = date;
