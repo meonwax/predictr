@@ -50,7 +50,7 @@ public class CustomErrorController implements ErrorController {
         if (statusCode != null) {
             try {
                 return HttpStatus.valueOf(statusCode);
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException ignored) {
             }
         }
         return HttpStatus.INTERNAL_SERVER_ERROR;

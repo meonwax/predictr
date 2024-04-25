@@ -1,9 +1,12 @@
 package de.meonwax.predictr.domain;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+@Data
 @Entity
 public class PasswordResetToken {
 
@@ -30,36 +33,4 @@ public class PasswordResetToken {
 
     @OneToOne(optional = false)
     private User user;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public ZonedDateTime getExpiry() {
-        return expiry;
-    }
-
-    public void setExpiry(ZonedDateTime expiry) {
-        this.expiry = expiry;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

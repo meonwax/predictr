@@ -2,7 +2,7 @@ package de.meonwax.predictr.util;
 
 import java.util.Random;
 
-public class PasswortGenerator {
+public class PasswordGenerator {
 
     private final static String CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 

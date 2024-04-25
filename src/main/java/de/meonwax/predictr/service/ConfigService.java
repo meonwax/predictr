@@ -12,6 +12,6 @@ public class ConfigService {
     private final ConfigRepository configRepository;
 
     public Config getConfig() {
-        return configRepository.getOne(1l);
+        return configRepository.getOne(1L);
     }
 }

@@ -37,7 +37,7 @@ public class QuestionService {
     public List<Question> getAllWithUsersAnswers(User user) {
         List<Question> questions = questionRepository.findAll();
         for (Question question : questions) {
-            if (question.getAnswers().size() > 0) {
+            if (!question.getAnswers().isEmpty()) {
 
                 // Fetch user's answer
                 Answer usersAnswer = null;

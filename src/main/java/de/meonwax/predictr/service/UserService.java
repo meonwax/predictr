@@ -9,7 +9,7 @@ import de.meonwax.predictr.dto.UserDto;
 import de.meonwax.predictr.exception.PasswordResetException;
 import de.meonwax.predictr.repository.PasswordResetTokenRepository;
 import de.meonwax.predictr.repository.UserRepository;
-import de.meonwax.predictr.util.PasswortGenerator;
+import de.meonwax.predictr.util.PasswordGenerator;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        if (email.length() > 0) {
+        if (!email.isEmpty()) {
             LOGGER.debug("Querying user with email {} from database", email);
             return userRepository.findOneByEmailIgnoringCase(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email address " + email + " not found"));
@@ -132,20 +132,20 @@ public class UserService implements UserDetailsService {
         PasswordResetToken token = new PasswordResetToken(user.get());
         passwordResetTokenRepository.save(token);
 
-        // Build the confirm URL
+        // Build the confirmation URL
         String urlTemplate = baseUrl + "/api/users/password/reset/%s/%s";
         String url;
         try {
             url = String.format(urlTemplate, URLEncoder.encode(token.getValue(), "UTF-8"), URLEncoder.encode(email, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOGGER.warn("Error building password reset confirmation URL: {}", e.getMessage());
             return false;
         }
 
         // Send URL to user
         Config config = configService.getConfig();
         if (mailService.send(email, config.getTitle() + ": " + REQUEST_TITLE, String.format(REQUEST_MESSAGE, user.get().getName(), url, config.getOwner()))) {
-            LOGGER.info("Mail sent.");
+            LOGGER.info("Mail with password reset confirmation URL sent to user {}", email);
         }
         return true;
     }
@@ -181,13 +181,13 @@ public class UserService implements UserDetailsService {
 
         // Generate a new password and apply it
         LOGGER.info("Generating new password for user {}", email);
-        String newPassword = PasswortGenerator.generate(16);
+        String newPassword = PasswordGenerator.generate(16);
         changePassword(newPassword, user);
 
         // Send password to user
         Config config = configService.getConfig();
         if (mailService.send(email, config.getTitle() + ": " + CONFIRMATION_TITLE, String.format(CONFIRMATION_MESSAGE, user.getName(), newPassword, config.getOwner()))) {
-            LOGGER.info("Mail sent.");
+            LOGGER.info("Mail with password sent to user {}", email);
         }
     }
 }

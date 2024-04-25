@@ -51,14 +51,14 @@ public class CalculationServiceTest {
     }
 
     @Test
-    public void calculateBetTendancy() {
+    public void calculateBetTendency() {
         Bet bet = createBet(1, 2, 0, 8);
         int result = service.calculate(bet);
         assertThat(result, is(2));
     }
 
     @Test
-    public void calculateBetTendancySpread() {
+    public void calculateBetTendencySpread() {
         Bet bet = createBet(0, 0, 1, 1);
         int result = service.calculate(bet);
         assertThat(result, is(3));

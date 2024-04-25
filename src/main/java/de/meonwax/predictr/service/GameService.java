@@ -65,7 +65,7 @@ public class GameService {
         List<Group> groups = groupRepository.findAllWithGames();
         for (Group group : groups) {
             for (Game game : group.getGames()) {
-                if (game.getBets().size() > 0) {
+                if (!game.getBets().isEmpty()) {
 
                     // Fetch user's bet
                     Bet usersBet = null;

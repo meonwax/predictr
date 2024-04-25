@@ -42,7 +42,7 @@ public class UserController {
     @RequestMapping(value = "/users/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> register(@Valid @RequestBody UserDto userDto) {
         if (userService.registerUser(userDto)) {
-            String msg = "User registered: " + userDto.toString();
+            String msg = "User registered: " + userDto;
             LOGGER.info(msg);
             if (mailService.isEnabled()) {
                 Config config = configService.getConfig();

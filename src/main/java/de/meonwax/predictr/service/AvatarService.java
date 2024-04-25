@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -113,7 +114,7 @@ public class AvatarService {
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try (InputStream is = new BufferedInputStream(getClass().getClassLoader().getResourceAsStream(FONT_FILE))) {
+        try (InputStream is = new BufferedInputStream(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(FONT_FILE)))) {
             // Set font
             Font font = Font.createFont(Font.TRUETYPE_FONT, is);
             g.setFont(font.deriveFont(Font.PLAIN, FONT_RATIO * AVATAR_HEIGHT));
@@ -135,7 +136,7 @@ public class AvatarService {
             ImageIO.write(image, "png", baos);
             g.dispose();
         } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
+            LOGGER.warn("Error creating avatar: {}", e.getMessage());
         }
         byte[] data = baos.toByteArray();
 
@@ -147,7 +148,7 @@ public class AvatarService {
     }
 
     private Color getBackgroundColor(char initial) {
-        int i = (int) Math.floor(initial % COLORS.length);
+        int i = initial % COLORS.length;
         return COLORS[i];
     }
 

@@ -1,5 +1,7 @@
 package de.meonwax.predictr.util;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +13,7 @@ import java.util.TreeMap;
  */
 public final class SortedContainer<K extends Comparable<? super K>, V> {
 
-    private TreeMap<K, List<V>> treeMap = new TreeMap<>();
+    private final TreeMap<K, List<V>> treeMap = new TreeMap<>();
 
     /**
      * Create a {@link SortedContainer} from a list of arguments.
@@ -63,22 +65,15 @@ public final class SortedContainer<K extends Comparable<? super K>, V> {
         return size;
     }
 
+    @Getter
     public class Entry {
 
         private final K key;
-        private V value;
+        private final V value;
 
         public Entry(K key, V value) {
             this.key = key;
             this.value = value;
-        }
-
-        public K getKey() {
-            return key;
-        }
-
-        public V getValue() {
-            return value;
         }
     }
 }
