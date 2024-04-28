@@ -1,6 +1,10 @@
 spring:
-  jpa.show_sql: false
-  datasource.platform: h2
+  jpa:
+    show_sql: false
+    defer-datasource-initialization: true
+  sql.init:
+    platform: h2
+    mode: always
   mail:
     host:
     port: 25
@@ -15,8 +19,7 @@ logging.level.de.meonwax.predictr: DEBUG
 server:
   error.whitelabel.enabled: false
   port: 8080
-  use-forward-headers: true
-
+  forward-headers-strategy: native
 predictr:
   rememberMeKey: 7f4a2c3d1e0b7a8c9d0f1f2b3b4c7d6e9f8a9b0c # 20 byte random key
   # Uncomment any pages to hide them in the navigation
@@ -31,14 +34,15 @@ predictr:
 
 server:
   address: 0.0.0.0 # Mandatory to be accessible within a Docker container
-  use-forward-headers: true
+  forward-headers-strategy: native
 
 spring:
-  profiles: production
+  config.activate.on-profile: production
   jpa.hibernate.ddl-auto: update
-  datasource:
+  sql.init:
     platform: mysql
-    initialization-mode: always
+    mode: never
+  datasource:
     url: jdbc:mysql://localhost/predictr?autoReconnect=true&useSSL=false
     username: predictr
     password: 123vorbei

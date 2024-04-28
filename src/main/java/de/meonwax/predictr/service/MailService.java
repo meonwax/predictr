@@ -35,7 +35,7 @@ public class MailService {
     private final ConfigService configService;
 
     public boolean isEnabled() {
-        return !StringUtils.isEmpty(mailHost);
+        return StringUtils.hasLength(mailHost);
     }
 
     public boolean send(String recipient, String subject, String text) {
@@ -47,7 +47,7 @@ public class MailService {
         if (tls) {
             properties.setProperty("mail.smtp.starttls.enable", "true");
         }
-        if (!StringUtils.isEmpty(senderHost)) {
+        if (StringUtils.hasLength(senderHost)) {
             properties.setProperty("mail.smtp.localhost", senderHost);
         }
         SimpleMailMessage message = new SimpleMailMessage();

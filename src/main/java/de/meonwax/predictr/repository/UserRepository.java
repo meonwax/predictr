@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByWagerGreaterThan(BigDecimal wager);
 
-    @Query(value = "SELECT SUM(wager) FROM user", nativeQuery = true)
+    @Query(value = "SELECT SUM(wager) FROM users", nativeQuery = true)
     BigDecimal getFullJackpot();
 
     Optional<User> findOneByEmailIgnoringCase(String email);

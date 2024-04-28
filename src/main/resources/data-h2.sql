@@ -219,7 +219,7 @@ Happy betting!
 --
 
 -- Password: 123vorbei
-INSERT INTO `user` (`password`, `name`, `email`, `role`, `wager`, `created_date`, `last_modified_date`, `avatar_id`)
+INSERT INTO `users` (`password`, `name`, `email`, `role`, `wager`, `created_date`, `last_modified_date`, `avatar_id`)
 VALUES ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Admin', 'admin@example.com', 'ROLE_ADMIN', 0,
         '1970-01-01', '1970-01-01', NULL),
        ('$2a$10$v7GArGytza34uWKrr6xD.OMdnI5aKwiGIHly1oRdELQ.hg3Cp0nYS', 'Sid Rowland', 'sid@example.com', 'ROLE_USER',

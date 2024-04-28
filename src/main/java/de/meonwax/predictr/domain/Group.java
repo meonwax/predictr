@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Data
 @Entity
-// Unfortunately 'group' is a reserved word in H2 database
+// 'group' is a reserved word in H2 database
 @Table(name = "groups")
 public class Group {
 

@@ -27,7 +27,7 @@ public class ServerInfo {
 
     public String getVersion() {
         String version = getClass().getPackage().getImplementationVersion();
-        return StringUtils.isEmpty(version) ? "devel" : version;
+        return !StringUtils.hasLength(version) ? "devel" : version;
     }
 
     public String getTitle() {

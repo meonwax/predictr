@@ -26,11 +26,6 @@ public class CustomErrorController implements ErrorController {
 
     private final ConfigService configService;
 
-    @Override
-    public String getErrorPath() {
-        return "error";
-    }
-
     @RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
     @ExceptionHandler(NullPointerException.class)
     public String errorHtml(HttpServletRequest request) {

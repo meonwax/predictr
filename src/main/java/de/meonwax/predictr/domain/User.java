@@ -21,6 +21,8 @@ import java.util.Set;
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+// 'user' is a reserved word in H2 database
+@Table(name = "users")
 public class User implements UserDetails {
 
     public final static String ROLE_ADMIN = "ROLE_ADMIN";
