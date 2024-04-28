@@ -11,7 +11,7 @@
       $scope.language = $rootScope.account.preferredLanguage || $translate.use();
       $scope.name = $rootScope.account.name;
       reloadAvatarPreview();
-    });
+    }, 500);
 
     $scope.edit = function() {
       $scope.editing = true;

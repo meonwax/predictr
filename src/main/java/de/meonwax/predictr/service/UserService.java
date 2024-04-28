@@ -81,6 +81,7 @@ public class UserService implements UserDetailsService {
         // Defaults for new users
         user.setRole(User.ROLE_USER);
         user.setWager(BigDecimal.valueOf(0));
+        user.setPreferredLanguage("de");
         try {
             userRepository.save(user);
             return true;
