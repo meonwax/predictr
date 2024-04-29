@@ -2,6 +2,7 @@
     "global": {
         "serverTime": "Server time",
         "version": "Version",
+        "source": "Source",
         "loading": "Loading…",
         "save": "Save",
         "english": "English",
