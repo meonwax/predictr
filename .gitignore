@@ -12,14 +12,12 @@
 # Third party libraries
 node_modules/
 src/main/webapp/lib/
+package-lock.json
 
 # Build
 target/
 .sass-cache/
 .tmp/
+*.tmp
 src/main/webapp/dist/
 src/main/webapp/css/
-
-# Others
-TODO.md
-package-lock.json
