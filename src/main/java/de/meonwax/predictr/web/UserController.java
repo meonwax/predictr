@@ -95,7 +95,8 @@ public class UserController {
             userService.confirmPasswordReset(email, token);
             return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, "/").body("");
         } catch (PasswordResetException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("<h2>Error</h2><h3>" + e.getMessage() + "</h3>");
+            LOGGER.error("Error resetting password for email {}\nMessage: {}", email, e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("<h2>Error</h2><h3>Error resetting password</h3>");
         }
     }
 }
