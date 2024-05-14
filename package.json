@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "bootstrap-sass": "3.4.3",
+    "bootstrap-sass": "3.3.6",
     "grunt": "^1.0.3",
     "grunt-browser-sync": "^2.2.0",
     "grunt-contrib-clean": "^1.0.0",
