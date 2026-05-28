@@ -115,7 +115,7 @@ MetLife Stadium in New Jersey.
 2. Vor jedem Anpfiff das **Endergebnis** tippen. Nach dem Anpfiff ist
    der Tipp gesperrt - keine Änderungen mehr möglich.
 3. Die **Sonderfragen** jeweils vor ihrem eigenen Stichtag beantworten
-   (Torschützenkönig, Geheim-Halbfinalist, ...).
+   (Torschützenkönig, Geheim-Halbfinalist, …).
 4. In der **Rangliste** mitverfolgen, wie es im Vergleich zu den anderen
    läuft.
 

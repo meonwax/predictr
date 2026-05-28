@@ -1,0 +1,19 @@
+---
+description: Commit message style
+alwaysApply: true
+---
+
+# Commit messages
+
+Headline:
+
+- Imperative mood. "Add", "Fix", "Remove", "Rewrite", "Bump".
+- No trailing period.
+- Aim for under 72 characters. Hard cap at 80.
+
+Body (optional, include only when the headline isn't self-evident):
+
+- Separate from the headline with one blank line.
+- A few sentences max. Plain prose, not a bullet dump.
+- Explain the *why*, not the *what* (the diff already shows the what).
+- Obey the typography rules from `typography.mdc`.

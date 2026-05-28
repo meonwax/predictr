@@ -1,0 +1,17 @@
+---
+description: Brand name capitalization
+alwaysApply: true
+---
+
+# Branding
+
+The product name is `Predictr` with an uppercase `P`. Never `predictr`,
+`PredictR`, or `PREDICTR` in user-facing strings, page titles,
+docstrings, comments, or documentation.
+
+The lowercase `predictr` is reserved for technical identifiers that
+follow Python or Git naming conventions:
+
+- the Python package directory `app/` and its distribution name
+- the repository slug
+- environment variable prefixes, Docker image names, CLI commands

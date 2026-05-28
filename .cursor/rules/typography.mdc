@@ -1,0 +1,28 @@
+---
+description: Typography ground rules
+alwaysApply: true
+---
+
+# Typography
+
+No em dashes, no Unicode arrows, no emojis. Applies to **everything**:
+documentation, README, code comments, docstrings, commit messages, and
+user-facing UI strings.
+
+Use plain ASCII hyphen-minus (`-`) for ranges and adjectives. Use commas,
+semicolons, or two short sentences instead of em dashes. If a directional
+glyph is genuinely needed (rare), use `->` or `<-`, never the Unicode
+arrow characters.
+
+## Ellipsis - user-facing UI only
+
+The Unicode ellipsis character `…` (U+2026) is allowed for the
+trailing-off / "and so on" sense, but **only** inside user-facing UI
+strings.
+Everywhere else - code comments, docstrings, README, compose files,
+shell scripts, container log lines, test docstrings, Jinja template
+comments - stick with ASCII `...`.
+
+In German UI prose the ellipsis takes a leading space when it follows a
+complete word (per Duden §99): `Wird geladen …`, not `Wird geladen…`.
+English UI prose stays tight: `Loading…`, not `Loading …`.
