@@ -35,6 +35,7 @@ from fastapi import APIRouter, Form, HTTPException, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 
 from app.dependencies import DbSession, RequiredUser
+from app.routes._helpers import is_htmx, map_invalid_score, parse_score
 from app.services.bets import (
     MAX_SCORE,
     MIN_SCORE,
@@ -50,26 +51,6 @@ from app.services.bets import (
 from app.templating import templates
 
 router = APIRouter(tags=["bets"])
-
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-
-def _is_htmx(request: Request) -> bool:
-    return request.headers.get("HX-Request", "").lower() == "true"
-
-
-def _parse_score(raw: str) -> int | None:
-    """Parse a score form value into an int, or return None for blank.
-
-    Raises :class:`ValueError` if *raw* is non-blank but not a clean integer.
-    """
-    s = raw.strip()
-    if s == "":
-        return None
-    return int(s)  # may raise ValueError
 
 
 # ---------------------------------------------------------------------------
@@ -120,8 +101,8 @@ def save_bet(
     error: str | None = None
     error_args: dict[str, object] = {}
     try:
-        home = _parse_score(score_home)
-        away = _parse_score(score_away)
+        home = parse_score(score_home)
+        away = parse_score(score_away)
     except ValueError:
         error = "error.score.invalid"
         home = away = None
@@ -150,9 +131,9 @@ def save_bet(
             except BetDeadlinePassed:
                 error = "error.bet.deadline_passed"
             except InvalidScore as exc:
-                error, error_args = _map_invalid_score(exc)
+                error, error_args = map_invalid_score(exc)
 
-    if _is_htmx(request):
+    if is_htmx(request):
         # Fetch the fresh cell state and return just the <td> fragment.
         entry = get_cell_view(db, user, game_id)
         return templates.TemplateResponse(
@@ -171,23 +152,6 @@ def save_bet(
 
     # No HTMX -> vanilla browser POST. Round-trip via PRG.
     return RedirectResponse(url="/bets", status_code=status.HTTP_303_SEE_OTHER)
-
-
-def _map_invalid_score(exc: InvalidScore) -> tuple[str, dict[str, object]]:
-    """Translate an :class:`InvalidScore` into an i18n key + args pair.
-
-    The route never trusts the exception's message - it only inspects the
-    structured ``field`` / ``kind`` attributes so the same error wording
-    surfaces consistently in both languages.
-    """
-    field_key = "error.score.home" if exc.field == "score_home" else "error.score.away"
-    if exc.kind == "range":
-        return "error.score.range", {
-            "field_key": field_key,
-            "min": MIN_SCORE,
-            "max": MAX_SCORE,
-        }
-    return "error.score.not_int", {"field_key": field_key}
 
 
 # ---------------------------------------------------------------------------

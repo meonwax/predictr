@@ -16,13 +16,9 @@ from fastapi import APIRouter, Form, HTTPException, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 
 from app.dependencies import DbSession, RequiredUser
+from app.routes._helpers import is_htmx, map_invalid_question
 from app.services.questions import (
     MAX_ANSWER_LEN,
-    MAX_CORRECT_ANSWER_LEN,
-    MAX_POINTS,
-    MAX_QUESTION_LEN,
-    MIN_POINTS,
-    MIN_QUESTION_LEN,
     DeadlinePassed,
     InvalidQuestionData,
     QuestionNotFound,
@@ -34,48 +30,7 @@ from app.services.questions import (
 )
 from app.templating import templates
 
-_QUESTION_ERROR_KEYS: dict[str, tuple[str, dict[str, object]]] = {
-    "text_too_short": ("error.question.text_too_short", {"min": MIN_QUESTION_LEN}),
-    "text_too_long": ("error.question.text_too_long", {"max": MAX_QUESTION_LEN}),
-    "points_not_int": ("error.question.points_not_int", {}),
-    "points_required": ("error.question.points_required", {}),
-    "points_range": (
-        "error.question.points_range",
-        {"min": MIN_POINTS, "max": MAX_POINTS},
-    ),
-    "correct_too_long": (
-        "error.question.correct_too_long",
-        {"max": MAX_CORRECT_ANSWER_LEN},
-    ),
-    "answer_empty": ("error.question.answer_empty", {}),
-    "answer_too_long": (
-        "error.question.answer_too_long",
-        {"max": MAX_ANSWER_LEN},
-    ),
-    "deadline_required": ("error.question.deadline_required", {}),
-    "deadline_invalid": ("error.question.deadline_invalid", {}),
-}
-
-
-def _map_invalid_question(exc: InvalidQuestionData) -> tuple[str, dict[str, object]]:
-    """Translate an :class:`InvalidQuestionData` to a UI key + args pair.
-
-    Falls back to a literal-key string if the exception's ``kind`` is
-    missing (older raise sites) so the user still sees *something* useful
-    rather than a blank field.
-    """
-    key, args = _QUESTION_ERROR_KEYS.get(
-        exc.kind or "",
-        ("error.question.answer_empty", {}),
-    )
-    return key, dict(args)
-
-
 router = APIRouter(tags=["questions"])
-
-
-def _is_htmx(request: Request) -> bool:
-    return request.headers.get("HX-Request", "").lower() == "true"
 
 
 @router.get("/questions", response_class=HTMLResponse, name="questions:index")
@@ -119,9 +74,9 @@ def save_answer(
     except DeadlinePassed:
         error = "error.question.deadline_passed"
     except InvalidQuestionData as exc:
-        error, error_args = _map_invalid_question(exc)
+        error, error_args = map_invalid_question(exc)
 
-    if _is_htmx(request):
+    if is_htmx(request):
         entry = get_question_view_for_user(db, user, question_id)
         return templates.TemplateResponse(
             request,

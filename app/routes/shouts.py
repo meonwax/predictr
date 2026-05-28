@@ -23,6 +23,7 @@ from fastapi import APIRouter, Form, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 
 from app.dependencies import DbSession, RequiredUser
+from app.routes._helpers import is_htmx
 from app.services.shouts import (
     MAX_MESSAGE_LEN,
     InvalidShout,
@@ -32,10 +33,6 @@ from app.services.shouts import (
 from app.templating import templates
 
 router = APIRouter(tags=["shouts"])
-
-
-def _is_htmx(request: Request) -> bool:
-    return request.headers.get("HX-Request", "").lower() == "true"
 
 
 def _render_panel(
@@ -113,7 +110,7 @@ def shouts_create(
     except InvalidShout as exc:
         error, error_args = _map_invalid_shout(exc)
 
-    if _is_htmx(request):
+    if is_htmx(request):
         return _render_panel(
             request,
             db=db,

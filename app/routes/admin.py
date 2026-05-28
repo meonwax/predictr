@@ -28,6 +28,12 @@ from app.config import get_settings
 from app.dependencies import DbSession, RequiredAdmin
 from app.i18n import gettext, resolve_language
 from app.models import Answer, Game, Question, User
+from app.routes._helpers import (
+    is_htmx,
+    map_invalid_question,
+    map_invalid_score,
+    parse_score,
+)
 from app.services.admin import (
     MAX_NOTES_LEN,
     GameNotFound,
@@ -42,12 +48,10 @@ from app.services.admin import (
 )
 from app.services.bets import MAX_SCORE, MIN_SCORE, InvalidScore
 from app.services.questions import (
-    MAX_ANSWER_LEN,
     MAX_CORRECT_ANSWER_LEN,
     MAX_POINTS,
     MAX_QUESTION_LEN,
     MIN_POINTS,
-    MIN_QUESTION_LEN,
     InvalidQuestionData,
     QuestionForAdmin,
     QuestionNotFound,
@@ -58,49 +62,6 @@ from app.services.questions import (
 )
 from app.team_data import KNOCKOUT_GROUP_IDS
 from app.templating import templates
-
-# i18n key + args for every InvalidQuestionData / InvalidScore / NotesTooLong
-# the admin surface can surface. Mirrors the user-side map in
-# ``app.routes.questions`` - kept here so the admin route doesn't import
-# from user routes (one-way dependency).
-_QUESTION_ERROR_KEYS: dict[str, tuple[str, dict[str, object]]] = {
-    "text_too_short": ("error.question.text_too_short", {"min": MIN_QUESTION_LEN}),
-    "text_too_long": ("error.question.text_too_long", {"max": MAX_QUESTION_LEN}),
-    "points_not_int": ("error.question.points_not_int", {}),
-    "points_required": ("error.question.points_required", {}),
-    "points_range": (
-        "error.question.points_range",
-        {"min": MIN_POINTS, "max": MAX_POINTS},
-    ),
-    "correct_too_long": (
-        "error.question.correct_too_long",
-        {"max": MAX_CORRECT_ANSWER_LEN},
-    ),
-    "answer_empty": ("error.question.answer_empty", {}),
-    "answer_too_long": ("error.question.answer_too_long", {"max": MAX_ANSWER_LEN}),
-    "deadline_required": ("error.question.deadline_required", {}),
-    "deadline_invalid": ("error.question.deadline_invalid", {}),
-}
-
-
-def _map_invalid_question(exc: InvalidQuestionData) -> tuple[str, dict[str, object]]:
-    key, args = _QUESTION_ERROR_KEYS.get(
-        exc.kind or "",
-        ("error.question.answer_empty", {}),
-    )
-    return key, dict(args)
-
-
-def _map_invalid_score(exc: InvalidScore) -> tuple[str, dict[str, object]]:
-    field_key = "error.score.home" if exc.field == "score_home" else "error.score.away"
-    if exc.kind == "range":
-        return "error.score.range", {
-            "field_key": field_key,
-            "min": MIN_SCORE,
-            "max": MAX_SCORE,
-        }
-    return "error.score.not_int", {"field_key": field_key}
-
 
 _TEAM_ERROR_KEYS: dict[str, str] = {
     "unknown_team": "error.team.unknown",
@@ -139,26 +100,6 @@ def _translate(user: User, key: str, args: dict[str, object]) -> str:
 
 
 router = APIRouter(prefix="/admin", tags=["admin"])
-
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-
-def _is_htmx(request: Request) -> bool:
-    return request.headers.get("HX-Request", "").lower() == "true"
-
-
-def _parse_score(raw: str) -> int | None:
-    """Parse a form value into an int (or ``None`` for blank).
-
-    Raises :class:`ValueError` if non-blank but not a clean integer.
-    """
-    s = raw.strip()
-    if s == "":
-        return None
-    return int(s)
 
 
 # ---------------------------------------------------------------------------
@@ -232,8 +173,8 @@ def save_game_result(
     error: str | None = None
     error_args: dict[str, object] = {}
     try:
-        home = _parse_score(score_home)
-        away = _parse_score(score_away)
+        home = parse_score(score_home)
+        away = parse_score(score_away)
     except ValueError:
         error = "error.score.invalid"
         home = away = None
@@ -258,12 +199,12 @@ def save_game_result(
             except GameNotFound:
                 raise HTTPException(status.HTTP_404_NOT_FOUND, "Unknown game.") from None
             except InvalidScore as exc:
-                error, error_args = _map_invalid_score(exc)
+                error, error_args = map_invalid_score(exc)
             except NotesTooLong:
                 error = "error.admin.notes_too_long"
                 error_args = {"max": MAX_NOTES_LEN}
 
-    if _is_htmx(request):
+    if is_htmx(request):
         # Reload the row so the swap reflects the persisted state.
         game = db.get(Game, game_id)
         if game is None:
@@ -324,7 +265,7 @@ def save_game_teams(
     except InvalidTeamAssignment as exc:
         error, error_args = _map_invalid_team(exc)
 
-    if _is_htmx(request):
+    if is_htmx(request):
         game = db.get(Game, game_id)
         if game is None:
             raise HTTPException(status.HTTP_404_NOT_FOUND, "Unknown game.")
@@ -430,7 +371,7 @@ def admin_create_question(
             correct_answer=correct_answer,
         )
     except InvalidQuestionData as exc:
-        key, args = _map_invalid_question(exc)
+        key, args = map_invalid_question(exc)
         return RedirectResponse(
             url=f"/admin/questions?error={quote(_translate(user, key, args))}",
             status_code=status.HTTP_303_SEE_OTHER,
@@ -468,9 +409,9 @@ def admin_update_question(
     except QuestionNotFound:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Unknown question.") from None
     except InvalidQuestionData as exc:
-        error, error_args = _map_invalid_question(exc)
+        error, error_args = map_invalid_question(exc)
 
-    if _is_htmx(request):
+    if is_htmx(request):
         question = db.get(Question, question_id)
         if question is None:
             raise HTTPException(status.HTTP_404_NOT_FOUND, "Unknown question.")
@@ -505,7 +446,7 @@ def admin_delete_question(
     user: RequiredAdmin,
 ) -> Response:
     delete_question(db, question_id)
-    if _is_htmx(request):
+    if is_htmx(request):
         # Returning an empty body with hx-swap="outerHTML" removes the row.
         return Response(status_code=status.HTTP_200_OK)
     return RedirectResponse(
