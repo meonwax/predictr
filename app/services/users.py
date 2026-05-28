@@ -245,7 +245,7 @@ def request_password_reset(
 
     db.execute(delete(PasswordResetToken).where(PasswordResetToken.user_id == user.id))
 
-    token_value = make_password_reset_token(settings=settings)
+    token_value = make_password_reset_token()
     expiry = datetime.now(UTC) + timedelta(hours=settings.password_reset_ttl_hours)
     db.add(
         PasswordResetToken(

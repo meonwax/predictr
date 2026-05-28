@@ -106,13 +106,13 @@ def test_session_token_with_garbage_value_returns_none(settings: Settings) -> No
 # ---------------------------------------------------------------------------
 
 
-def test_password_reset_tokens_are_unique(settings: Settings) -> None:
-    seen = {make_password_reset_token(settings=settings) for _ in range(50)}
+def test_password_reset_tokens_are_unique() -> None:
+    seen = {make_password_reset_token() for _ in range(50)}
     assert len(seen) == 50, "every reset token must be unique"
 
 
-def test_password_reset_tokens_are_urlsafe(settings: Settings) -> None:
-    token = make_password_reset_token(settings=settings)
+def test_password_reset_tokens_are_urlsafe() -> None:
+    token = make_password_reset_token()
     assert token == token.strip()
     assert all(c.isalnum() or c in "-_" for c in token)
     assert len(token) >= 32

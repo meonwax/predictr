@@ -1,15 +1,18 @@
 """Low-level security primitives used by the auth flows.
 
-Two responsibilities:
+Three responsibilities:
 
 1. **Password hashing** via `bcrypt`. Hashed strings include the cost factor
    so future bumps don't break existing hashes.
-2. **Signed, expiring tokens** via `itsdangerous`. We use one signer instance
-   per *purpose* (session cookie, password-reset link) so a token minted for
-   one purpose cannot be replayed against another even if both share the same
-   underlying secret.
+2. **Signed, expiring session tokens** via `itsdangerous`. The salt namespaces
+   the session signer so that, if we ever add a second signed-token kind
+   sharing the same secret, a session token can't be replayed there.
+3. **Opaque password-reset tokens** generated with `secrets.token_urlsafe`
+   and stored verbatim in the ``password_reset_token`` table. Keeping them
+   DB-backed (rather than signed) lets us invalidate one by deleting its
+   row; the token itself is unforgeable purely because it is high-entropy.
 
-Both APIs are intentionally tiny and synchronous: they're called from
+All three APIs are intentionally tiny and synchronous: they're called from
 request handlers a few times per request at most, well below the threshold
 where we'd benefit from running them off the event loop.
 """
@@ -24,12 +27,11 @@ from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 
 from app.config import Settings
 
-# Salt strings used to namespace tokens by purpose. itsdangerous mixes them
-# into the HMAC, so a token signed with one salt cannot be verified with
-# another. Keep the names stable - changing them invalidates outstanding
-# tokens (which is fine: users just have to log in / request a new reset).
+# itsdangerous mixes this into the HMAC, so a session token cannot be
+# replayed against any future signer that shares the same secret. Keep the
+# string stable - changing it invalidates outstanding sessions (users just
+# have to log in again).
 SALT_SESSION: Final[str] = "predictr.session.v1"
-SALT_PASSWORD_RESET: Final[str] = "predictr.password_reset.v1"
 
 # Cost factor (work) used for new bcrypt hashes. 12 is the de-facto default
 # in 2026; tune if hash time becomes noticeable in profiling.
@@ -66,7 +68,7 @@ def verify_password(plain: str, hashed: str) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Signed, expiring tokens
+# Session tokens (signed, expiring)
 # ---------------------------------------------------------------------------
 
 
@@ -95,21 +97,23 @@ def read_session_token(token: str, *, settings: Settings) -> int | None:
     return value
 
 
-def make_password_reset_token(*, settings: Settings) -> str:
+# ---------------------------------------------------------------------------
+# Password-reset tokens (opaque, DB-backed)
+# ---------------------------------------------------------------------------
+
+
+def make_password_reset_token() -> str:
     """Generate a fresh opaque token to store in the DB and email to the user.
 
-    We store the *plain* token in the DB (it's already random, single-use, and
-    short-lived) so the link in the email is the same string we look up.
-    Compared to itsdangerous-signed tokens this lets us trivially invalidate
-    a reset on demand (e.g. by deleting the row).
+    The token is high-entropy random; we store the plain value in the
+    ``password_reset_token`` table so the link in the email is the same
+    string we look up. Revocation is just a ``DELETE`` on the row.
     """
-    del settings  # currently unused; kept for symmetry / future hardening
     return secrets.token_urlsafe(32)
 
 
 __all__ = [
     "SALT_SESSION",
-    "SALT_PASSWORD_RESET",
     "hash_password",
     "verify_password",
     "make_session_token",
