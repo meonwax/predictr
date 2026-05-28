@@ -22,7 +22,7 @@ from __future__ import annotations
 from typing import Annotated
 
 from email_validator import EmailNotValidError, validate_email
-from fastapi import APIRouter, Form, HTTPException, Request, status
+from fastapi import APIRouter, Form, Request, status
 from fastapi.responses import RedirectResponse
 
 from app.dependencies import (
@@ -319,14 +319,19 @@ def reset_submit(
     password: Annotated[str, Form()],
     password_confirm: Annotated[str, Form()],
 ) -> object:
-    def _render_error(error_key: str, *, status_code: int = status.HTTP_400_BAD_REQUEST):
+    def _render_error(
+        error_key: str,
+        *,
+        status_code: int = status.HTTP_400_BAD_REQUEST,
+        expired: bool = False,
+    ):
         return templates.TemplateResponse(
             request,
             "auth/reset_password.html",
             {
                 "token": token,
                 "error": error_key,
-                "expired": False,
+                "expired": expired,
                 "min_password_len": MIN_PASSWORD_LEN,
                 "current_user": None,
             },
@@ -341,9 +346,10 @@ def reset_submit(
     try:
         confirm_password_reset(db, token_value=token, new_password=password)
     except InvalidResetToken as exc:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(exc),
-        ) from exc
+        # Mirror the GET handler: render the page with a localised message
+        # and ``expired=True`` so the form collapses to the "request a new
+        # link" affordance. Surfacing ``str(exc)`` here would leak English
+        # into the translated UI; see InvalidResetToken's docstring.
+        return _render_error(f"error.auth.reset_invalid_{exc.reason}", expired=True)
 
     return RedirectResponse(url="/login?registered=0&reset=1", status_code=303)

@@ -400,6 +400,21 @@ def test_reset_submit_with_expired_token_returns_400(
         data={"password": "new-password-2", "password_confirm": "new-password-2"},
     )
     assert response.status_code == 400
+    # The handler must render the localised reset_password template, not
+    # leak the English ``str(InvalidResetToken)`` via a bare HTTPException.
+    assert "has expired" in response.text
+    assert "Reset token is" not in response.text
+
+
+def test_reset_submit_with_unknown_token_renders_400(auth_client: TestClient) -> None:
+    """A bogus token in the POST must render the same localised page as the GET."""
+    response = auth_client.post(
+        "/password/reset/totally-bogus",
+        data={"password": "new-password-2", "password_confirm": "new-password-2"},
+    )
+    assert response.status_code == 400
+    assert "no longer valid" in response.text
+    assert "Reset token is" not in response.text
 
 
 def test_role_admin_required_default_user_is_role_user(
