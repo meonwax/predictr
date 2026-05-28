@@ -1,0 +1,26 @@
+---
+description: Before claiming a task is complete, run linters and tests
+alwaysApply: true
+---
+
+# Verify before declaring done
+
+Before reporting a task as finished, run the project's full quality gate
+against the current working tree:
+
+```bash
+uv run ruff check .
+uv run ruff format --check .
+uv run mypy app
+uv run pytest
+```
+
+All four must pass. If any of them fails:
+
+1. Fix the failure if it was caused by your change. Auto-fixable lint
+   issues should be repaired with `uv run ruff check --fix .` and
+   `uv run ruff format .` before re-running the gate.
+2. Leave the failure as-is *only* if it is a pre-existing failure on
+   the base branch and unrelated to your change. In that case call it
+   out explicitly in the final summary so it does not get silently
+   accepted.

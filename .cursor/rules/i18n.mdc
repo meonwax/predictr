@@ -1,0 +1,21 @@
+---
+description: All user-facing strings are available in both EN and DE
+alwaysApply: true
+---
+
+# Internationalization
+
+Every user-facing string lives in `app/i18n.py` and is rendered through
+the `_('key')` Jinja global (or `gettext('key', language)` in Python).
+Never hardcode English or German prose in templates, route handlers,
+service modules, or error messages.
+
+The catalogue is bilingual: every key has both an English value (in the
+EN section) and a German value (in the DE section). Adding one without
+the other is a regression.
+
+## Error messages
+
+Error pages and `HTTPException(detail=...)` payloads are user-facing.
+Make the message self-contained so no English fragments leak into a
+German session, and key it under `error.{domain}.{condition}`.
