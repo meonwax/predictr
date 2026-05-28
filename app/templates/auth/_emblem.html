@@ -1,0 +1,11 @@
+{#- WC 2026 emblem block shared by every auth page (login / register /
+    lostpwd / reset_password). Centred above the form heading at a fixed
+    max-height so the layout stays stable across viewports. The CC BY-SA
+    4.0 attribution lives in the project README. -#}
+<div class="text-center mb-4">
+  <img src="{{ url_for('static', path='img/wc2026/emblem.svg') }}"
+       alt="{{ _('brand.emblem.alt') }}"
+       class="img-fluid"
+       style="max-height: 140px;"
+       width="91" height="140">
+</div>

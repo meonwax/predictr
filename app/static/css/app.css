@@ -1,0 +1,136 @@
+/* predictr - small overrides on top of Bootstrap 5.3 */
+
+/* Team flag + name pair (used in games table). */
+.team-flag {
+  flex-shrink: 0;
+  background-color: var(--bs-tertiary-bg);
+  object-fit: cover;
+}
+
+/* Placeholder for unknown teams (knockout stage TBD) */
+.placeholder-flag {
+  width: 28px;
+  height: 21px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bs-secondary-color);
+  font-size: 0.7rem;
+  background-color: var(--bs-tertiary-bg);
+}
+
+.team-name {
+  font-weight: 500;
+}
+
+/* Slight visual lift for the group header inside cards. */
+.card-header .badge {
+  font-size: 0.85em;
+  letter-spacing: 0.04em;
+}
+
+/* Anonymous home hero emblem.
+ *
+ * On >=sm viewports the emblem sits in a side column next to the CTAs and
+ * uses its full 180px height. Below sm the two columns stack and the
+ * emblem would otherwise dominate the (now full-width) card, so we cap it
+ * at 110px. Bootstrap 5's `sm` breakpoint is 576px, so the max-width
+ * threshold is 575.98px (matching their other "below sm" media queries).
+ */
+.home-hero-emblem {
+  height: auto;
+  max-height: 180px;
+  width: auto;
+}
+@media (max-width: 575.98px) {
+  .home-hero-emblem {
+    max-height: 110px;
+  }
+}
+
+/* Tighten table padding a touch on dense rows. */
+.table > tbody > tr > td,
+.table > tbody > tr > th {
+  padding-top: 0.55rem;
+  padding-bottom: 0.55rem;
+}
+
+/* Compact score inputs: two small number boxes joined by ':' */
+.bet-form .bet-score,
+.admin-score {
+  width: 3.25rem;
+  padding-inline: 0.4rem;
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+}
+.bet-form .bet-score::-webkit-outer-spin-button,
+.bet-form .bet-score::-webkit-inner-spin-button,
+.admin-score::-webkit-outer-spin-button,
+.admin-score::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* "saved" badge: fade out after a few seconds without a JS hook. */
+@keyframes bet-saved-fade {
+  0%   { opacity: 1; }
+  60%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+.bet-saved-flag {
+  animation: bet-saved-fade 3s ease-out forwards;
+}
+
+/* /info page - Markdown-rendered rules content.
+ *
+ * Bootstrap doesn't apply .table styles to bare <table> tags emitted by
+ * markdown.py, so we re-add the borders/striping locally. The h2/h3
+ * margins also need a bit more breathing room since the source is plain
+ * Markdown ("## Heading\n\nbody...") rather than the structured cards
+ * elsewhere on the site.
+ */
+.rules-content h2 {
+  font-size: 1.4rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.rules-content h2:first-child {
+  margin-top: 0;
+}
+.rules-content h3 {
+  font-size: 1.15rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.rules-content p,
+.rules-content ul,
+.rules-content ol {
+  margin-bottom: 1rem;
+}
+.rules-content table {
+  width: 100%;
+  margin-bottom: 1rem;
+  border-collapse: collapse;
+}
+.rules-content table th,
+.rules-content table td {
+  padding: 0.55rem 0.75rem;
+  border-top: 1px solid var(--bs-border-color);
+}
+.rules-content table thead th {
+  border-top: 0;
+  border-bottom: 2px solid var(--bs-border-color);
+  text-align: left;
+  font-weight: 600;
+}
+.rules-content code {
+  background-color: var(--bs-tertiary-bg);
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+}
+.rules-content pre {
+  background-color: var(--bs-tertiary-bg);
+  padding: 0.75rem 1rem;
+  border-radius: 0.4rem;
+  overflow-x: auto;
+}

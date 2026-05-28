@@ -1,0 +1,68 @@
+# predictr - local development overrides.
+#
+# This file is auto-merged on top of `docker-compose.yml` by every plain
+# `docker compose ...` invocation in this directory. It's the canonical
+# Compose pattern for "dev tweaks on a prod-shaped base".
+#
+# Differences vs. the base file:
+#   - Postgres data lives in tmpfs (RAM) instead of a named volume, so every
+#     `docker compose down && up` boots a freshly-empty database. Catches
+#     missing migrations and stale-state bugs early.
+#   - mailhog is added as a third service (UI on $MAILHOG_BIND).
+#   - The Postgres port is published on the host so `psql` and local IDEs
+#     can reach it directly.
+#   - adminer (a Postgres web UI) is inherited from the base compose file
+#     and reachable on $ADMINER_BIND (default 127.0.0.1:8081). It needs
+#     no basic auth in dev because the bind is loopback-only.
+#   - AUTO_SEED=1: the entrypoint loads `seeds/wc2026.sql` via `--if-empty`
+#     on every boot, so the fresh tmpfs DB always ends up populated.
+#   - AUTO_DEV_SEED=1: the entrypoint also seeds a handful of test users
+#     (alice / bob / carla / dave + admin, all sharing password `hunter22`)
+#     plus sample shouts and bets, so the home dashboard, ladder and bets
+#     pages are not empty when you boot a fresh tmpfs DB. Never enable
+#     this in production.
+#   - MAIL_HOST defaults to `mailhog`.
+#   - SESSION_SECRET falls back to a clearly-dev value if .env isn't set.
+#
+# To run *without* this override (i.e. production-shaped):
+#     docker compose -f docker-compose.yml up -d
+
+services:
+  app:
+    environment:
+      SESSION_SECRET: ${SESSION_SECRET:-dev-secret-change-me-in-production}
+      MAIL_HOST: ${MAIL_HOST:-mailhog}
+      MAIL_PORT: ${MAIL_PORT:-1025}
+      AUTO_SEED: ${AUTO_SEED:-1}
+      AUTO_DEV_SEED: ${AUTO_DEV_SEED:-1}
+      DEBUG: ${DEBUG:-true}
+      # Dev defaults to DEBUG so every app-level log line surfaces in
+      # ``docker compose logs app``. Set LOG_LEVEL in your .env to dial
+      # it back if the volume gets noisy.
+      LOG_LEVEL: ${LOG_LEVEL:-DEBUG}
+
+  postgres:
+    # Drop the base file's named-volume mount entirely (compose 2.20+ syntax).
+    # Without `!reset`, sequence fields are *concatenated* during a merge, so
+    # the base volume would remain attached.
+    volumes: !reset []
+    tmpfs:
+      - /var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_BIND:-127.0.0.1:5432}:5432"
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "${MAILHOG_BIND:-127.0.0.1:8025}:8025"
+    restart: unless-stopped
+
+  # The postgres-backup service is defined in the base compose file because
+  # it belongs to the production deployment. Stamp a profile on it here so
+  # dev `docker compose up` does NOT start the backup loop against the
+  # ephemeral tmpfs database (which would fill ./backups with dumps of a
+  # freshly-seeded throwaway DB every morning). Prod opts out of this
+  # override file via `-f docker-compose.yml`, so the service has no
+  # profile there and starts as normal.
+  postgres-backup:
+    profiles: ["never"]

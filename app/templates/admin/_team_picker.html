@@ -1,0 +1,49 @@
+{#-
+  Inline team picker used in the admin /admin/games table for knockout
+  fixtures. Renders the flag of the currently-resolved team next to a
+  ``<select>`` populated with all 48 group-stage teams (grouped via
+  ``<optgroup>``). The first option carries the bracket-slot
+  placeholder text ("1A", "W74", ...) and submits as empty, which clears
+  the slot back to TBD.
+
+  Context:
+    game            Game (with .team_*_id and .placeholder_*)
+    teams_by_group  list[(group_id, list[Team])]  loaded by the route
+    side            'home' or 'away' - picks which slot we're rendering
+    align           'start' (home) or 'end' (away)
+-#}
+{%- set current_id = game.team_home_id if side == 'home' else game.team_away_id -%}
+{%- set placeholder = game.placeholder_home if side == 'home' else game.placeholder_away -%}
+{%- set field_name = 'team_home_id' if side == 'home' else 'team_away_id' -%}
+{%- set field_aria_key = 'admin.games.aria.home_team' if side == 'home' else 'admin.games.aria.away_team' -%}
+<div class="d-inline-flex align-items-center gap-2 justify-content-{{ align }}">
+  {%- set iso = team_iso(current_id) -%}
+  {% if iso %}
+    <img class="team-flag rounded-1 border"
+         src="{{ url_for('static', path='img/flags/' ~ iso ~ '.svg') }}"
+         alt="" width="28" height="21" loading="lazy">
+  {% else %}
+    <span class="team-flag placeholder-flag d-inline-block rounded-1 border"
+          aria-hidden="true">
+      <i class="bi bi-question-lg"></i>
+    </span>
+  {% endif %}
+  <select name="{{ field_name }}"
+          class="form-select form-select-sm admin-team-picker"
+          aria-label="{{ _(field_aria_key, id=game.id) }}">
+    <option value=""
+            {% if not current_id %}selected{% endif %}>
+      {{ placeholder or _('common.tbd') }}
+    </option>
+    {% for group_id, teams in teams_by_group %}
+      <optgroup label="{{ group_id | group_label }}">
+        {% for team in teams %}
+          <option value="{{ team.id }}"
+                  {% if team.id == current_id %}selected{% endif %}>
+            {{ team_name(team.id) }}
+          </option>
+        {% endfor %}
+      </optgroup>
+    {% endfor %}
+  </select>
+</div>

@@ -1,0 +1,31 @@
+{#- Shared layout block for the four error pages (401 / 403 / 404 / 500).
+
+    Each concrete template (errors/401.html etc.) sets:
+      - {% set status_code = "404" %}    big number above the heading
+      - {% set i18n_prefix = "error.404" %}   used for .title / .message keys
+
+    and then puts the CTA buttons in the `actions` block. The status code
+    that the response carries is controlled by the FastAPI exception handler
+    in app.main, not by the template - the number rendered here is purely
+    visual.
+-#}
+{% extends "base.html" %}
+
+{% block title %}{{ _(i18n_prefix ~ '.title') }} | {{ _('brand.name') }}{% endblock %}
+
+{% block content %}
+<section class="row justify-content-center text-center">
+  <div class="col-md-9 col-lg-7 col-xl-6 py-4">
+    <div class="display-1 fw-light text-body-tertiary mb-0" aria-hidden="true">
+      {{ status_code }}
+    </div>
+    <h1 class="h2 mt-2 mb-3">{{ _(i18n_prefix ~ '.title') }}</h1>
+    <p class="lead text-body-secondary mb-4">
+      {{ _(i18n_prefix ~ '.message') }}
+    </p>
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+      {% block actions %}{% endblock %}
+    </div>
+  </div>
+</section>
+{% endblock %}

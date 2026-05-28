@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('nav.admin') }} | {{ _('brand.name') }}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap align-items-end justify-content-between mb-4 gap-2">
+  <div>
+    <h1 class="h3 mb-1">
+      <i class="bi bi-shield-lock me-2 text-primary"></i>
+      {{ _('admin.dash.title') }}
+    </h1>
+    <p class="text-body-secondary mb-0 small">
+      {{ _('admin.dash.subtitle') }}
+    </p>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-12 col-md-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h6 text-body-secondary text-uppercase mb-3">
+          <i class="bi bi-people-fill me-1"></i> {{ _('admin.dash.users') }}
+        </h2>
+        <p class="display-6 mb-0">{{ stats.user_count }}</p>
+        <p class="text-body-secondary small mb-0">
+          {%- if stats.admin_count == 1 and stats.bet_count == 1 -%}
+            {{ _('admin.dash.users_summary_one', admin=stats.admin_count, bets=stats.bet_count) }}
+          {%- elif stats.admin_count == 1 -%}
+            {{ _('admin.dash.users_summary_few', admin=stats.admin_count, bets=stats.bet_count) }}
+          {%- else -%}
+            {{ _('admin.dash.users_summary_many', admin=stats.admin_count, bets=stats.bet_count) }}
+          {%- endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h6 text-body-secondary text-uppercase mb-3">
+          <i class="bi bi-calendar-check me-1"></i> {{ _('admin.dash.matches') }}
+        </h2>
+        <p class="display-6 mb-0">
+          {{ stats.games_finished }}<small class="text-body-secondary">/{{ stats.games_total }}</small>
+        </p>
+        <p class="text-body-secondary small mb-0">
+          {{ _('admin.dash.matches_upcoming', count=stats.games_upcoming) }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-4">
+    <a href="/admin/games" class="card shadow-sm h-100 text-decoration-none
+              {% if stats.games_pending_result %}border-warning{% endif %}">
+      <div class="card-body">
+        <h2 class="h6 text-body-secondary text-uppercase mb-3">
+          <i class="bi bi-exclamation-triangle me-1"></i> {{ _('admin.dash.pending') }}
+        </h2>
+        <p class="display-6 mb-0 {% if stats.games_pending_result %}text-warning{% endif %}">
+          {{ stats.games_pending_result }}
+        </p>
+        <p class="text-body-secondary small mb-0">
+          {% if stats.games_pending_result %}
+            {{ _('admin.dash.pending_more') }}
+          {% else %}
+            {{ _('admin.dash.pending_done') }}
+          {% endif %}
+        </p>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h5 mb-3">{{ _('admin.dash.manage') }}</h2>
+    <ul class="list-unstyled mb-0">
+      <li class="mb-2">
+        <a href="/admin/games" class="text-decoration-none">
+          <i class="bi bi-clipboard-data me-2"></i>
+          {{ _('admin.dash.manage_results') }}
+        </a>
+      </li>
+      <li class="mb-2">
+        <a href="/admin/questions" class="text-decoration-none">
+          <i class="bi bi-question-circle me-2"></i>
+          {{ _('admin.dash.manage_questions') }}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

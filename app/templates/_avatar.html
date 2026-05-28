@@ -1,0 +1,24 @@
+{#
+  Macro: avatar(user, size=64, css="rounded-circle border")
+
+  Renders a user's avatar as a sized <img>, or - when the user has no
+  avatar uploaded - falls back to a Bootstrap-Icons "person-circle" SVG
+  glyph rendered at the same size.
+
+  Usage:
+    {%- from "_avatar.html" import avatar -%}
+    {{ avatar(current_user) }}
+    {{ avatar(some_user, size=32) }}
+#}
+{% macro avatar(user, size=64, css="rounded-circle border") -%}
+  {%- if user.avatar_id -%}
+    <img src="/avatars/{{ user.id }}"
+         alt="{{ user.name }}"
+         width="{{ size }}" height="{{ size }}"
+         class="{{ css }}">
+  {%- else -%}
+    <i class="bi bi-person-circle text-body-secondary"
+       style="font-size: {{ size }}px; line-height: 1;"
+       aria-label="{{ user.name }}"></i>
+  {%- endif -%}
+{%- endmacro %}

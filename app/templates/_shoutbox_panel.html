@@ -1,0 +1,78 @@
+{#-
+  Swappable card body for the shoutbox.
+
+  Both GET /shouts and POST /shouts render this fragment; HTMX uses
+  ``outerHTML`` so the entire panel (form + error + list) is replaced
+  on every submit. That keeps the markup simple - no OOB swaps and no
+  per-message JS - at the cost of re-shipping the list each time.
+
+  Context:
+    shouts            list[Shout]   newest first
+    max_message_len   int
+    draft             str   pre-fill the input (empty on success, user's
+                            text on validation error)
+    error             str|None i18n key
+    error_args        dict (optional) extra kwargs for the i18n template
+-#}
+{%- from "_avatar.html" import avatar -%}
+<div id="shoutbox-panel" class="card shadow-sm">
+  <header class="card-header bg-body">
+    <form class="d-flex gap-2 align-items-start mb-0"
+          method="post" action="/shouts"
+          hx-post="/shouts"
+          hx-target="#shoutbox-panel"
+          hx-swap="outerHTML">
+      <input type="text"
+             name="message"
+             value="{{ draft or '' }}"
+             maxlength="{{ max_message_len }}"
+             required
+             autocomplete="off"
+             placeholder="{{ _('shouts.placeholder') }}"
+             aria-label="{{ _('shouts.aria.message') }}"
+             class="form-control">
+      <button type="submit" class="btn btn-primary text-nowrap">
+        <i class="bi bi-send me-1"></i>
+        {{ _('common.send') }}
+      </button>
+    </form>
+    {%- if error %}
+      <div class="alert alert-danger small mt-2 mb-0 py-2" role="alert">
+        <i class="bi bi-exclamation-triangle me-1"></i>
+        {{ _(error, **(error_args or {})) }}
+      </div>
+    {%- endif %}
+  </header>
+
+  {%- if shouts %}
+    <ul class="list-group list-group-flush">
+      {%- for shout in shouts %}
+        <li class="list-group-item d-flex gap-3 align-items-start">
+          <div class="flex-shrink-0">
+            {{ avatar(shout.user, size=40, css="rounded-circle") }}
+          </div>
+          <div class="flex-grow-1 min-w-0">
+            <div class="d-flex flex-wrap align-items-baseline gap-2">
+              <span class="fw-semibold">{{ shout.user.name }}</span>
+              {%- if shout.user.role == 'ROLE_ADMIN' %}
+                <span class="badge text-bg-warning-subtle text-warning-emphasis"
+                      title="{{ _('common.admin') }}">
+                  <i class="bi bi-shield-lock me-1"></i>{{ _('shouts.admin_badge') }}
+                </span>
+              {%- endif %}
+              <span class="text-body-secondary small">
+                {{ shout.date | kickoff }}
+              </span>
+            </div>
+            <p class="mb-0 text-break">{{ shout.message }}</p>
+          </div>
+        </li>
+      {%- endfor %}
+    </ul>
+  {%- else %}
+    <div class="card-body text-center text-body-secondary py-4">
+      <i class="bi bi-chat-quote me-1"></i>
+      {{ _('shouts.empty') }}
+    </div>
+  {%- endif %}
+</div>

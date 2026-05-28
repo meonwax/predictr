@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% set active_nav = 'questions' %}
+
+{% block title %}{{ _('questions.title') }} | {{ _('brand.name') }}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-end mb-3 gap-2">
+  <div>
+    <h1 class="h3 mb-1">
+      <i class="bi bi-question-circle me-2 text-primary"></i>
+      {{ _('questions.title') }}
+    </h1>
+    <p class="text-body-secondary mb-0 small">
+      {{ _('questions.subtitle') }}
+    </p>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="small text-uppercase text-body-secondary">
+        <tr>
+          <th scope="col" class="ps-3">{{ _('questions.col.question') }}</th>
+          <th scope="col">{{ _('questions.col.deadline') }}</th>
+          <th scope="col" style="min-width: 12rem;">{{ _('questions.col.your_answer') }}</th>
+          <th scope="col" class="d-none d-md-table-cell">{{ _('questions.col.correct_answer') }}</th>
+          <th scope="col" class="text-center" style="width: 5rem;">{{ _('questions.col.worth') }}</th>
+          <th scope="col" class="text-center" style="width: 5rem;">{{ _('questions.col.points_short') }}</th>
+          <th scope="col" class="text-center pe-3" style="width: 3rem;"
+              title="{{ _('questions.col.others_title') }}">
+            <i class="bi bi-people" aria-hidden="true"></i>
+            <span class="visually-hidden">{{ _('questions.col.others') }}</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in entries %}
+          {% set q = entry.question %}
+          <tr>
+            <td class="ps-3">{{ q.question }}</td>
+            <td>
+              <span class="small text-nowrap">{{ q.deadline | kickoff }}</span>
+            </td>
+
+            {# Answer cell - separate partial, HTMX-swappable. #}
+            {% include '_answer_cell.html' %}
+
+            <td class="d-none d-md-table-cell">
+              {% if entry.correct_answer_display %}
+                <span class="fw-medium">{{ entry.correct_answer_display }}</span>
+              {% elif not entry.can_answer %}
+                <i class="bi bi-hourglass-split text-body-secondary"
+                   title="{{ _('questions.awaiting_correct') }}"></i>
+              {% else %}
+                <span class="text-body-secondary">{{ _('common.dash') }}</span>
+              {% endif %}
+            </td>
+            <td class="text-center text-body-secondary">{{ q.points }}</td>
+            <td class="text-center">
+              {% if not entry.can_answer and entry.answer and entry.correct_answer_display %}
+                <span class="fw-semibold">{{ entry.points_earned }}</span>
+              {% elif not entry.can_answer and entry.answer %}
+                <i class="bi bi-hourglass-split text-body-secondary"
+                   title="{{ _('questions.awaiting_correct_short') }}"></i>
+              {% else %}
+                <span class="text-body-secondary">{{ _('common.dash') }}</span>
+              {% endif %}
+            </td>
+            <td class="text-center pe-3">
+              <button type="button"
+                      class="btn btn-sm btn-outline-secondary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#peek-modal"
+                      hx-get="/questions/{{ q.id }}/others"
+                      hx-target="#peek-modal-body"
+                      hx-swap="innerHTML"
+                      aria-label="{{ _('questions.aria.peek_others', id=q.id) }}">
+                <i class="bi bi-people"></i>
+              </button>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="7" class="text-center text-body-secondary py-4">
+              <i class="bi bi-info-circle me-1"></i>
+              {{ _('questions.empty') }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

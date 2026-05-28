@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('auth.login.page_title') }} | {{ _('brand.name') }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-5">
+    {% include "auth/_emblem.html" %}
+    <h1 class="h3 mb-4 text-center">{{ _('auth.login.heading') }}</h1>
+
+    {% if registered %}
+      <div class="alert alert-success" role="alert">
+        {{ _('auth.login.registered_alert') }}
+      </div>
+    {% endif %}
+
+    {% if error %}
+      <div class="alert alert-danger" role="alert">{{ _(error) }}</div>
+    {% endif %}
+
+    <form method="post" action="/login" novalidate>
+      <input type="hidden" name="next" value="{{ next }}">
+
+      <div class="mb-3">
+        <label for="email" class="form-label">{{ _('auth.login.email') }}</label>
+        <input class="form-control" type="email" id="email" name="email"
+               value="{{ email }}" autocomplete="email" autofocus required>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">{{ _('auth.login.password') }}</label>
+        <input class="form-control" type="password" id="password" name="password"
+               autocomplete="current-password" required>
+      </div>
+
+      <div class="form-check mb-4">
+        <input class="form-check-input" type="checkbox" id="remember_me"
+               name="remember_me" value="true">
+        <label class="form-check-label" for="remember_me">{{ _('auth.login.remember_me') }}</label>
+      </div>
+
+      <button class="btn btn-primary w-100" type="submit">{{ _('auth.login.submit') }}</button>
+    </form>
+
+    <p class="text-center mt-4 small">
+      <a href="/lostpwd" class="link-secondary">{{ _('auth.login.forgot') }}</a>
+      &middot;
+      <a href="/register" class="link-secondary">{{ _('auth.login.create_account') }}</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

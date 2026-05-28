@@ -1,5 +1,45 @@
-# Ignore everything
-*
+# Version control & local tooling
+.git
+.gitignore
+.idea
+.vscode
+*.iml
+.cursor
 
-# Allow explicitly
-!/target
+# Python build / test artefacts
+__pycache__
+*.py[cod]
+*.egg-info
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+htmlcov
+build
+dist
+
+# Virtual envs (the image builds its own with uv)
+.venv
+.python-version
+
+# Vendored JS/CSS - the image fetches a fresh, hash-verified copy via
+# scripts/fetch_vendor_assets.py during the build (so the image doesn't
+# depend on whatever happens to be in the dev's local checkout).
+app/static/vendor
+
+# Source trees that aren't part of the runtime image. README.md and
+# LICENSE are intentionally NOT ignored: hatchling reads the readme for
+# package metadata and we want LICENSE shipped inside the image.
+tests
+plan
+
+# Local secrets & runtime artefacts
+.env
+.env.*
+*.log
+*.sqlite3
+
+# Docker meta
+Dockerfile
+.dockerignore
+docker-compose*.yml

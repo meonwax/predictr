@@ -1,0 +1,16 @@
+{% extends "errors/_layout.html" %}
+
+{% set status_code = "404" %}
+{% set i18n_prefix = "error.404" %}
+
+{% block actions %}
+  <a href="{{ url_for('home:index') }}" class="btn btn-primary">
+    <i class="bi bi-house-door me-1"></i> {{ _('error.cta.home') }}
+  </a>
+  {#- Inline JS for "Go back" is the only client-only behaviour we need on
+      this page. Bootstrap's bundled JS is already loaded by base.html. -#}
+  <button type="button" class="btn btn-outline-secondary"
+          onclick="history.length > 1 ? history.back() : (window.location.href = '/')">
+    <i class="bi bi-arrow-left me-1"></i> {{ _('error.cta.back') }}
+  </button>
+{% endblock %}

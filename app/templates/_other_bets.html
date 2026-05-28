@@ -1,0 +1,74 @@
+{#-
+  Modal-body fragment for /bets/{game_id}/others.
+
+  Context:
+    view  OtherBetsView (game, can_view, others)
+
+  Three render states:
+    * Pre-kickoff             - locked placeholder.
+    * Kickoff passed, empty   - "no other bets yet" message.
+    * Kickoff passed + others - table coloured by bet_css_class().
+-#}
+{% set game = view.game %}
+
+<div class="mb-3 small text-body-secondary d-flex justify-content-between gap-2 flex-wrap">
+  <span>
+    <i class="bi bi-calendar-event me-1"></i>
+    {{ _('others.match_label', id=game.id) }}
+  </span>
+  {%- if game.score_home is not none and game.score_away is not none %}
+    <span>
+      <span class="badge text-bg-success-subtle text-success-emphasis">
+        {{ _('others.result_label', home=game.score_home, away=game.score_away) }}
+      </span>
+    </span>
+  {%- elif view.can_view %}
+    <span><i class="bi bi-hourglass-split me-1"></i> {{ _('others.awaiting_result') }}</span>
+  {%- endif %}
+</div>
+
+{%- if not view.can_view %}
+  <p class="text-body-secondary mb-0">
+    <i class="bi bi-lock me-1"></i>
+    {{ _('others.bets.locked', kickoff=game.kickoff_time | kickoff) }}
+  </p>
+{%- elif not view.others %}
+  <p class="text-body-secondary mb-0">
+    <i class="bi bi-info-circle me-1"></i>
+    {{ _('others.bets.empty') }}
+  </p>
+{%- else %}
+  <div class="table-responsive">
+    <table class="table table-sm align-middle mb-0">
+      <thead class="small text-uppercase text-body-secondary">
+        <tr>
+          <th scope="col">{{ _('others.col.player') }}</th>
+          <th scope="col" class="text-center">{{ _('others.col.bet') }}</th>
+          <th scope="col" class="text-end">{{ _('others.col.points') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in view.others %}
+          {% set cls = bet_css_class(o.points) %}
+          <tr class="{% if cls == 'success bold' %}table-success
+                  {%- elif cls == 'info' %}table-info
+                  {%- elif cls == 'warning' %}table-warning{% endif %}">
+            <td class="text-truncate" style="max-width: 14rem;">
+              {{ o.user.name }}
+            </td>
+            <td class="text-center text-nowrap fw-semibold">
+              {{ o.score_home }} : {{ o.score_away }}
+            </td>
+            <td class="text-end">
+              {% if game.score_home is not none and game.score_away is not none %}
+                {{ o.points }}
+              {% else %}
+                <span class="text-body-secondary">{{ _('common.dash') }}</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{%- endif %}

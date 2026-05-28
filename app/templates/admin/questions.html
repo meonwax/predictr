@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('nav.admin') }} | {{ _('admin.crumb.questions') }} | {{ _('brand.name') }}{% endblock %}
+
+{% block content %}
+<nav class="small mb-3" aria-label="{{ _('nav.breadcrumb_aria') }}">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item"><a href="/admin" class="text-decoration-none">{{ _('admin.crumb.root') }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ _('admin.crumb.questions') }}</li>
+  </ol>
+</nav>
+
+<div class="d-flex flex-wrap align-items-end justify-content-between mb-3 gap-2">
+  <div>
+    <h1 class="h3 mb-1">
+      <i class="bi bi-question-circle me-2 text-primary"></i>
+      {{ _('admin.questions.title') }}
+    </h1>
+    <p class="text-body-secondary mb-0 small">
+      {{ _('admin.questions.subtitle_html') | safe }}
+    </p>
+  </div>
+</div>
+
+{# Inline flash from PRG after create/update/delete. The ``?saved=...`` code is
+   one of "created" / "updated" / "deleted" (i18n-keyed). The ``?error=...``
+   payload was already translated by the route handler - admins are always
+   authenticated so the route knows the language. #}
+{% set req_qs = request.query_params %}
+{% set _saved_what_keys = {
+  "created": "admin.questions.saved.created",
+  "updated": "admin.questions.saved.updated",
+  "deleted": "admin.questions.saved.deleted",
+} %}
+{% if req_qs.get("saved") in _saved_what_keys %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="bi bi-check-circle me-1"></i>
+    {{ _('admin.questions.saved_html', what=_(_saved_what_keys[req_qs.get("saved")])) }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ _('common.close') }}"></button>
+  </div>
+{% elif req_qs.get("error") %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-triangle me-1"></i>
+    {{ req_qs.get("error") }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ _('common.close') }}"></button>
+  </div>
+{% endif %}
+
+<div class="card shadow-sm mb-4">
+  <header class="card-header bg-body">
+    <h2 class="h6 mb-0">
+      <i class="bi bi-plus-circle me-1"></i> {{ _('admin.questions.new') }}
+    </h2>
+  </header>
+  <div class="card-body">
+    <form action="/admin/questions/new" method="post" class="row g-3">
+      <div class="col-12 col-lg-5">
+        <label for="new-q-text" class="form-label small text-uppercase text-body-secondary">{{ _('admin.questions.field.question') }}</label>
+        <textarea id="new-q-text" name="question" rows="2"
+                  maxlength="{{ max_question_len }}"
+                  required
+                  class="form-control"></textarea>
+      </div>
+      <div class="col-12 col-md-5 col-lg-3">
+        <label for="new-q-deadline" class="form-label small text-uppercase text-body-secondary">{{ _('admin.questions.field.deadline') }}</label>
+        <input id="new-q-deadline" type="datetime-local" name="deadline"
+               required class="form-control">
+      </div>
+      <div class="col-6 col-md-3 col-lg-1">
+        <label for="new-q-points" class="form-label small text-uppercase text-body-secondary">{{ _('admin.questions.field.points') }}</label>
+        <input id="new-q-points" type="number" name="points"
+               min="{{ min_points }}" max="{{ max_points }}"
+               value="10" required class="form-control">
+      </div>
+      <div class="col-12 col-lg-3">
+        <label for="new-q-correct" class="form-label small text-uppercase text-body-secondary">{{ _('admin.questions.field.correct_optional') }}</label>
+        <input id="new-q-correct" type="text" name="correct_answer"
+               maxlength="{{ max_correct_answer_len }}"
+               placeholder="{{ _('admin.questions.placeholder.correct') }}"
+               class="form-control">
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-plus-lg me-1"></i> {{ _('admin.questions.submit_new') }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="small text-uppercase text-body-secondary">
+        <tr>
+          <th scope="col" class="ps-3" style="width: 3rem;">#</th>
+          <th scope="col">{{ _('admin.questions.field.question') }}</th>
+          <th scope="col" style="width: 14rem;">{{ _('admin.questions.col.deadline') }}</th>
+          <th scope="col" style="width: 6rem;">{{ _('admin.questions.col.points') }}</th>
+          <th scope="col" style="width: 16rem;">{{ _('admin.questions.field.correct') }}</th>
+          <th scope="col" class="text-center" style="width: 5rem;"
+              title="{{ _('admin.questions.col.answers_count_title') }}">
+            <i class="bi bi-people"></i>
+          </th>
+          <th scope="col" class="pe-3" style="width: 8rem;">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in questions %}
+          {% include "admin/_question_row.html" %}
+        {% else %}
+          <tr>
+            <td colspan="7" class="text-center text-body-secondary py-4">
+              <i class="bi bi-info-circle me-1"></i>
+              {{ _('admin.questions.empty') }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

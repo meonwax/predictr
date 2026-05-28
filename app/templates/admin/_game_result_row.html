@@ -1,0 +1,119 @@
+{#-
+  One editable row for the admin /admin/games table.
+
+  A ``<form>`` can't be a direct child of ``<tr>``, so each row instead
+  uses HTMX's ``hx-include`` + ``hx-target`` on the save button to pull
+  every named input within the row and swap the row in-place. The
+  admin UI deliberately requires JS - the dashboard is admin-only and
+  there's no point doing JS-free fallback gymnastics for it.
+
+  The row also carries an out-of-band sibling row used to surface
+  inline error messages without affecting layout when there's no error.
+
+  For knockout fixtures the home/away cells render a ``<select>`` so
+  the admin can resolve the bracket placeholder ("1A", "W74", ...) to an
+  actual team. The select posts to ``/admin/games/{id}/teams`` via a
+  dedicated save button; the result-and-notes save button continues to
+  post to ``/admin/games/{id}`` and skips the team fields.
+
+  Context:
+    game                Game (with venue + group eagerly loaded)
+    teams_by_group      list[(group_id, list[Team])]  (knockout rows only)
+    knockout_group_ids  tuple[str, ...]  pseudo-group ids ('r32', ...)
+    min_score           int
+    max_score           int
+    max_notes_len       int
+    just_saved          bool   optional, set on the HTMX response after a save
+    error               str|None i18n key, surfaced inline below the row
+    error_args          dict (optional) extra kwargs for the i18n template
+-#}
+{%- set is_knockout = game.group_id in knockout_group_ids -%}
+<tr id="admin-game-{{ game.id }}">
+  <th scope="row" class="ps-3 text-body-secondary fw-normal">
+    {{ game.id }}
+  </th>
+  <td>
+    <span class="small text-nowrap">{{ game.kickoff_time | kickoff }}</span>
+  </td>
+  <td class="text-end">
+    {% if is_knockout %}
+      {% with side='home', align='end' %}
+        {% include 'admin/_team_picker.html' %}
+      {% endwith %}
+    {% else %}
+      {% with team_id=game.team_home_id, placeholder=game.placeholder_home, align='end' %}
+        {% include '_team_cell.html' %}
+      {% endwith %}
+    {% endif %}
+  </td>
+  <td class="text-center">
+    <div class="d-inline-flex align-items-center gap-1">
+      <input type="number"
+             name="score_home"
+             value="{% if game.score_home is not none %}{{ game.score_home }}{% endif %}"
+             min="{{ min_score }}" max="{{ max_score }}"
+             aria-label="{{ _('admin.games.aria.home_score', id=game.id) }}"
+             class="form-control form-control-sm admin-score text-end">
+      <span class="text-body-secondary">:</span>
+      <input type="number"
+             name="score_away"
+             value="{% if game.score_away is not none %}{{ game.score_away }}{% endif %}"
+             min="{{ min_score }}" max="{{ max_score }}"
+             aria-label="{{ _('admin.games.aria.away_score', id=game.id) }}"
+             class="form-control form-control-sm admin-score">
+    </div>
+  </td>
+  <td>
+    {% if is_knockout %}
+      {% with side='away', align='start' %}
+        {% include 'admin/_team_picker.html' %}
+      {% endwith %}
+    {% else %}
+      {% with team_id=game.team_away_id, placeholder=game.placeholder_away, align='start' %}
+        {% include '_team_cell.html' %}
+      {% endwith %}
+    {% endif %}
+  </td>
+  <td>
+    <input type="text"
+           name="notes"
+           value="{{ game.notes or '' }}"
+           maxlength="{{ max_notes_len }}"
+           placeholder="{{ _('admin.games.notes.placeholder') }}"
+           aria-label="{{ _('admin.games.aria.notes', id=game.id) }}"
+           class="form-control form-control-sm">
+  </td>
+  <td class="text-center pe-3">
+    <div class="d-inline-flex flex-column align-items-center gap-1">
+      <button type="button"
+              class="btn btn-sm btn-outline-primary"
+              hx-post="/admin/games/{{ game.id }}"
+              hx-include="closest tr"
+              hx-target="#admin-game-{{ game.id }}"
+              hx-swap="outerHTML"
+              aria-label="{{ _('admin.games.aria.save', id=game.id) }}"
+              title="{{ _('admin.games.save_result') }}">
+        <i class="bi bi-check2"></i>
+      </button>
+      {% if is_knockout %}
+        <button type="button"
+                class="btn btn-sm btn-outline-secondary"
+                hx-post="/admin/games/{{ game.id }}/teams"
+                hx-include="closest tr"
+                hx-target="#admin-game-{{ game.id }}"
+                hx-swap="outerHTML"
+                aria-label="{{ _('admin.games.aria.save_teams', id=game.id) }}"
+                title="{{ _('admin.games.save_teams') }}">
+          <i class="bi bi-people"></i>
+        </button>
+      {% endif %}
+    </div>
+    {%- if just_saved %}
+      <span class="badge text-bg-success-subtle text-success-emphasis bet-saved-flag ms-1"
+            role="status" aria-live="polite">{{ _('common.saved') }}</span>
+    {%- endif %}
+    {%- if error %}
+      <div class="small text-danger mt-1" role="alert">{{ _(error, **(error_args or {})) }}</div>
+    {%- endif %}
+  </td>
+</tr>

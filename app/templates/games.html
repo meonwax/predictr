@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% set active_nav = 'games' %}
+
+{% block title %}{{ _('nav.games') }} | {{ _('brand.name') }}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">
+    <i class="bi bi-calendar-event me-2 text-primary"></i>
+    {{ _('games.title') }}
+  </h1>
+  <span class="text-body-secondary small">
+    {{ _('games.summary',
+          matches=sections | sum(attribute='games', start=[]) | length,
+          groups=sections | length) }}
+  </span>
+</div>
+
+{% for section in sections %}
+  {% set is_knockout = section.id not in 'abcdefghijkl' %}
+  {% set match_count = section.games | length %}
+  <section class="card shadow-sm mb-4" id="group-{{ section.id }}">
+    <header class="card-header d-flex align-items-center bg-body">
+      <span class="badge text-bg-{{ 'warning' if is_knockout else 'primary' }} me-2">
+        {{ section.id.upper() }}
+      </span>
+      <h2 class="h5 mb-0">{{ section.id | group_label }}</h2>
+      <span class="ms-auto text-body-secondary small">
+        {% if match_count == 1 %}
+          {{ _('games.matches_count_one', count=match_count) }}
+        {% else %}
+          {{ _('games.matches_count_many', count=match_count) }}
+        {% endif %}
+      </span>
+    </header>
+
+    {% if section.games %}
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="small text-uppercase text-body-secondary">
+            <tr>
+              <th scope="col" class="ps-3">#</th>
+              <th scope="col">{{ _('games.col.kickoff') }}</th>
+              <th scope="col" class="text-end">{{ _('games.col.home') }}</th>
+              <th scope="col" class="text-center">{{ _('games.col.score') }}</th>
+              <th scope="col">{{ _('games.col.away') }}</th>
+              <th scope="col" class="pe-3">{{ _('games.col.venue') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for game in section.games %}
+              <tr>
+                <th scope="row" class="ps-3 text-body-secondary fw-normal">
+                  {{ game.id }}
+                </th>
+                <td>
+                  <span class="small text-nowrap">
+                    {{ game.kickoff_time | kickoff }}
+                  </span>
+                </td>
+                <td class="text-end">
+                  {% with team_id=game.team_home_id, placeholder=game.placeholder_home, align='end' %}
+                    {% include '_team_cell.html' %}
+                  {% endwith %}
+                </td>
+                <td class="text-center text-nowrap fw-semibold">
+                  {% if game.score_home is not none and game.score_away is not none %}
+                    <span class="badge text-bg-success-subtle text-success-emphasis fs-6">
+                      {{ game.score_home }} : {{ game.score_away }}
+                    </span>
+                  {% else %}
+                    <span class="text-body-secondary">{{ _('games.placeholder.vs') }}</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% with team_id=game.team_away_id, placeholder=game.placeholder_away, align='start' %}
+                    {% include '_team_cell.html' %}
+                  {% endwith %}
+                </td>
+                <td class="pe-3">
+                  <span class="d-block text-nowrap">
+                    <i class="bi bi-geo-alt text-body-secondary me-1"></i>{{ game.venue.stadium.split(',')[0] }}
+                  </span>
+                  <span class="d-block small text-body-secondary text-nowrap">
+                    {{ game.venue.stadium.split(',')[1:] | join(',') | trim }}
+                  </span>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="card-body text-body-secondary">
+        <i class="bi bi-info-circle me-1"></i>
+        {{ _('games.empty_group') }}
+      </div>
+    {% endif %}
+  </section>
+{% else %}
+  <div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle me-1"></i>
+    {{ _('games.empty_tournament_html') | safe }}
+  </div>
+{% endfor %}
+{% endblock %}

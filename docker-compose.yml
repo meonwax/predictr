@@ -1,0 +1,124 @@
+# predictr - production-ready Compose stack.
+#
+# This file is intentionally the "safe" baseline:
+#   - Postgres data lives on a named volume (predictr_postgres_data).
+#   - No service ports beyond the app's 8000 are published on the host.
+#   - AUTO_SEED is OFF (seeding production must be a deliberate operator
+#     action: `docker compose exec app python -m app.seed seeds/wc2026.sql`).
+#   - mailhog is NOT included; in production MAIL_HOST points at a real SMTP
+#     relay (set via the host environment / .env).
+#
+# For local development, a sibling `docker-compose.override.yml` is auto-
+# merged on top of this file and adds: ephemeral tmpfs database, mailhog,
+# postgres port exposure, AUTO_SEED=1, and a dev session secret. To run
+# this base file *without* the dev override (e.g. on the production VPS),
+# use `docker compose -f docker-compose.yml up -d`.
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: predictr:local
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://predictr:${POSTGRES_PASSWORD:-predictr}@postgres:5432/predictr
+      # SESSION_SECRET MUST be a long random value in production. The empty
+      # fallback here lets the app's own default surface during dev; we'll
+      # turn this into a hard requirement once auth lands.
+      SESSION_SECRET: ${SESSION_SECRET:-}
+      DEBUG: ${DEBUG:-false}
+      SQL_ECHO: ${SQL_ECHO:-false}
+      # Application log level (root logger for the ``app.*`` hierarchy).
+      # Accepts DEBUG / INFO / WARNING / ERROR / CRITICAL. Production
+      # defaults to INFO; flip to DEBUG temporarily via the host .env when
+      # diagnosing a live issue. Uvicorn's own access logs are unaffected.
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      MAIL_HOST: ${MAIL_HOST:-}
+      MAIL_PORT: ${MAIL_PORT:-25}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      MAIL_USE_TLS: ${MAIL_USE_TLS:-false}
+      MAIL_SENDER: ${MAIL_SENDER:-noreply@predictr.local}
+      RUN_MIGRATIONS: ${RUN_MIGRATIONS:-1}
+      AUTO_SEED: ${AUTO_SEED:-0}
+    ports:
+      - "${APP_BIND:-127.0.0.1:8000}:8000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=2).status == 200 else 1)"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: predictr
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-predictr}
+      POSTGRES_DB: predictr
+      TZ: UTC
+      PGTZ: UTC
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U predictr -d predictr"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  # Daily Postgres backup sidecar. Reuses the postgres:16-alpine image so
+  # pg_dump is already in it; no custom build, no extra layer to pull.
+  # The script runs in a sleep-loop and writes one `predictr-<UTC>.pgdump`
+  # per day at $BACKUP_HOUR_UTC (default 04:00 UTC = 06:00 CEST during the
+  # WC tournament window). Output lands in $BACKUP_DIR on the host, where
+  # the operator's regular host-level backup tool (Borg, restic, rsync,
+  # VPS snapshots, ...) can pick it up.
+  # No retention is applied - predictr only runs during the World Cup, so
+  # the total dump count is naturally bounded. See README for the restore
+  # recipe.
+  postgres-backup:
+    image: postgres:16-alpine
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGHOST: postgres
+      PGUSER: predictr
+      PGDATABASE: predictr
+      PGPASSWORD: ${POSTGRES_PASSWORD:-predictr}
+      SCHEDULE_HOUR_UTC: ${BACKUP_HOUR_UTC:-4}
+      BACKUP_ON_STARTUP: ${BACKUP_ON_STARTUP:-0}
+    volumes:
+      - ./docker/backup.sh:/usr/local/bin/backup.sh:ro
+      - ${BACKUP_DIR:-./backups}:/backups
+    entrypoint: ["/bin/sh", "/usr/local/bin/backup.sh"]
+    restart: unless-stopped
+
+  # Web UI for direct Postgres access (~5 MB PHP image, stateless).
+  # Bound to loopback only - in production the host-level Caddy is the
+  # public entry point and MUST add a `basicauth` directive (or another
+  # access guard) before proxying here; see README for the snippet.
+  # In development the loopback binding is the only access guard, which
+  # is fine because dev hosts are not exposed.
+  adminer:
+    image: adminer:5
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # Pre-fill the "Server" field on the login form so operators only
+      # have to type the credentials.
+      ADMINER_DEFAULT_SERVER: postgres
+      ADMINER_DESIGN: ${ADMINER_DESIGN:-dracula}
+    ports:
+      - "${ADMINER_BIND:-127.0.0.1:8081}:8080"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

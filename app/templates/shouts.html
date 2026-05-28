@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% set active_nav = 'shouts' %}
+
+{% block title %}{{ _('shouts.title') }} | {{ _('brand.name') }}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-end mb-3 gap-2">
+  <div>
+    <h1 class="h3 mb-1">
+      <i class="bi bi-chat-dots me-2 text-primary"></i>
+      {{ _('shouts.title') }}
+    </h1>
+    <p class="text-body-secondary mb-0 small">
+      {{ _('shouts.subtitle') }}
+    </p>
+  </div>
+</div>
+
+{% include "_shoutbox_panel.html" %}
+{% endblock %}

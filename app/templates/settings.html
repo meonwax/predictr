@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% from "_avatar.html" import avatar %}
+
+{% block title %}{{ _('settings.page_title') }} | {{ _('brand.name') }}{% endblock %}
+
+{% macro alert(level, text) %}
+  <div class="alert alert-{{ level }}" role="alert">{{ text }}</div>
+{% endmacro %}
+
+{# Maps the ``?saved=...`` query param values to translation keys. #}
+{% set _saved_keys = {
+  "profile": "settings.saved.profile",
+  "password": "settings.saved.password",
+  "avatar": "settings.saved.avatar",
+  "avatar_deleted": "settings.saved.avatar_deleted",
+} %}
+
+{# Maps the ``?error=...`` query param values to translation keys. #}
+{% set _error_keys = {
+  "profile": "settings.profile.error",
+  "avatar_empty": "settings.avatar.error.empty",
+  "avatar_too_large": "settings.avatar.error.too_large",
+  "avatar_bad_type": "settings.avatar.error.bad_type",
+  "avatar_corrupt": "settings.avatar.error.corrupt",
+} %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+
+    <h1 class="h3 mb-4">{{ _('settings.heading') }}</h1>
+
+    {# --- Global "saved" success banners -------------------------------- #}
+    {% if saved in _saved_keys %}
+      {{ alert("success", _(_saved_keys[saved])) }}
+    {% endif %}
+
+    {# --- Profile ------------------------------------------------------- #}
+    <section class="card shadow-sm mb-4">
+      <div class="card-header bg-body">
+        <h2 class="h5 mb-0">
+          <i class="bi bi-person-fill me-1"></i> {{ _('settings.section.profile') }}
+        </h2>
+      </div>
+      <div class="card-body">
+        {% if error == "profile" %}
+          {{ alert("danger", _('settings.profile.error')) }}
+        {% endif %}
+
+        <form method="post" action="/settings/profile" novalidate>
+          <div class="mb-3">
+            <label class="form-label" for="name">{{ _('settings.profile.name') }}</label>
+            <input class="form-control" type="text" id="name" name="name"
+                   value="{{ current_user.name }}" minlength="2" maxlength="120"
+                   autocomplete="nickname" required>
+          </div>
+
+          <fieldset class="mb-3">
+            <legend class="form-label">{{ _('settings.profile.language') }}</legend>
+            {% for lang in supported_languages %}
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="lang-{{ lang }}"
+                       name="preferred_language" value="{{ lang }}"
+                       {% if (current_user.preferred_language or default_language) == lang %}checked{% endif %}>
+                <label class="form-check-label" for="lang-{{ lang }}">
+                  {{ _('settings.profile.lang.' ~ lang) }}
+                </label>
+              </div>
+            {% endfor %}
+          </fieldset>
+
+          <div class="mb-3">
+            <label class="form-label" for="preferred_timezone">
+              {{ _('settings.profile.timezone') }}
+            </label>
+            {%- set active_tz = current_user.preferred_timezone or default_timezone -%}
+            <select class="form-select" id="preferred_timezone" name="preferred_timezone">
+              {% for tz in supported_timezones %}
+                <option value="{{ tz }}" {% if tz == active_tz %}selected{% endif %}>
+                  {{ tz }}
+                </option>
+              {% endfor %}
+            </select>
+            <div class="form-text">
+              {{ _('settings.profile.timezone_hint', default=default_timezone) }}
+            </div>
+          </div>
+
+          <p class="form-text mb-3">
+            {{ _('settings.profile.signed_in_html',
+                 email=current_user.email,
+                 created=current_user.created_date | short_date) | safe }}
+          </p>
+
+          <button class="btn btn-primary" type="submit">{{ _('settings.profile.submit') }}</button>
+        </form>
+      </div>
+    </section>
+
+    {# --- Avatar -------------------------------------------------------- #}
+    <section class="card shadow-sm mb-4">
+      <div class="card-header bg-body">
+        <h2 class="h5 mb-0">
+          <i class="bi bi-image me-1"></i> {{ _('settings.section.avatar') }}
+        </h2>
+      </div>
+      <div class="card-body">
+        {% if error in _error_keys and error != "profile" %}
+          {{ alert("danger", _(_error_keys[error])) }}
+        {% endif %}
+
+        <div class="d-flex align-items-center gap-3 mb-3">
+          {{ avatar(current_user, size=96) }}
+          <div class="text-body-secondary small">
+            {% if current_user.avatar_id %}
+              {{ _('settings.avatar.current') }}
+            {% else %}
+              {{ _('settings.avatar.none') }}
+            {% endif %}
+          </div>
+        </div>
+
+        <form method="post" action="/settings/avatar" enctype="multipart/form-data"
+              class="mb-2">
+          <div class="mb-3">
+            <label class="form-label" for="avatar-file">{{ _('settings.avatar.upload_label') }}</label>
+            <input class="form-control" type="file" id="avatar-file" name="file"
+                   accept="image/png,image/jpeg" required>
+            <div class="form-text">{{ _('settings.avatar.upload_hint') }}</div>
+          </div>
+          <button class="btn btn-primary" type="submit">{{ _('settings.avatar.upload_submit') }}</button>
+        </form>
+
+        {% if current_user.avatar_id %}
+          <form method="post" action="/settings/avatar/delete" class="d-inline">
+            <button class="btn btn-outline-danger" type="submit">
+              <i class="bi bi-trash me-1"></i> {{ _('settings.avatar.remove') }}
+            </button>
+          </form>
+        {% endif %}
+      </div>
+    </section>
+
+    {# --- Password ------------------------------------------------------ #}
+    <section class="card shadow-sm mb-4">
+      <div class="card-header bg-body">
+        <h2 class="h5 mb-0">
+          <i class="bi bi-shield-lock-fill me-1"></i> {{ _('settings.section.password') }}
+        </h2>
+      </div>
+      <div class="card-body">
+        {% if error == "password_mismatch" %}
+          {{ alert("danger", _('settings.password.error.mismatch')) }}
+        {% elif error == "password_too_short" %}
+          {{ alert("danger", _('settings.password.error.too_short', min=min_password_len)) }}
+        {% elif error == "password_wrong_current" %}
+          {{ alert("danger", _('settings.password.error.wrong_current')) }}
+        {% endif %}
+
+        <form method="post" action="/settings/password" novalidate>
+          <div class="mb-3">
+            <label class="form-label" for="old_password">{{ _('settings.password.current') }}</label>
+            <input class="form-control" type="password" id="old_password"
+                   name="old_password" autocomplete="current-password" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="new_password">{{ _('settings.password.new') }}</label>
+            <input class="form-control" type="password" id="new_password"
+                   name="new_password" autocomplete="new-password"
+                   minlength="{{ min_password_len }}" required>
+            <div class="form-text">{{ _('settings.password.new_hint', min=min_password_len) }}</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="new_password_confirm">{{ _('settings.password.confirm') }}</label>
+            <input class="form-control" type="password" id="new_password_confirm"
+                   name="new_password_confirm" autocomplete="new-password"
+                   minlength="{{ min_password_len }}" required>
+          </div>
+          <button class="btn btn-primary" type="submit">{{ _('settings.password.submit') }}</button>
+        </form>
+      </div>
+    </section>
+
+  </div>
+</div>
+{% endblock %}

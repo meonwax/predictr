@@ -1,0 +1,66 @@
+{#-
+  One ``<td>`` holding the user's answer for one special question.
+
+  Renders either:
+
+  * An inline edit form (text input + save button) until the deadline.
+  * The user's previously-typed answer (read-only) once the deadline
+    has passed. The points / correct-answer columns are handled in
+    the page template, not here.
+
+  Context:
+    entry           QuestionForUser
+    max_answer_len  int
+    just_saved      bool   (optional) show the 'saved' badge
+    error           str|None (optional) i18n key for a failed POST
+    error_args      dict (optional) extra kwargs for the i18n template
+-#}
+{%- set q = entry.question -%}
+{%- set ans = entry.answer -%}
+<td id="answer-cell-{{ q.id }}" class="answer-cell">
+  {%- if entry.can_answer -%}
+    <form class="answer-form d-flex flex-wrap align-items-center gap-1"
+          hx-post="/questions/{{ q.id }}"
+          hx-target="#answer-cell-{{ q.id }}"
+          hx-swap="outerHTML"
+          action="/questions/{{ q.id }}"
+          method="post">
+      <input type="text"
+             name="answer"
+             value="{{ ans.answer if ans else '' }}"
+             maxlength="{{ max_answer_len }}"
+             aria-label="{{ _('questions.aria.answer', id=q.id) }}"
+             class="form-control form-control-sm flex-grow-1"
+             style="min-width: 8rem;">
+      <button type="submit"
+              class="btn btn-sm btn-outline-primary"
+              aria-label="{{ _('questions.aria.save_answer', id=q.id) }}">
+        <i class="bi bi-check2"></i>
+      </button>
+      {%- if just_saved %}
+        <span class="badge text-bg-success-subtle text-success-emphasis bet-saved-flag"
+              role="status" aria-live="polite">{{ _('common.saved') }}</span>
+      {%- endif %}
+    </form>
+    {%- if error %}
+      <div class="small text-danger mt-1" role="alert">{{ _(error, **(error_args or {})) }}</div>
+    {%- endif %}
+  {%- else -%}
+    {%- if ans and ans.answer -%}
+      {#- Green badge if the answer scored at least one point, neutral
+          otherwise. Pre-correct-answer (admin still deciding) we render
+          neutral so we don't visually promise "wrong". -#}
+      {%- set scored = entry.correct_answer_display and entry.points_earned > 0 -%}
+      <span class="badge fs-6 {% if scored %}text-bg-success
+                            {%- else %}text-bg-light text-body-secondary{% endif %}">
+        {{ ans.answer }}
+      </span>
+    {%- else -%}
+      <span class="text-body-secondary"
+            title="{{ _('questions.no_answer_title') }}">{{ _('common.dash') }}</span>
+    {%- endif %}
+    {%- if error %}
+      <div class="small text-danger mt-1" role="alert">{{ _(error, **(error_args or {})) }}</div>
+    {%- endif %}
+  {%- endif %}
+</td>

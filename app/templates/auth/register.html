@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('auth.register.page_title') }} | {{ _('brand.name') }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-5">
+    {% include "auth/_emblem.html" %}
+    <h1 class="h3 mb-4 text-center">{{ _('auth.register.heading') }}</h1>
+
+    {% if error %}
+      <div class="alert alert-danger" role="alert">{{ _(error, min=min_password_len) }}</div>
+    {% endif %}
+
+    <form method="post" action="/register" novalidate>
+      <div class="mb-3">
+        <label for="name" class="form-label">{{ _('auth.register.name') }}</label>
+        <input class="form-control" type="text" id="name" name="name"
+               value="{{ name }}" autocomplete="nickname" autofocus required minlength="2" maxlength="120">
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">{{ _('auth.register.email') }}</label>
+        <input class="form-control" type="email" id="email" name="email"
+               value="{{ email }}" autocomplete="email" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">{{ _('auth.register.password') }}</label>
+        <input class="form-control" type="password" id="password" name="password"
+               autocomplete="new-password" minlength="{{ min_password_len }}" required>
+        <div class="form-text">{{ _('auth.register.password_hint', min=min_password_len) }}</div>
+      </div>
+
+      <button class="btn btn-primary w-100" type="submit">{{ _('auth.register.submit') }}</button>
+    </form>
+
+    <p class="text-center mt-4 small">
+      {{ _('auth.register.have_account') }}
+      <a href="/login" class="link-secondary">{{ _('auth.login.submit') }}</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

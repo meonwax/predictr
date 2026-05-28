@@ -1,23 +1,40 @@
-# Eclipse
+# --- IDEs --------------------------------------------------------------
+.idea/
+.vscode/
+*.iws
+*.iml
+*.ipr
 .project
 .classpath
 .settings/
 
-# IntelliJ
-.idea
-*.iws
-*.iml
-*.ipr
+# --- Python ------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
 
-# Third party libraries
-node_modules/
-src/main/webapp/lib/
-package-lock.json
+# --- uv / venv ---------------------------------------------------------
+.venv/
+.python-version
 
-# Build
+# --- runtime / build artifacts ----------------------------------------
 target/
-.sass-cache/
-.tmp/
-*.tmp
-src/main/webapp/dist/
-src/main/webapp/css/
+dist/
+build/
+*.log
+
+# --- vendored third-party assets (fetched by scripts/fetch_vendor_assets.py) -
+app/static/vendor/
+
+# --- local secrets -----------------------------------------------------
+.env
+.env.local
+
+# --- backups (pg_dump files from the postgres-backup sidecar) ---------
+backups/

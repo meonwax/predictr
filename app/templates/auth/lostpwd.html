@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('auth.lostpwd.page_title') }} | {{ _('brand.name') }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-5">
+    {% include "auth/_emblem.html" %}
+    <h1 class="h3 mb-4 text-center">{{ _('auth.lostpwd.heading') }}</h1>
+
+    {% if sent %}
+      <div class="alert alert-info" role="alert">
+        {{ _('auth.lostpwd.sent') }}
+      </div>
+      <p class="text-center small">
+        <a href="/login" class="link-secondary">{{ _('auth.lostpwd.back') }}</a>
+      </p>
+    {% else %}
+      {% if error %}
+        <div class="alert alert-danger" role="alert">{{ _(error) }}</div>
+      {% endif %}
+
+      <p class="text-body-secondary small">
+        {{ _('auth.lostpwd.intro') }}
+      </p>
+
+      <form method="post" action="/lostpwd" novalidate>
+        <div class="mb-3">
+          <label for="email" class="form-label">{{ _('auth.lostpwd.email') }}</label>
+          <input class="form-control" type="email" id="email" name="email"
+                 value="{{ email }}" autocomplete="email" autofocus required>
+        </div>
+        <button class="btn btn-primary w-100" type="submit">{{ _('auth.lostpwd.submit') }}</button>
+      </form>
+
+      <p class="text-center mt-4 small">
+        <a href="/login" class="link-secondary">{{ _('auth.lostpwd.back') }}</a>
+      </p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

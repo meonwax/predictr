@@ -1,0 +1,90 @@
+{#-
+  One editable row for the admin /admin/questions table.
+
+  Same HTMX pattern as the games row: the save button posts via
+  ``hx-include="closest tr"`` since a ``<form>`` can't be a child of
+  ``<tr>``. The delete button posts to a separate endpoint and replaces
+  the row with an empty response (effectively removing it).
+
+  Context:
+    entry                   QuestionForAdmin
+    just_saved              bool   optional, set on HTMX response after save
+    error                   str|None i18n key for an inline error
+    error_args              dict (optional) extra kwargs for the i18n template
+    min_points              int
+    max_points              int
+    max_question_len        int
+    max_correct_answer_len  int
+-#}
+{%- set q = entry.question -%}
+<tr id="admin-question-{{ q.id }}">
+  <th scope="row" class="ps-3 text-body-secondary fw-normal align-top">
+    {{ q.id }}
+  </th>
+  <td>
+    <textarea name="question"
+              rows="2"
+              maxlength="{{ max_question_len }}"
+              required
+              aria-label="{{ _('admin.questions.aria.question', id=q.id) }}"
+              class="form-control form-control-sm">{{ q.question }}</textarea>
+  </td>
+  <td>
+    <input type="datetime-local"
+           name="deadline"
+           value="{{ q.deadline | datetime_local }}"
+           required
+           aria-label="{{ _('admin.questions.aria.deadline', id=q.id) }}"
+           class="form-control form-control-sm">
+    <div class="form-text small">{{ _('common.utc') }}</div>
+  </td>
+  <td>
+    <input type="number"
+           name="points"
+           value="{{ q.points }}"
+           min="{{ min_points }}" max="{{ max_points }}"
+           required
+           aria-label="{{ _('admin.questions.aria.points', id=q.id) }}"
+           class="form-control form-control-sm"
+           style="width: 5.5rem;">
+  </td>
+  <td>
+    <input type="text"
+           name="correct_answer"
+           value="{{ q.correct_answer or '' }}"
+           maxlength="{{ max_correct_answer_len }}"
+           placeholder="{{ _('admin.questions.placeholder.correct') }}"
+           aria-label="{{ _('admin.questions.aria.correct', id=q.id) }}"
+           class="form-control form-control-sm">
+  </td>
+  <td class="text-center text-body-secondary">
+    {{ entry.answer_count }}
+  </td>
+  <td class="text-end pe-3 text-nowrap">
+    <button type="button"
+            class="btn btn-sm btn-outline-primary"
+            hx-post="/admin/questions/{{ q.id }}"
+            hx-include="closest tr"
+            hx-target="#admin-question-{{ q.id }}"
+            hx-swap="outerHTML"
+            aria-label="{{ _('admin.questions.aria.save', id=q.id) }}">
+      <i class="bi bi-check2"></i>
+    </button>
+    <button type="button"
+            class="btn btn-sm btn-outline-danger"
+            hx-post="/admin/questions/{{ q.id }}/delete"
+            hx-target="#admin-question-{{ q.id }}"
+            hx-swap="outerHTML"
+            hx-confirm="{{ _('admin.questions.confirm_delete') }}"
+            aria-label="{{ _('admin.questions.aria.delete', id=q.id) }}">
+      <i class="bi bi-trash"></i>
+    </button>
+    {%- if just_saved %}
+      <span class="badge text-bg-success-subtle text-success-emphasis bet-saved-flag ms-1"
+            role="status" aria-live="polite">{{ _('common.saved') }}</span>
+    {%- endif %}
+    {%- if error %}
+      <div class="small text-danger mt-1" role="alert">{{ _(error, **(error_args or {})) }}</div>
+    {%- endif %}
+  </td>
+</tr>

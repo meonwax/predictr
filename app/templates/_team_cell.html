@@ -1,0 +1,58 @@
+{#-
+  Render a single team cell: flag + name, or a bracket-slot placeholder
+  for knockout fixtures where the team isn't known yet.
+
+  The cell is rendered "flag-on-the-inside": the flag always sits on the
+  edge nearest the score, so a row like
+
+      [home name] [flag] | 2 : 1 | [flag] [away name]
+
+  visually anchors both flags around the score column. ``align`` doubles
+  as the visual-order switch:
+
+    * ``end``   - home team, sits to the LEFT of the score.
+                  Order: name, flag. ``justify-content-end`` pushes the
+                  group toward the score on the right edge of the cell.
+    * ``start`` - away team, sits to the RIGHT of the score.
+                  Order: flag, name. ``justify-content-start`` pushes the
+                  group toward the score on the left edge of the cell.
+
+  Params:
+    team_id      FIFA 3-letter code, or None
+    placeholder  Short bracket-slot label (e.g. "1A", "W74"), or None
+    align        'start' (away, default) or 'end' (home)
+-#}
+{% set iso = team_iso(team_id) %}
+{% set name = team_name(team_id) %}
+{% set align = align | default('start') %}
+{% set placeholder = placeholder | default(none) %}
+{%- macro _flag() -%}
+  {% if iso %}
+    <img class="team-flag rounded-1 border"
+         src="{{ url_for('static', path='img/flags/' ~ iso ~ '.svg') }}"
+         alt="" width="28" height="21" loading="lazy">
+  {% else %}
+    <span class="team-flag placeholder-flag d-inline-block rounded-1 border"
+          aria-hidden="true">
+      <i class="bi bi-question-lg"></i>
+    </span>
+  {% endif %}
+{%- endmacro -%}
+{%- macro _name() -%}
+  <span class="team-name {% if not iso %}text-body-secondary fst-italic{% endif %}">
+    {%- if name -%}
+      {{ name }}
+    {%- elif placeholder -%}
+      {{ placeholder }}
+    {%- else -%}
+      {{ _('common.tbd') }}
+    {%- endif -%}
+  </span>
+{%- endmacro -%}
+<span class="team d-inline-flex align-items-center gap-2 justify-content-{{ align }}">
+  {% if align == 'end' %}
+    {{ _name() }}{{ _flag() }}
+  {% else %}
+    {{ _flag() }}{{ _name() }}
+  {% endif %}
+</span>

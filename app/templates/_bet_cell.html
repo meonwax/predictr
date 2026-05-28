@@ -1,0 +1,76 @@
+{#-
+  Bet cell partial.
+
+  Renders one ``<td>`` containing either:
+
+  * The editable bet form (two number inputs + save) when the user can
+    still place/change their bet (i.e. kickoff is in the future).
+  * A read-only summary of the bet (or a placeholder when none was
+    placed) once kickoff has passed.
+
+  Server-rendered for the initial page load *and* for HTMX swaps from
+  POST /bets/{game_id}, so the markup at the root is identical
+  (``<td id="bet-cell-{game_id}" ...>``) regardless of where the request
+  came from.
+
+  Context:
+    entry        GameWithBet (game, bet, points, can_bet)
+    min_score    int
+    max_score    int
+    just_saved   bool   (optional)  show a brief 'saved' indicator
+    error        str|None (optional) i18n key for an inline error from a
+                                     failed POST
+-#}
+{%- set game = entry.game -%}
+{%- set bet = entry.bet -%}
+<td id="bet-cell-{{ game.id }}" class="text-nowrap">
+  {%- if entry.can_bet -%}
+    <form class="bet-form d-inline-flex align-items-center gap-1"
+          hx-post="/bets/{{ game.id }}"
+          hx-target="#bet-cell-{{ game.id }}"
+          hx-swap="outerHTML"
+          action="/bets/{{ game.id }}"
+          method="post">
+      <input type="number"
+             name="score_home"
+             value="{% if bet %}{{ bet.score_home }}{% endif %}"
+             min="{{ min_score }}" max="{{ max_score }}"
+             aria-label="{{ _('bets.aria.home_score', id=game.id) }}"
+             class="form-control form-control-sm bet-score text-end">
+      <span class="text-body-secondary">:</span>
+      <input type="number"
+             name="score_away"
+             value="{% if bet %}{{ bet.score_away }}{% endif %}"
+             min="{{ min_score }}" max="{{ max_score }}"
+             aria-label="{{ _('bets.aria.away_score', id=game.id) }}"
+             class="form-control form-control-sm bet-score">
+      <button type="submit"
+              class="btn btn-sm btn-outline-primary"
+              aria-label="{{ _('bets.aria.save_bet', id=game.id) }}">
+        <i class="bi bi-check2"></i>
+      </button>
+      {%- if just_saved %}
+        <span class="badge text-bg-success-subtle text-success-emphasis bet-saved-flag"
+              role="status" aria-live="polite">{{ _('common.saved') }}</span>
+      {%- endif %}
+    </form>
+    {%- if error %}
+      <div class="small text-danger mt-1" role="alert">{{ _(error, **(error_args or {})) }}</div>
+    {%- endif %}
+  {%- else -%}
+    {%- if bet %}
+      {%- set cls = bet_css_class(entry.points) -%}
+      <span class="badge fs-6 {% if cls == 'success bold' %}text-bg-success
+                            {%- elif cls == 'info' %}text-bg-info
+                            {%- elif cls == 'warning' %}text-bg-warning
+                            {%- else %}text-bg-light text-body-secondary{% endif %}">
+        {{ bet.score_home }} : {{ bet.score_away }}
+      </span>
+    {%- else %}
+      <span class="text-body-secondary" title="{{ _('bets.no_bet_title') }}">{{ _('common.dash') }}</span>
+    {%- endif %}
+    {%- if error %}
+      <div class="small text-danger mt-1" role="alert">{{ _(error, **(error_args or {})) }}</div>
+    {%- endif %}
+  {%- endif %}
+</td>

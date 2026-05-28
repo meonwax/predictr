@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% from "_avatar.html" import avatar %}
+
+{% set active_nav = 'ladder' %}
+
+{% block title %}{{ _('ladder.title') }} | {{ _('brand.name') }}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap align-items-end justify-content-between mb-3 gap-2">
+  <div>
+    <h1 class="h3 mb-1">
+      <i class="bi bi-trophy-fill me-2 text-warning"></i>
+      {{ _('ladder.title') }}
+    </h1>
+    <p class="text-body-secondary mb-0 small">
+      {{ _('ladder.subtitle') }}
+    </p>
+  </div>
+  {#-
+    Points legend. Each row is a right-anchored flex pair: the label
+    sits on the left, the badge on the right. ``justify-content-md-end``
+    keeps the rows hugging the right edge on tablet+ (matching the
+    heading-vs-legend split-row above), and ``min-width: 2.25rem`` on
+    the badges normalises their width to a single digit so the three
+    of them form a clean vertical column regardless of value.
+  -#}
+  <div class="small text-body-secondary" style="min-width: 12rem;">
+    <div class="d-flex justify-content-between justify-content-md-end align-items-center gap-2">
+      <span>{{ _('bets.legend.result') }}</span>
+      <span class="badge text-bg-success text-center" style="min-width: 2.25rem;">{{ scoring.points_result }}</span>
+    </div>
+    <div class="d-flex justify-content-between justify-content-md-end align-items-center gap-2">
+      <span>{{ _('bets.legend.spread') }}</span>
+      <span class="badge text-bg-info text-center" style="min-width: 2.25rem;">{{ scoring.points_tendency_spread }}</span>
+    </div>
+    <div class="d-flex justify-content-between justify-content-md-end align-items-center gap-2">
+      <span>{{ _('bets.legend.tendency') }}</span>
+      <span class="badge text-bg-warning text-center" style="min-width: 2.25rem;">{{ scoring.points_tendency }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="small text-uppercase text-body-secondary">
+        <tr>
+          <th scope="col" class="ps-3 text-center" style="width: 3.5rem;">#</th>
+          <th scope="col">{{ _('ladder.col.player') }}</th>
+          <th scope="col" class="text-end" style="width: 6rem;">{{ _('ladder.col.points') }}</th>
+          <th scope="col" class="text-center d-none d-sm-table-cell">
+            <abbr title="{{ _('ladder.abbr.exact', pts=scoring.points_result) }}">5</abbr>
+          </th>
+          <th scope="col" class="text-center d-none d-sm-table-cell">
+            <abbr title="{{ _('ladder.abbr.spread', pts=scoring.points_tendency_spread) }}">3</abbr>
+          </th>
+          <th scope="col" class="text-center d-none d-sm-table-cell">
+            <abbr title="{{ _('ladder.abbr.tendency', pts=scoring.points_tendency) }}">2</abbr>
+          </th>
+          <th scope="col" class="text-center d-none d-md-table-cell">
+            <abbr title="{{ _('ladder.abbr.miss') }}">&minus;</abbr>
+          </th>
+          <th scope="col" class="text-center d-none d-md-table-cell pe-3">
+            <abbr title="{{ _('ladder.abbr.placed') }}">Σ</abbr>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in entries %}
+          {% set is_me = entry.user.id == current_user.id %}
+          <tr class="{% if is_me %}table-active{% endif %}">
+            <th scope="row"
+                class="ps-3 text-center fw-semibold {% if entry.rank == 1 %}text-warning{% endif %}">
+              {% if entry.rank == 1 %}
+                <i class="bi bi-trophy-fill"
+                   title="{{ _('common.leader') }}" aria-label="{{ _('common.leader') }}"></i>
+              {% else %}
+                {{ entry.rank }}
+              {% endif %}
+            </th>
+            <td>
+              <span class="d-inline-flex align-items-center gap-2">
+                {{ avatar(entry.user, size=28, css="rounded-circle border") }}
+                <span class="fw-medium">{{ entry.user.name }}</span>
+                {% if is_me %}
+                  <span class="badge text-bg-primary-subtle text-primary-emphasis">{{ _('common.you') }}</span>
+                {% endif %}
+                {% if entry.user.role == 'ROLE_ADMIN' %}
+                  <i class="bi bi-shield-lock text-body-secondary"
+                     title="{{ _('common.admin') }}" aria-label="{{ _('common.admin') }}"></i>
+                {% endif %}
+              </span>
+            </td>
+            <td class="text-end fw-semibold">
+              <span class="fs-5">{{ entry.total_points }}</span>
+              {% if entry.answer_points %}
+                <div class="small text-body-secondary">
+                  {{ _('ladder.breakdown.bets') }} {{ entry.bet_points }} | {{ _('ladder.breakdown.questions') }} {{ entry.answer_points }}
+                </div>
+              {% endif %}
+            </td>
+            <td class="text-center d-none d-sm-table-cell">
+              {% if entry.breakdown.exact %}
+                <span class="badge text-bg-success">{{ entry.breakdown.exact }}</span>
+              {% else %}
+                <span class="text-body-secondary">0</span>
+              {% endif %}
+            </td>
+            <td class="text-center d-none d-sm-table-cell">
+              {% if entry.breakdown.spread %}
+                <span class="badge text-bg-info">{{ entry.breakdown.spread }}</span>
+              {% else %}
+                <span class="text-body-secondary">0</span>
+              {% endif %}
+            </td>
+            <td class="text-center d-none d-sm-table-cell">
+              {% if entry.breakdown.tendency %}
+                <span class="badge text-bg-warning">{{ entry.breakdown.tendency }}</span>
+              {% else %}
+                <span class="text-body-secondary">0</span>
+              {% endif %}
+            </td>
+            <td class="text-center text-body-secondary d-none d-md-table-cell">
+              {{ entry.breakdown.miss }}
+            </td>
+            <td class="text-center text-body-secondary d-none d-md-table-cell pe-3">
+              {{ entry.breakdown.scored }}
+              {% if entry.breakdown.pending or entry.breakdown.upcoming %}
+                <div class="small">
+                  {% if entry.breakdown.pending %}
+                    <span title="{{ _('ladder.pending_title') }}">{{ entry.breakdown.pending }}⌛</span>
+                  {% endif %}
+                  {% if entry.breakdown.upcoming %}
+                    <span title="{{ _('ladder.upcoming_title') }}">+{{ entry.breakdown.upcoming }}</span>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="8" class="text-center text-body-secondary py-4">
+              <i class="bi bi-people me-1"></i>
+              {{ _('ladder.empty_html') | safe }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
