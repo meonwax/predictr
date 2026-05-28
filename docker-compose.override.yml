@@ -31,6 +31,10 @@ services:
   app:
     environment:
       SESSION_SECRET: ${SESSION_SECRET:-dev-secret-change-me-in-production}
+      # Dev speaks plain HTTP on loopback, so cookies cannot carry the
+      # Secure flag (the browser would drop them). The base compose file
+      # defaults this to true for the production target.
+      SECURE_COOKIES: ${SECURE_COOKIES:-false}
       MAIL_HOST: ${MAIL_HOST:-mailhog}
       MAIL_PORT: ${MAIL_PORT:-1025}
       AUTO_SEED: ${AUTO_SEED:-1}

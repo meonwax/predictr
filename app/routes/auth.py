@@ -78,15 +78,21 @@ def _set_session_cookie(
         max_age=settings.session_max_age_days * 24 * 3600 if remember_me else None,
         httponly=True,
         samesite="lax",
-        secure=False,  # set True behind HTTPS in prod via reverse-proxy config
+        secure=settings.secure_cookies,
         path="/",
     )
 
 
 def _clear_session_cookie(response: RedirectResponse, *, settings) -> None:
+    # Match the attributes used in _set_session_cookie. Browsers technically
+    # only need name+domain+path to drop a cookie, but mirroring secure /
+    # samesite avoids edge cases in stricter cookie jars and proxies.
     response.delete_cookie(
         key=settings.session_cookie_name,
         path="/",
+        samesite="lax",
+        secure=settings.secure_cookies,
+        httponly=True,
     )
 
 

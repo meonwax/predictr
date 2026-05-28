@@ -151,6 +151,41 @@ def test_unsupported_language_does_not_set_cookie(auth_client: TestClient) -> No
     assert LANGUAGE_COOKIE_NAME not in r.cookies
 
 
+def test_language_cookie_omits_secure_flag_by_default(auth_client: TestClient) -> None:
+    """Dev traffic over plain HTTP must not get a ``Secure`` cookie."""
+    r = auth_client.post(
+        "/language",
+        data={"language": "de", "next": "/games"},
+        follow_redirects=False,
+    )
+    assert "secure" not in r.headers["set-cookie"].lower()
+
+
+def test_preference_cookies_carry_secure_flag_when_enabled(
+    auth_client: TestClient,
+) -> None:
+    """``SECURE_COOKIES=true`` must mark both the language and timezone
+    cookies with ``Secure`` so the user's preference can't be sniffed
+    off a downgrade-attacked connection."""
+    from app.dependencies import get_settings_dep
+    from app.main import app
+
+    secure_settings = get_settings().model_copy(update={"secure_cookies": True})
+    app.dependency_overrides[get_settings_dep] = lambda: secure_settings
+    try:
+        lang = auth_client.post(
+            "/language",
+            data={"language": "de", "next": "/games"},
+            follow_redirects=False,
+        )
+        assert "secure" in lang.headers["set-cookie"].lower()
+
+        tz = auth_client.post("/timezone", data={"timezone": "Europe/Berlin"})
+        assert "secure" in tz.headers["set-cookie"].lower()
+    finally:
+        app.dependency_overrides.pop(get_settings_dep, None)
+
+
 # ---------------------------------------------------------------------------
 # `next` URL sanitisation (open-redirect protection)
 # ---------------------------------------------------------------------------

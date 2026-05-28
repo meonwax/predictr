@@ -208,6 +208,46 @@ def test_login_without_remember_me_is_session_cookie(auth_client: TestClient) ->
     assert "Max-Age=" not in set_cookie
 
 
+def test_session_cookie_omits_secure_flag_by_default(auth_client: TestClient) -> None:
+    """Dev / test traffic over plain HTTP must not get a ``Secure`` cookie,
+    or the browser would silently drop it and the user could never sign in."""
+    _register(auth_client)
+    response = auth_client.post(
+        "/login",
+        data={"email": "alice@example.com", "password": "hunter222"},
+        follow_redirects=False,
+    )
+    assert "secure" not in response.headers["set-cookie"].lower()
+
+
+def test_session_cookie_carries_secure_flag_when_settings_enable_it(
+    auth_client: TestClient,
+) -> None:
+    """``SECURE_COOKIES=true`` (production behind TLS) must mark every
+    session cookie with ``Secure`` so a downgrade-attack MITM can't read it."""
+    from app.config import get_settings
+    from app.dependencies import get_settings_dep
+    from app.main import app
+
+    secure_settings = get_settings().model_copy(update={"secure_cookies": True})
+    app.dependency_overrides[get_settings_dep] = lambda: secure_settings
+    try:
+        _register(auth_client)
+        login = auth_client.post(
+            "/login",
+            data={"email": "alice@example.com", "password": "hunter222"},
+            follow_redirects=False,
+        )
+        assert "secure" in login.headers["set-cookie"].lower()
+
+        # Logout's delete-cookie response must mirror the set: matching
+        # attributes avoid edge cases in strict cookie jars.
+        logout = auth_client.post("/logout", follow_redirects=False)
+        assert "secure" in logout.headers["set-cookie"].lower()
+    finally:
+        app.dependency_overrides.pop(get_settings_dep, None)
+
+
 def test_navbar_shows_user_name_when_signed_in(auth_client: TestClient) -> None:
     _register(auth_client, name="Alice")
     _login(auth_client)

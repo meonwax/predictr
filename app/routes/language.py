@@ -31,7 +31,7 @@ from urllib.parse import urlsplit
 from fastapi import APIRouter, Form, Response, status
 from fastapi.responses import RedirectResponse
 
-from app.dependencies import CurrentUser, DbSession
+from app.dependencies import CurrentUser, DbSession, SettingsDep
 from app.i18n import SUPPORTED_LANGUAGES
 from app.middleware import LANGUAGE_COOKIE_NAME, TIMEZONE_COOKIE_NAME
 from app.timezones import is_supported as _is_supported_tz
@@ -72,6 +72,7 @@ def _safe_next(raw: str) -> str:
 def set_language(
     db: DbSession,
     user: CurrentUser,
+    settings: SettingsDep,
     language: Annotated[str, Form()] = "",
     next: Annotated[str, Form()] = "/",
 ) -> RedirectResponse:
@@ -99,7 +100,7 @@ def set_language(
         path="/",
         samesite="lax",
         httponly=False,
-        secure=False,
+        secure=settings.secure_cookies,
     )
     if user is not None and user.preferred_language != requested:
         user.preferred_language = requested
@@ -112,6 +113,7 @@ def set_language(
 def set_timezone(
     db: DbSession,
     user: CurrentUser,
+    settings: SettingsDep,
     timezone_name: Annotated[str, Form(alias="timezone")] = "",
 ) -> Response:
     """Update the visitor's timezone from a small JS auto-detect snippet.
@@ -134,7 +136,7 @@ def set_timezone(
         path="/",
         samesite="lax",
         httponly=False,
-        secure=False,
+        secure=settings.secure_cookies,
     )
     if (
         user is not None

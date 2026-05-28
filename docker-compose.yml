@@ -29,6 +29,10 @@ services:
       # fallback here lets the app's own default surface during dev; we'll
       # turn this into a hard requirement once auth lands.
       SESSION_SECRET: ${SESSION_SECRET:-}
+      # SECURE_COOKIES MUST be true in production behind TLS. Defaults to
+      # true here because this base file is the production target; dev
+      # overrides it to false in docker-compose.override.yml.
+      SECURE_COOKIES: ${SECURE_COOKIES:-true}
       DEBUG: ${DEBUG:-false}
       SQL_ECHO: ${SQL_ECHO:-false}
       # Application log level (root logger for the ``app.*`` hierarchy).

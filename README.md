@@ -139,6 +139,9 @@ loopback (port `8000`) and Caddy proxies to it.
    * `POSTGRES_PASSWORD` - strong, unique
    * `SESSION_SECRET` - long random string (e.g. `openssl rand -hex 48`)
    * `MAIL_*` - your real SMTP relay
+   * `SECURE_COOKIES` (optional) - defaults to `true` in the production
+     compose file; only override if you are deliberately running the prod
+     stack on plain HTTP (which you should not)
    * `LOG_LEVEL` (optional) - defaults to `INFO`; flip to `DEBUG`
      temporarily when diagnosing a live issue, then revert
 3. Build and start:

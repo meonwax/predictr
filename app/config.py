@@ -82,6 +82,18 @@ class Settings(BaseSettings):
         description="Secret used to sign session cookies. MUST be overridden in prod.",
     )
     session_cookie_name: str = "predictr_session"
+    secure_cookies: bool = Field(
+        default=False,
+        description=(
+            "If true, every cookie the app writes (session, language, "
+            "timezone) carries the ``Secure`` attribute and is therefore "
+            "only sent over HTTPS. MUST be true in production behind a TLS "
+            "terminator; leave false in local development where the app "
+            "speaks plain HTTP. The default is false so dev just works; "
+            "shipping it as false to production is the trade-off that "
+            "warrants the explicit operator flag."
+        ),
+    )
     session_max_age_days: int = Field(
         default=7,
         description=(
