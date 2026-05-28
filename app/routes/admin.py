@@ -36,7 +36,6 @@ from app.routes._helpers import (
 )
 from app.services.admin import (
     MAX_NOTES_LEN,
-    GameNotFound,
     InvalidTeamAssignment,
     NotesTooLong,
     clear_game_result,
@@ -46,7 +45,7 @@ from app.services.admin import (
     set_game_result,
     set_game_teams,
 )
-from app.services.bets import MAX_SCORE, MIN_SCORE, InvalidScore
+from app.services.games import MAX_SCORE, MIN_SCORE, GameNotFound, InvalidScore
 from app.services.questions import (
     MAX_CORRECT_ANSWER_LEN,
     MAX_POINTS,

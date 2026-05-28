@@ -18,7 +18,7 @@ from __future__ import annotations
 
 from fastapi import Request
 
-from app.services.bets import MAX_SCORE, MIN_SCORE, InvalidScore
+from app.services.games import MAX_SCORE, MIN_SCORE, InvalidScore
 from app.services.questions import (
     MAX_ANSWER_LEN,
     MAX_CORRECT_ANSWER_LEN,

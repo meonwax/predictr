@@ -37,17 +37,14 @@ from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from app.dependencies import DbSession, RequiredUser
 from app.routes._helpers import is_htmx, map_invalid_score, parse_score
 from app.services.bets import (
-    MAX_SCORE,
-    MIN_SCORE,
     BetDeadlinePassed,
-    GameNotFound,
-    InvalidScore,
     delete_bet,
     get_cell_view,
     list_games_with_bets_grouped,
     list_other_bets_for_game,
     upsert_bet,
 )
+from app.services.games import MAX_SCORE, MIN_SCORE, GameNotFound, InvalidScore
 from app.templating import templates
 
 router = APIRouter(tags=["bets"])

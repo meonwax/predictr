@@ -25,14 +25,14 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
 from app.models import Bet, Game, Group, User
+from app.services.games import (
+    GameNotFound,
+    load_game,
+    validate_score,
+)
 from app.services.scoring import calculate_bet_points
 
 LOGGER = logging.getLogger(__name__)
-
-# Score validation bounds. Two-digit scores per side cover every realistic
-# football result; anything outside 0..99 is effectively a typo.
-MIN_SCORE: int = 0
-MAX_SCORE: int = 99
 
 
 # ---------------------------------------------------------------------------
@@ -40,27 +40,8 @@ MAX_SCORE: int = 99
 # ---------------------------------------------------------------------------
 
 
-class GameNotFound(KeyError):
-    """Raised when the game id passed to the service doesn't exist."""
-
-
 class BetDeadlinePassed(Exception):
     """Raised when an upsert/delete is attempted after kickoff."""
-
-
-class InvalidScore(ValueError):
-    """Raised when a supplied score is outside the accepted range.
-
-    Carries machine-readable ``field`` (``"score_home"`` / ``"score_away"``)
-    and ``kind`` (``"not_int"`` / ``"range"``) attributes so the route layer
-    can translate the message without parsing strings. The base ``args``
-    still carry the English message for log compatibility.
-    """
-
-    def __init__(self, message: str, *, field: str | None = None, kind: str | None = None) -> None:
-        super().__init__(message)
-        self.field = field
-        self.kind = kind
 
 
 # ---------------------------------------------------------------------------
@@ -169,24 +150,6 @@ def list_games_with_bets_grouped(
 # ---------------------------------------------------------------------------
 
 
-def _load_game(db: Session, game_id: int) -> Game:
-    game = db.get(Game, game_id)
-    if game is None:
-        raise GameNotFound(game_id)
-    return game
-
-
-def _validate_score(name: str, value: int) -> None:
-    if not isinstance(value, int):  # type: ignore[unreachable]
-        raise InvalidScore(f"{name} must be an integer.", field=name, kind="not_int")
-    if value < MIN_SCORE or value > MAX_SCORE:
-        raise InvalidScore(
-            f"{name} must be between {MIN_SCORE} and {MAX_SCORE}.",
-            field=name,
-            kind="range",
-        )
-
-
 def upsert_bet(
     db: Session,
     user: User,
@@ -205,12 +168,12 @@ def upsert_bet(
     """
     now = now or datetime.now(UTC)
 
-    game = _load_game(db, game_id)
+    game = load_game(db, game_id)
     if game.kickoff_time <= now:
         raise BetDeadlinePassed(game_id)
 
-    _validate_score("score_home", score_home)
-    _validate_score("score_away", score_away)
+    validate_score("score_home", score_home)
+    validate_score("score_away", score_away)
 
     bet = db.scalars(
         select(Bet).where(Bet.user_id == user.id, Bet.game_id == game_id)
@@ -248,7 +211,7 @@ def delete_bet(
     """
     now = now or datetime.now(UTC)
 
-    game = _load_game(db, game_id)
+    game = load_game(db, game_id)
     if game.kickoff_time <= now:
         raise BetDeadlinePassed(game_id)
 
@@ -390,12 +353,8 @@ def list_other_bets_for_game(
 
 
 __all__ = [
-    "MIN_SCORE",
-    "MAX_SCORE",
     "GameWithBet",
-    "GameNotFound",
     "BetDeadlinePassed",
-    "InvalidScore",
     "OtherBet",
     "OtherBetsView",
     "list_games_with_bets",

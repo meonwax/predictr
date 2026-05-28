@@ -18,7 +18,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload, selectinload
 
 from app.models import Bet, Game, Group, Team, User
-from app.services.bets import MAX_SCORE, MIN_SCORE, InvalidScore
+from app.services.games import load_game, validate_score
 from app.team_data import GROUP_STAGE_IDS, KNOCKOUT_GROUP_IDS
 
 LOGGER = logging.getLogger(__name__)
@@ -33,10 +33,6 @@ MAX_NOTES_LEN: int = 64
 # ---------------------------------------------------------------------------
 # Domain exceptions
 # ---------------------------------------------------------------------------
-
-
-class GameNotFound(KeyError):
-    """Raised when the supplied game_id doesn't exist."""
 
 
 class NotesTooLong(ValueError):
@@ -179,22 +175,6 @@ def list_games_for_admin(
 # ---------------------------------------------------------------------------
 
 
-def _load_game(db: Session, game_id: int) -> Game:
-    game = db.get(Game, game_id)
-    if game is None:
-        raise GameNotFound(game_id)
-    return game
-
-
-def _validate_score(name: str, value: int) -> None:
-    if value < MIN_SCORE or value > MAX_SCORE:
-        raise InvalidScore(
-            f"{name} must be between {MIN_SCORE} and {MAX_SCORE}.",
-            field=name,
-            kind="range",
-        )
-
-
 def _normalise_notes(notes: str | None) -> str | None:
     """Trim whitespace; treat blank/empty as None; enforce hard length cap."""
     if notes is None:
@@ -229,11 +209,11 @@ def set_game_result(
         :class:`InvalidScore`   home or away score out of range
         :class:`NotesTooLong`   notes longer than :data:`MAX_NOTES_LEN`
     """
-    _validate_score("score_home", score_home)
-    _validate_score("score_away", score_away)
+    validate_score("score_home", score_home)
+    validate_score("score_away", score_away)
     cleaned_notes = _normalise_notes(notes)
 
-    game = _load_game(db, game_id)
+    game = load_game(db, game_id)
     game.score_home = score_home
     game.score_away = score_away
     game.notes = cleaned_notes
@@ -279,7 +259,7 @@ def set_game_teams(
     home = _normalise_team_code(team_home_id)
     away = _normalise_team_code(team_away_id)
 
-    game = _load_game(db, game_id)
+    game = load_game(db, game_id)
     group_id = game.group_id
     if group_id is not None and len(group_id) == 1 and group_id.isalpha():
         raise InvalidTeamAssignment(
@@ -319,7 +299,7 @@ def clear_game_result(db: Session, *, game_id: int) -> Game:
     No-op when the game has no result. Raises :class:`GameNotFound` if
     the game id is unknown.
     """
-    game = _load_game(db, game_id)
+    game = load_game(db, game_id)
     if game.score_home is None and game.score_away is None and game.notes is None:
         return game
     game.score_home = None
@@ -334,7 +314,6 @@ def clear_game_result(db: Session, *, game_id: int) -> Game:
 __all__ = [
     "MAX_NOTES_LEN",
     "DashboardStats",
-    "GameNotFound",
     "InvalidTeamAssignment",
     "NotesTooLong",
     "get_dashboard_stats",

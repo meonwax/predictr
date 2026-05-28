@@ -11,7 +11,6 @@ from sqlalchemy.orm import Session, sessionmaker
 from app.models import Game, User
 from app.services.admin import (
     MAX_NOTES_LEN,
-    GameNotFound,
     InvalidTeamAssignment,
     NotesTooLong,
     clear_game_result,
@@ -21,7 +20,8 @@ from app.services.admin import (
     set_game_result,
     set_game_teams,
 )
-from app.services.bets import InvalidScore, upsert_bet
+from app.services.bets import upsert_bet
+from app.services.games import GameNotFound, InvalidScore
 from app.services.users import RegistrationData, register_user
 
 GAME_OPENER_ID = 1

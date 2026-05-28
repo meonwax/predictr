@@ -17,14 +17,13 @@ from sqlalchemy.orm import Session, sessionmaker
 from app.models import Bet, Game, User
 from app.services.bets import (
     BetDeadlinePassed,
-    GameNotFound,
-    InvalidScore,
     delete_bet,
     get_cell_view,
     list_games_with_bets,
     list_games_with_bets_grouped,
     upsert_bet,
 )
+from app.services.games import GameNotFound, InvalidScore
 from app.services.users import RegistrationData, register_user
 
 # Game id 1 in the WC 2026 seed: Mexico v South Africa, 2026-06-11 19:00 UTC.

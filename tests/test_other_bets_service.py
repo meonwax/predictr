@@ -11,10 +11,10 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from app.models import Game, User
 from app.services.bets import (
-    GameNotFound,
     list_other_bets_for_game,
     upsert_bet,
 )
+from app.services.games import GameNotFound
 from app.services.users import RegistrationData, register_user
 
 # Game id 1 in the WC 2026 seed.
