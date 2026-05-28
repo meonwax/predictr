@@ -14,6 +14,8 @@ Headline:
 Body (optional, include only when the headline isn't self-evident):
 
 - Separate from the headline with one blank line.
-- A few sentences max. Plain prose, not a bullet dump.
+- Default to one short paragraph (2-3 sentences); reach for more only
+  when the *why* genuinely warrants it.
+- Plain prose, not a bullet dump.
 - Explain the *why*, not the *what* (the diff already shows the what).
 - Obey the typography rules from `typography.mdc`.
