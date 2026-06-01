@@ -7,14 +7,11 @@
   admin UI deliberately requires JS - the dashboard is admin-only and
   there's no point doing JS-free fallback gymnastics for it.
 
-  The row also carries an out-of-band sibling row used to surface
-  inline error messages without affecting layout when there's no error.
-
-  For knockout fixtures the home/away cells render a ``<select>`` so
-  the admin can resolve the bracket placeholder ("1A", "W74", ...) to an
-  actual team. The select posts to ``/admin/games/{id}/teams`` via a
-  dedicated save button; the result-and-notes save button continues to
-  post to ``/admin/games/{id}`` and skips the team fields.
+  One save button per row. It posts to ``/admin/games/{id}`` with every
+  named input on the row included, so a single click persists the score,
+  the optional notes, and -- for knockout fixtures -- the resolved team
+  selections, all in one transaction. Group-stage rows simply don't render
+  any ``team_*_id`` selects, so the same payload shape works for both.
 
   Context:
     game                Game (with venue + group eagerly loaded)
@@ -84,30 +81,16 @@
            class="form-control form-control-sm">
   </td>
   <td class="text-center pe-3">
-    <div class="d-inline-flex flex-column align-items-center gap-1">
-      <button type="button"
-              class="btn btn-sm btn-outline-primary"
-              hx-post="/admin/games/{{ game.id }}"
-              hx-include="closest tr"
-              hx-target="#admin-game-{{ game.id }}"
-              hx-swap="outerHTML"
-              aria-label="{{ _('admin.games.aria.save', id=game.id) }}"
-              title="{{ _('admin.games.save_result') }}">
-        <i class="bi bi-check2"></i>
-      </button>
-      {% if is_knockout %}
-        <button type="button"
-                class="btn btn-sm btn-outline-secondary"
-                hx-post="/admin/games/{{ game.id }}/teams"
-                hx-include="closest tr"
-                hx-target="#admin-game-{{ game.id }}"
-                hx-swap="outerHTML"
-                aria-label="{{ _('admin.games.aria.save_teams', id=game.id) }}"
-                title="{{ _('admin.games.save_teams') }}">
-          <i class="bi bi-people"></i>
-        </button>
-      {% endif %}
-    </div>
+    <button type="button"
+            class="btn btn-sm btn-outline-primary"
+            hx-post="/admin/games/{{ game.id }}"
+            hx-include="closest tr"
+            hx-target="#admin-game-{{ game.id }}"
+            hx-swap="outerHTML"
+            aria-label="{{ _('admin.games.aria.save', id=game.id) }}"
+            title="{{ _('admin.games.save_row') }}">
+      <i class="bi bi-check2"></i>
+    </button>
     {%- if just_saved %}
       <span class="badge text-bg-success-subtle text-success-emphasis bet-saved-flag ms-1"
             role="status" aria-live="polite">{{ _('common.saved') }}</span>

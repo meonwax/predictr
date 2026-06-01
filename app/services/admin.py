@@ -311,6 +311,119 @@ def clear_game_result(db: Session, *, game_id: int) -> Game:
     return game
 
 
+def _validate_team_codes(
+    db: Session,
+    home: str | None,
+    away: str | None,
+) -> None:
+    """Shared validation: both codes (if non-null) must exist and differ."""
+    for code in (home, away):
+        if code is not None and db.get(Team, code) is None:
+            raise InvalidTeamAssignment(
+                f"Unknown team code: {code!r}.",
+                kind="unknown_team",
+            )
+    if home is not None and away is not None and home == away:
+        raise InvalidTeamAssignment(
+            "Home and away teams must differ.",
+            kind="same_team",
+        )
+
+
+def save_admin_game(
+    db: Session,
+    *,
+    game_id: int,
+    score_home: int | None,
+    score_away: int | None,
+    notes: str | None,
+    team_home_id: str | None = None,
+    team_away_id: str | None = None,
+    apply_teams: bool = False,
+) -> Game:
+    """Apply every editable admin field for *game_id* in one transaction.
+
+    Used by the consolidated ``POST /admin/games/{id}`` handler so a row
+    save persists score+notes+team-resolution atomically.
+
+    Score fields:
+
+    * Both ``None`` -> clear the recorded result (and notes) for this game.
+    * Both set      -> store the result. ``notes`` is normalised by
+      :func:`_normalise_notes`; ``"   "`` collapses to ``None``.
+    * Mixed         -> rejected by the route before reaching this function.
+
+    Team fields are looked at only when *apply_teams* is true (the route
+    flips this on for knockout fixtures whose form actually carries the
+    selects). Validation matches :func:`set_game_teams` exactly: codes are
+    case-/whitespace-normalised, non-null codes must exist in ``team``,
+    and home/away may not collapse to the same team. Group-stage games
+    refuse the operation outright.
+
+    Raises:
+        :class:`GameNotFound`         game id doesn't exist
+        :class:`InvalidScore`         home or away score out of range
+        :class:`NotesTooLong`         notes longer than :data:`MAX_NOTES_LEN`
+        :class:`InvalidTeamAssignment` invalid team combination (see ``kind``)
+    """
+    game = load_game(db, game_id)
+
+    # Validate everything before mutating, so a teams error doesn't leave
+    # a half-applied score behind.
+    if score_home is not None and score_away is not None:
+        validate_score("score_home", score_home)
+        validate_score("score_away", score_away)
+        cleaned_notes = _normalise_notes(notes)
+    elif score_home is None and score_away is None:
+        cleaned_notes = None
+    else:
+        # The route is expected to reject the mixed (one-set / one-blank)
+        # case before we get here. Defensive raise so direct callers still
+        # see a clear error.
+        raise ValueError(
+            "save_admin_game requires score_home and score_away to be both set or both None."
+        )
+
+    home_code: str | None = None
+    away_code: str | None = None
+    if apply_teams:
+        if game.group_id not in KNOCKOUT_GROUP_IDS:
+            raise InvalidTeamAssignment(
+                "Cannot edit teams for a group-stage fixture.",
+                kind="not_knockout",
+            )
+        home_code = _normalise_team_code(team_home_id)
+        away_code = _normalise_team_code(team_away_id)
+        _validate_team_codes(db, home_code, away_code)
+
+    # Apply.
+    if score_home is None and score_away is None:
+        game.score_home = None
+        game.score_away = None
+        game.notes = None
+    else:
+        game.score_home = score_home
+        game.score_away = score_away
+        game.notes = cleaned_notes
+
+    if apply_teams:
+        game.team_home_id = home_code
+        game.team_away_id = away_code
+
+    db.commit()
+    db.refresh(game)
+    LOGGER.info(
+        "Admin saved game: game=%d score=%r:%r notes=%r teams=%r:%r",
+        game_id,
+        game.score_home,
+        game.score_away,
+        game.notes,
+        game.team_home_id if apply_teams else "<unchanged>",
+        game.team_away_id if apply_teams else "<unchanged>",
+    )
+    return game
+
+
 __all__ = [
     "MAX_NOTES_LEN",
     "DashboardStats",
@@ -319,6 +432,7 @@ __all__ = [
     "get_dashboard_stats",
     "list_games_for_admin",
     "list_teams_grouped",
+    "save_admin_game",
     "set_game_result",
     "set_game_teams",
     "clear_game_result",

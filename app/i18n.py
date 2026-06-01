@@ -393,10 +393,8 @@ EN: dict[str, str] = {
     "admin.games.aria.home_team": "Home team for game {id}",
     "admin.games.aria.away_team": "Away team for game {id}",
     "admin.games.aria.notes": "Notes for game {id}",
-    "admin.games.aria.save": "Save result for game {id}",
-    "admin.games.aria.save_teams": "Save teams for game {id}",
-    "admin.games.save_result": "Save result + notes",
-    "admin.games.save_teams": "Save teams",
+    "admin.games.aria.save": "Save row for game {id}",
+    "admin.games.save_row": "Save score, notes, and teams",
     # --- Admin questions -----------------------------------------------
     "admin.questions.title": "Special questions",
     "admin.questions.subtitle_html": (
@@ -838,10 +836,8 @@ DE: dict[str, str] = {
     "admin.games.aria.home_team": "Heimmannschaft für Spiel {id}",
     "admin.games.aria.away_team": "Auswärtsmannschaft für Spiel {id}",
     "admin.games.aria.notes": "Anmerkungen für Spiel {id}",
-    "admin.games.aria.save": "Ergebnis für Spiel {id} speichern",
-    "admin.games.aria.save_teams": "Mannschaften für Spiel {id} speichern",
-    "admin.games.save_result": "Ergebnis + Anmerkungen speichern",
-    "admin.games.save_teams": "Mannschaften speichern",
+    "admin.games.aria.save": "Zeile für Spiel {id} speichern",
+    "admin.games.save_row": "Ergebnis, Anmerkungen und Mannschaften speichern",
     # --- Admin questions -----------------------------------------------
     "admin.questions.title": "Sonderfragen",
     "admin.questions.subtitle_html": (

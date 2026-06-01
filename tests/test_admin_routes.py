@@ -290,10 +290,29 @@ def test_admin_games_shows_placeholder_label_for_knockout(
     # "2B" (away) before any team is set.
     assert "2A" in page
     assert "2B" in page
-    # Group-stage games don't render the team-picker submit button.
-    assert 'aria-label="Save teams for game 1"' not in page
-    # But knockout rows do.
-    assert 'aria-label="Save teams for game 73"' in page
+    # Every row, group-stage or knockout, has exactly one save button now.
+    assert 'aria-label="Save row for game 1"' in page
+    assert 'aria-label="Save row for game 73"' in page
+    # The dedicated "Save teams" button is gone.
+    assert "Save teams" not in page
+
+
+def test_admin_games_row_has_single_save_button(admin_client: TestClient) -> None:
+    """Knockout rows used to render two save buttons; now they render one."""
+    import re
+
+    page = admin_client.get("/admin/games").text
+    row_match = re.search(
+        rf'<tr id="admin-game-{GAME_R32_FIRST_ID}".*?</tr>',
+        page,
+        re.DOTALL,
+    )
+    assert row_match, "R32 row missing from /admin/games"
+    row_html = row_match.group(0)
+    # Exactly one HTMX-driven save button on the row.
+    assert row_html.count("hx-post=") == 1, row_html
+    assert f'hx-post="/admin/games/{GAME_R32_FIRST_ID}"' in row_html
+    assert f"/admin/games/{GAME_R32_FIRST_ID}/teams" not in row_html
 
 
 def test_admin_games_picker_lists_all_48_teams(admin_client: TestClient) -> None:
@@ -302,29 +321,25 @@ def test_admin_games_picker_lists_all_48_teams(admin_client: TestClient) -> None
         assert f'value="{code}"' in page
 
 
-def test_post_teams_requires_admin(non_admin_client: TestClient) -> None:
-    r = non_admin_client.post(
-        f"/admin/games/{GAME_R32_FIRST_ID}/teams",
-        data={"team_home_id": "mex", "team_away_id": "can"},
-    )
-    assert r.status_code == 403
+# ---------------------------------------------------------------------------
+# POST /admin/games/{id} - knockout team resolution via the consolidated endpoint
+# ---------------------------------------------------------------------------
 
 
-def test_post_teams_requires_login(auth_client: TestClient) -> None:
-    r = auth_client.post(
-        f"/admin/games/{GAME_R32_FIRST_ID}/teams",
-        data={"team_home_id": "mex", "team_away_id": "can"},
-    )
-    assert r.status_code == 401
-
-
-def test_htmx_post_teams_resolves_placeholder(
+def test_htmx_post_resolves_placeholder(
     admin_client: TestClient,
     db: Session,
 ) -> None:
+    """A knockout row's save persists the chosen teams alongside score+notes."""
     r = admin_client.post(
-        f"/admin/games/{GAME_R32_FIRST_ID}/teams",
-        data={"team_home_id": "mex", "team_away_id": "can"},
+        f"/admin/games/{GAME_R32_FIRST_ID}",
+        data={
+            "score_home": "",
+            "score_away": "",
+            "notes": "",
+            "team_home_id": "mex",
+            "team_away_id": "can",
+        },
         headers={"HX-Request": "true"},
     )
     assert r.status_code == 200, r.text
@@ -339,85 +354,128 @@ def test_htmx_post_teams_resolves_placeholder(
     assert game.team_away_id == "can"
 
 
-def test_htmx_post_teams_clears_back_to_placeholder(
+def test_htmx_post_clears_teams_back_to_placeholder(
     admin_client: TestClient,
     db: Session,
 ) -> None:
-    admin_client.post(
-        f"/admin/games/{GAME_R32_FIRST_ID}/teams",
-        data={"team_home_id": "mex", "team_away_id": "can"},
+    r1 = admin_client.post(
+        f"/admin/games/{GAME_R32_FIRST_ID}",
+        data={
+            "score_home": "",
+            "score_away": "",
+            "notes": "",
+            "team_home_id": "mex",
+            "team_away_id": "can",
+        },
         headers={"HX-Request": "true"},
     )
+    assert r1.status_code == 200, r1.text
     r = admin_client.post(
-        f"/admin/games/{GAME_R32_FIRST_ID}/teams",
-        data={"team_home_id": "", "team_away_id": ""},
+        f"/admin/games/{GAME_R32_FIRST_ID}",
+        data={
+            "score_home": "",
+            "score_away": "",
+            "notes": "",
+            "team_home_id": "",
+            "team_away_id": "",
+        },
         headers={"HX-Request": "true"},
     )
-    assert r.status_code == 200
+    assert r.status_code == 200, r.text
     db.expire_all()
     game = db.get(Game, GAME_R32_FIRST_ID)
     assert game is not None
-    assert game.team_home_id is None
-    assert game.team_away_id is None
+    assert game.team_home_id is None, r.text
+    assert game.team_away_id is None, r.text
 
 
-def test_htmx_post_teams_same_team_returns_error(
+def test_htmx_post_combined_score_and_teams(
+    admin_client: TestClient,
+    db: Session,
+) -> None:
+    """One save persists score, notes, and team resolution together."""
+    r = admin_client.post(
+        f"/admin/games/{GAME_R32_FIRST_ID}",
+        data={
+            "score_home": "3",
+            "score_away": "1",
+            "notes": "AET",
+            "team_home_id": "mex",
+            "team_away_id": "can",
+        },
+        headers={"HX-Request": "true"},
+    )
+    assert r.status_code == 200, r.text
+    db.expire_all()
+    game = db.get(Game, GAME_R32_FIRST_ID)
+    assert game is not None
+    assert (game.score_home, game.score_away, game.notes) == (3, 1, "AET")
+    assert (game.team_home_id, game.team_away_id) == ("mex", "can")
+
+
+def test_htmx_post_same_team_returns_error(
     admin_client: TestClient,
 ) -> None:
     r = admin_client.post(
-        f"/admin/games/{GAME_R32_FIRST_ID}/teams",
-        data={"team_home_id": "mex", "team_away_id": "mex"},
+        f"/admin/games/{GAME_R32_FIRST_ID}",
+        data={
+            "score_home": "",
+            "score_away": "",
+            "notes": "",
+            "team_home_id": "mex",
+            "team_away_id": "mex",
+        },
         headers={"HX-Request": "true"},
     )
     assert r.status_code == 200
     assert "must differ" in r.text.lower()
 
 
-def test_htmx_post_teams_unknown_team_returns_error(
+def test_htmx_post_unknown_team_returns_error(
     admin_client: TestClient,
 ) -> None:
     r = admin_client.post(
-        f"/admin/games/{GAME_R32_FIRST_ID}/teams",
-        data={"team_home_id": "zzz", "team_away_id": "can"},
+        f"/admin/games/{GAME_R32_FIRST_ID}",
+        data={
+            "score_home": "",
+            "score_away": "",
+            "notes": "",
+            "team_home_id": "zzz",
+            "team_away_id": "can",
+        },
         headers={"HX-Request": "true"},
     )
     assert r.status_code == 200
     assert "unknown team" in r.text.lower()
 
 
-def test_htmx_post_teams_group_stage_returns_error(
+def test_htmx_post_team_fields_on_group_stage_are_ignored(
     admin_client: TestClient,
+    db: Session,
 ) -> None:
+    """Group-stage rows don't render team selects, so the route has no
+    legitimate reason to apply team fields. An out-of-band POST that
+    sneaks them in is silently ignored: the score still saves, the
+    seeded teams stay put."""
     r = admin_client.post(
-        f"/admin/games/{GAME_OPENER_ID}/teams",
-        data={"team_home_id": "mex", "team_away_id": "rsa"},
+        f"/admin/games/{GAME_OPENER_ID}",
+        data={
+            "score_home": "1",
+            "score_away": "0",
+            "notes": "",
+            "team_home_id": "ger",
+            "team_away_id": "fra",
+        },
         headers={"HX-Request": "true"},
     )
-    assert r.status_code == 200
-    assert "group-stage" in r.text.lower() or "group stage" in r.text.lower()
-
-
-def test_htmx_post_teams_unknown_game_404s(admin_client: TestClient) -> None:
-    r = admin_client.post(
-        "/admin/games/99999/teams",
-        data={"team_home_id": "mex", "team_away_id": "can"},
-        headers={"HX-Request": "true"},
-    )
-    assert r.status_code == 404
-
-
-def test_plain_post_teams_redirects(admin_client: TestClient, db: Session) -> None:
-    r = admin_client.post(
-        f"/admin/games/{GAME_R32_FIRST_ID}/teams",
-        data={"team_home_id": "mex", "team_away_id": "can"},
-        follow_redirects=False,
-    )
-    assert r.status_code == 303
-    assert r.headers["location"] == "/admin/games"
+    assert r.status_code == 200, r.text
     db.expire_all()
-    game = db.get(Game, GAME_R32_FIRST_ID)
+    game = db.get(Game, GAME_OPENER_ID)
     assert game is not None
-    assert (game.team_home_id, game.team_away_id) == ("mex", "can")
+    assert (game.score_home, game.score_away) == (1, 0)
+    # Original seeded teams (Mexico vs South Africa) untouched.
+    assert game.team_home_id == "mex"
+    assert game.team_away_id == "rsa"
 
 
 def test_games_page_shows_placeholder_for_anonymous(
@@ -436,8 +494,14 @@ def test_resolved_team_displaces_placeholder_on_games_page(
 ) -> None:
     """Once teams are set, the placeholder ("2A") gives way to the team name."""
     admin_client.post(
-        f"/admin/games/{GAME_R32_FIRST_ID}/teams",
-        data={"team_home_id": "mex", "team_away_id": "can"},
+        f"/admin/games/{GAME_R32_FIRST_ID}",
+        data={
+            "score_home": "",
+            "score_away": "",
+            "notes": "",
+            "team_home_id": "mex",
+            "team_away_id": "can",
+        },
         headers={"HX-Request": "true"},
     )
     page = admin_client.get("/games").text
