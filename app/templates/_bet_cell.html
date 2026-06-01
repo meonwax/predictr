@@ -3,8 +3,14 @@
 
   Renders one ``<td>`` containing either:
 
-  * The editable bet form (two number inputs + save) when the user can
-    still place/change their bet (i.e. kickoff is in the future).
+  * The editable bet form (two number inputs) when the user can still
+    place/change their bet (i.e. kickoff is in the future). The form
+    has no visible save button: the inline JS in
+    ``app/static/js/bets-autosave.js`` submits it via HTMX on the
+    ``change`` event of either input, as long as both fields are valid
+    numbers or both are empty and a prior bet existed. Hitting Enter or
+    switching apps also triggers the save. This means /bets now requires
+    JS.
   * A read-only summary of the bet (or a placeholder when none was
     placed) once kickoff has passed.
 
@@ -35,6 +41,8 @@
              name="score_home"
              value="{% if bet %}{{ bet.score_home }}{% endif %}"
              min="{{ min_score }}" max="{{ max_score }}"
+             inputmode="numeric"
+             enterkeyhint="next"
              aria-label="{{ _('bets.aria.home_score', id=game.id) }}"
              class="form-control form-control-sm bet-score text-end">
       <span class="text-body-secondary">:</span>
@@ -42,13 +50,10 @@
              name="score_away"
              value="{% if bet %}{{ bet.score_away }}{% endif %}"
              min="{{ min_score }}" max="{{ max_score }}"
+             inputmode="numeric"
+             enterkeyhint="done"
              aria-label="{{ _('bets.aria.away_score', id=game.id) }}"
              class="form-control form-control-sm bet-score">
-      <button type="submit"
-              class="btn btn-sm btn-outline-primary"
-              aria-label="{{ _('bets.aria.save_bet', id=game.id) }}">
-        <i class="bi bi-check2"></i>
-      </button>
       {%- if just_saved %}
         <span class="badge text-bg-success-subtle text-success-emphasis bet-saved-flag"
               role="status" aria-live="polite">{{ _('common.saved') }}</span>

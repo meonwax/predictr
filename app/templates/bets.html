@@ -143,3 +143,7 @@
   </div>
 {% endfor %}
 {% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', path='js/bets-autosave.js') }}" defer></script>
+{% endblock %}

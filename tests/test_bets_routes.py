@@ -118,6 +118,41 @@ def test_bets_page_shows_existing_bet(logged_in_client: TestClient, db: Session)
     assert re.search(r'name="score_away"[^>]*value="1"', cell_html), cell_html
 
 
+def test_bets_page_has_no_visible_save_button(logged_in_client: TestClient) -> None:
+    """Auto-save replaced the per-row save button; the form must not render one."""
+    import re
+
+    page = logged_in_client.get("/bets").text
+    form_match = re.search(
+        rf'<form class="bet-form[^"]*"[^>]*hx-post="/bets/{GAME_OPENER_ID}".*?</form>',
+        page,
+        re.DOTALL,
+    )
+    assert form_match, "editable bet form missing for opener"
+    form_html = form_match.group(0)
+    assert "<button" not in form_html.lower(), form_html
+    # The auto-save script is what makes the form submittable now.
+    assert "js/bets-autosave.js" in page
+
+
+def test_bets_page_inputs_have_mobile_keyboard_hints(logged_in_client: TestClient) -> None:
+    """Score inputs ask iOS/Android for the numeric keypad and a sensible action."""
+    import re
+
+    page = logged_in_client.get("/bets").text
+    cell_match = re.search(
+        rf'id="bet-cell-{GAME_OPENER_ID}".*?</td>',
+        page,
+        re.DOTALL,
+    )
+    assert cell_match, "opener bet cell missing from page"
+    cell_html = cell_match.group(0)
+    assert re.search(r'name="score_home"[^>]*inputmode="numeric"', cell_html), cell_html
+    assert re.search(r'name="score_away"[^>]*inputmode="numeric"', cell_html), cell_html
+    assert re.search(r'name="score_home"[^>]*enterkeyhint="next"', cell_html), cell_html
+    assert re.search(r'name="score_away"[^>]*enterkeyhint="done"', cell_html), cell_html
+
+
 # ---------------------------------------------------------------------------
 # POST /bets/{game_id} - HTMX path
 # ---------------------------------------------------------------------------

@@ -157,7 +157,6 @@ EN: dict[str, str] = {
     "bets.awaiting_result": "Waiting for result",
     "bets.aria.home_score": "Home score for game {id}",
     "bets.aria.away_score": "Away score for game {id}",
-    "bets.aria.save_bet": "Save bet for game {id}",
     "bets.aria.peek_others": "See other players' bets for match {id}",
     # --- Questions (user-facing) ----------------------------------------
     "questions.title": "Special questions",
@@ -594,7 +593,6 @@ DE: dict[str, str] = {
     "bets.awaiting_result": "Ergebnis ausstehend",
     "bets.aria.home_score": "Heimtor für Spiel {id}",
     "bets.aria.away_score": "Auswärtstor für Spiel {id}",
-    "bets.aria.save_bet": "Tipp für Spiel {id} speichern",
     "bets.aria.peek_others": "Tipps der anderen für Spiel {id} ansehen",
     # --- Questions (user-facing) ----------------------------------------
     "questions.title": "Sonderfragen",

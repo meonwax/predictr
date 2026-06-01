@@ -4,9 +4,11 @@ UX shape:
 
 * ``GET /bets`` renders one row per fixture, grouped by tournament phase.
   For each cell the user can still edit, the row shows a two-input form
-  (home / away score) and a save button. For locked rows it shows the
-  user's prior bet read-only, plus the points they earned once the
-  result is in.
+  (home / away score) with no visible save button. The companion
+  ``app/static/js/bets-autosave.js`` submits the form via HTMX whenever
+  both fields are filled, or whenever both are emptied to clear a prior
+  bet. For locked rows the cell shows the user's prior bet read-only,
+  plus the points earned once the result is in.
 * ``POST /bets/{game_id}`` upserts (or, when both fields are blank,
   deletes) a single bet. The request body is form-encoded:
 
@@ -15,11 +17,16 @@ UX shape:
       score_home=2&score_away=1            # upsert
       score_home=&score_away=              # delete
 
-  Mixed (one blank, one set) is a validation error.
+  Mixed (one blank, one set) is a validation error. The auto-save client
+  is designed never to send a mixed body, but the server still validates
+  defensively in case a stale HTMX swap or a custom client gets there.
 
 * HTMX clients (identified by ``HX-Request: true``) get the updated
-  ``<td>`` fragment swapped in place. Non-HTMX clients are redirected
-  back to ``/bets`` so the page still works with JS disabled.
+  ``<td>`` fragment swapped in place. The form retains ``action`` and
+  ``method`` so a vanilla POST (e.g. from server-side tests, or a
+  rogue ``form.submit()``) still hits this handler and gets a 303 back
+  to ``/bets``, but the page itself now requires JS to save: without
+  JS there is no button to click.
 
 CSRF: the session cookie is ``SameSite=Lax``, so cross-site POSTs from
 attacker pages don't carry it - they 401 before reaching this handler.
