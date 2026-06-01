@@ -67,6 +67,11 @@
             <i class="bi bi-question-circle me-1"></i>{{ _('home.cta.answer_questions') }}
           </a>
         {% endif %}
+        {% if has_unbet_imminent_games %}
+          <a href="/bets" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-pencil-square me-1"></i>{{ _('home.cta.place_bets') }}
+          </a>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -83,6 +88,23 @@
     <div class="flex-grow-1">{{ _('home.reminder.unanswered') }}</div>
     <a href="/questions" class="btn btn-sm btn-warning">
       <i class="bi bi-question-circle me-1"></i>{{ _('home.cta.answer_questions') }}
+    </a>
+  </div>
+{% endif %}
+
+{#- ===========================================================
+    Imminent unbet matches nudge
+    Shown when a match the user has not bet on is kicking off
+    within the next 24 hours, unless the admin's important banner
+    is already up (in which case its inline "Place bets" button
+    covers the nudge).
+=========================================================== -#}
+{% if current_user and has_unbet_imminent_games and not site_info.show_important_message %}
+  <div class="alert alert-warning d-flex align-items-center gap-2 mb-4">
+    <i class="bi bi-bell-fill"></i>
+    <div class="flex-grow-1">{{ _('home.reminder.unbet') }}</div>
+    <a href="/bets" class="btn btn-sm btn-warning">
+      <i class="bi bi-pencil-square me-1"></i>{{ _('home.cta.place_bets') }}
     </a>
   </div>
 {% endif %}

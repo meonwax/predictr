@@ -20,7 +20,7 @@ from typing import Final
 from sqlalchemy import and_, or_, select
 from sqlalchemy.orm import Session, joinedload
 
-from app.models import Game, User
+from app.models import Bet, Game, User
 from app.services.questions import QuestionForUser, list_questions_for_user
 
 # A match runs ~90 minutes of regular time, up to 30 minutes of extra
@@ -38,6 +38,13 @@ DEFAULT_UPCOMING_LIMIT: Final[int] = 8
 # Default size for the open-questions panel. Mirrors the size used on
 # the bets/ladder pages for consistency.
 DEFAULT_OPEN_QUESTIONS_LIMIT: Final[int] = 5
+
+# How far ahead the home page looks when deciding whether to nudge a
+# user about unbet matches. 24 hours is short enough to feel urgent
+# (the kickoff is "imminent") but long enough to cover the typical
+# tournament-day cadence so the warning surfaces well before the
+# bet deadline closes on each match.
+IMMINENT_BET_WINDOW: Final[timedelta] = timedelta(hours=24)
 
 
 def _now(now: datetime | None) -> datetime:
@@ -143,12 +150,54 @@ def has_unanswered_open_questions(
     return any(e.answer is None for e in entries)
 
 
+# ---------------------------------------------------------------------------
+# Bets (imminent kickoff nudge)
+# ---------------------------------------------------------------------------
+
+
+def has_unbet_imminent_games(
+    db: Session,
+    user: User,
+    *,
+    now: datetime | None = None,
+    window: timedelta = IMMINENT_BET_WINDOW,
+) -> bool:
+    """True iff *user* has at least one unbet match kicking off within *window*.
+
+    "Imminent" is anchored at *now* and runs forward for *window* (default
+    :data:`IMMINENT_BET_WINDOW`). Matches whose kickoff has already passed
+    are intentionally excluded - the bet deadline is gone, the user has no
+    action left to take. Matches further out than *window* are also
+    excluded so the nudge stays urgent and doesn't degrade into permanent
+    early-tournament noise (a freshly-registered user with no bets and a
+    100-match schedule would otherwise see the warning forever).
+
+    Implemented as a single ``NOT EXISTS`` query so it stays cheap on the
+    home dashboard hot path even with hundreds of fixtures.
+    """
+    now = _now(now)
+    cutoff = now + window
+    user_bet_exists = select(Bet.id).where(Bet.game_id == Game.id, Bet.user_id == user.id).exists()
+    stmt = (
+        select(Game.id)
+        .where(
+            Game.kickoff_time > now,
+            Game.kickoff_time <= cutoff,
+            ~user_bet_exists,
+        )
+        .limit(1)
+    )
+    return db.scalar(stmt) is not None
+
+
 __all__ = [
     "LIVE_WINDOW",
     "DEFAULT_UPCOMING_LIMIT",
     "DEFAULT_OPEN_QUESTIONS_LIMIT",
+    "IMMINENT_BET_WINDOW",
     "live_games",
     "upcoming_games",
     "open_questions_for_user",
     "has_unanswered_open_questions",
+    "has_unbet_imminent_games",
 ]

@@ -246,6 +246,115 @@ def test_questions_panel_hides_questions_past_deadline(
 
 
 # ---------------------------------------------------------------------------
+# Imminent-bet nudge
+# ---------------------------------------------------------------------------
+
+
+def _move_game_to(seeded_engine, *, game_id: int, kickoff: datetime) -> None:
+    with seeded_engine.begin() as conn:
+        conn.execute(
+            text("UPDATE game SET kickoff_time = :k WHERE id = :id"),
+            {"k": kickoff, "id": game_id},
+        )
+
+
+# The English copy contains an apostrophe which Jinja escapes as &#39;.
+# Match on a substring without it so the assertions don't depend on the
+# exact HTML-escape representation.
+_UNBET_NUDGE_SNIPPET = "upcoming matches you"
+
+
+def test_unbet_nudge_hidden_when_no_imminent_games(
+    logged_in_client: TestClient,
+    seeded_engine,
+) -> None:
+    """If every fixture is more than 24h away, the imminent-bet nudge stays hidden."""
+    with seeded_engine.begin() as conn:
+        conn.execute(
+            text("UPDATE game SET kickoff_time = :k"),
+            {"k": datetime.now(UTC) + timedelta(days=14)},
+        )
+    page = logged_in_client.get("/").text
+    assert _UNBET_NUDGE_SNIPPET not in page
+
+
+def test_unbet_nudge_shown_when_imminent_game_has_no_bet(
+    logged_in_client: TestClient,
+    seeded_engine,
+) -> None:
+    """A match kicking off in the next 24h with no bet from the user
+    triggers the yellow nudge."""
+    # Push every game beyond the imminent window first, then bring just
+    # one back inside it, so we control the nudge precisely.
+    with seeded_engine.begin() as conn:
+        conn.execute(
+            text("UPDATE game SET kickoff_time = :k"),
+            {"k": datetime.now(UTC) + timedelta(days=14)},
+        )
+    _move_game_to(seeded_engine, game_id=1, kickoff=datetime.now(UTC) + timedelta(hours=12))
+    page = logged_in_client.get("/").text
+    assert _UNBET_NUDGE_SNIPPET in page
+    # Same yellow-nudge layout as the unanswered-questions reminder.
+    assert "btn btn-sm btn-warning" in page
+    assert 'href="/bets"' in page
+
+
+def test_unbet_nudge_hidden_after_user_bets_on_imminent_game(
+    logged_in_client: TestClient,
+    seeded_engine,
+) -> None:
+    """Once every imminent match has a bet, the nudge disappears."""
+    with seeded_engine.begin() as conn:
+        conn.execute(
+            text("UPDATE game SET kickoff_time = :k"),
+            {"k": datetime.now(UTC) + timedelta(days=14)},
+        )
+    _move_game_to(seeded_engine, game_id=1, kickoff=datetime.now(UTC) + timedelta(hours=12))
+
+    r = logged_in_client.post(
+        "/bets/1",
+        data={"score_home": "2", "score_away": "1"},
+        headers={"HX-Request": "true"},
+    )
+    assert r.status_code == 200, r.text
+
+    page = logged_in_client.get("/").text
+    assert _UNBET_NUDGE_SNIPPET not in page
+
+
+def test_unbet_nudge_ignores_kicked_off_games(
+    logged_in_client: TestClient,
+    seeded_engine,
+) -> None:
+    """A match whose kickoff has already passed is not actionable any more
+    and must not surface in the nudge."""
+    with seeded_engine.begin() as conn:
+        conn.execute(
+            text("UPDATE game SET kickoff_time = :k"),
+            {"k": datetime.now(UTC) + timedelta(days=14)},
+        )
+    _move_game_to(seeded_engine, game_id=1, kickoff=datetime.now(UTC) - timedelta(minutes=30))
+    page = logged_in_client.get("/").text
+    assert _UNBET_NUDGE_SNIPPET not in page
+
+
+def test_unbet_nudge_hidden_for_anonymous_visitor(
+    auth_client: TestClient,
+    seeded_engine,
+) -> None:
+    """The nudge is user-specific; anonymous visitors never see it even
+    when an imminent unbet match is technically present."""
+    with seeded_engine.begin() as conn:
+        conn.execute(
+            text("UPDATE game SET kickoff_time = :k"),
+            {"k": datetime.now(UTC) + timedelta(days=14)},
+        )
+    _move_game_to(seeded_engine, game_id=1, kickoff=datetime.now(UTC) + timedelta(hours=12))
+    page = auth_client.get("/").text
+    assert _UNBET_NUDGE_SNIPPET not in page
+
+
+# ---------------------------------------------------------------------------
 # Recent shouts panel
 # ---------------------------------------------------------------------------
 

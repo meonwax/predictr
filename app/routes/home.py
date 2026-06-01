@@ -27,6 +27,7 @@ from app.services.home import (
     DEFAULT_OPEN_QUESTIONS_LIMIT,
     DEFAULT_UPCOMING_LIMIT,
     has_unanswered_open_questions,
+    has_unbet_imminent_games,
     live_games,
     open_questions_for_user,
     upcoming_games,
@@ -61,10 +62,12 @@ def home_index(
         )
         shouts = list_shouts(db, limit=RECENT_SHOUTS_LIMIT)
         unanswered = has_unanswered_open_questions(questions)
+        unbet_imminent = has_unbet_imminent_games(db, current_user)
     else:
         questions = []
         shouts = []
         unanswered = False
+        unbet_imminent = False
 
     return templates.TemplateResponse(
         request,
@@ -77,6 +80,7 @@ def home_index(
             "open_questions": questions,
             "shouts": shouts,
             "has_unanswered_questions": unanswered,
+            "has_unbet_imminent_games": unbet_imminent,
             "active_nav": "home",
         },
     )

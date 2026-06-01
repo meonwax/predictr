@@ -123,6 +123,7 @@ EN: dict[str, str] = {
     "home.shouts.empty": "No shouts yet.",
     "home.shouts.see_all": "Open the shoutbox",
     "home.reminder.unanswered": ("You have open questions waiting for an answer."),
+    "home.reminder.unbet": ("You have upcoming matches you haven't bet on yet."),
     # --- Games page -----------------------------------------------------
     "games.title": "Tournament schedule",
     "games.summary": "{matches} matches across {groups} groups",
@@ -556,6 +557,7 @@ DE: dict[str, str] = {
     "home.shouts.empty": "Noch keine Shouts.",
     "home.shouts.see_all": "Zum Shoutbox",
     "home.reminder.unanswered": ("Du hast noch offene Sonderfragen, die auf eine Antwort warten."),
+    "home.reminder.unbet": ("Du hast anstehende Spiele, auf die du noch nicht getippt hast."),
     # --- Games page -----------------------------------------------------
     "games.title": "Spielplan",
     "games.summary": "{matches} Spiele in {groups} Gruppen",
