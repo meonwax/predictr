@@ -37,6 +37,56 @@ LOGGER = logging.getLogger(__name__)
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 
+#: Path of the liveness probe. The container healthcheck (and Caddy, and any
+#: external monitor) polls it every few seconds, forever, so its access-log
+#: line is pure noise on the INFO log. See :class:`_HealthCheckAccessLogFilter`.
+HEALTHZ_PATH = "/healthz"
+
+
+class _HealthCheckAccessLogFilter(logging.Filter):
+    """Demote ``uvicorn.access`` lines for the health probe to DEBUG.
+
+    uvicorn logs every request through the ``uvicorn.access`` logger as
+    ``'%s - "%s %s HTTP/%s" %d'`` with ``record.args`` of
+    ``(client_addr, method, path, http_version, status_code)``. The probe
+    fires several times a minute, drowning the INFO log in identical
+    ``GET /healthz 200`` lines.
+
+    Rather than dropping those records outright we relabel them DEBUG, so
+    they stay reachable when an operator turns ``LOG_LEVEL=DEBUG`` to chase
+    a problem, and suppress them whenever DEBUG output is off (the default).
+    """
+
+    def __init__(self, *, debug_enabled: bool) -> None:
+        super().__init__()
+        self._debug_enabled = debug_enabled
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        args = record.args
+        if not (isinstance(args, tuple) and len(args) >= 3):
+            return True
+        path = args[2]
+        if not (isinstance(path, str) and path.split("?", 1)[0] == HEALTHZ_PATH):
+            return True
+        record.levelno = logging.DEBUG
+        record.levelname = "DEBUG"
+        return self._debug_enabled
+
+
+def _install_access_log_filter(settings: Settings) -> None:
+    """Attach (idempotently) the health-check filter to ``uvicorn.access``.
+
+    Called from :func:`_configure_logging`. We strip any filter we added on
+    a previous call first so repeated ``create_app()`` invocations (notably
+    in the test suite) don't stack duplicates.
+    """
+    access_logger = logging.getLogger("uvicorn.access")
+    access_logger.filters = [
+        f for f in access_logger.filters if not isinstance(f, _HealthCheckAccessLogFilter)
+    ]
+    debug_enabled = getattr(logging, settings.log_level) <= logging.DEBUG
+    access_logger.addFilter(_HealthCheckAccessLogFilter(debug_enabled=debug_enabled))
+
 
 def _configure_logging(settings: Settings) -> None:
     """Configure the root logger from ``settings.log_level``.
@@ -61,6 +111,7 @@ def _configure_logging(settings: Settings) -> None:
         format="%(asctime)sZ %(levelname)-8s %(name)s: %(message)s",
         datefmt="%Y-%m-%dT%H:%M:%S",
     )
+    _install_access_log_filter(settings)
 
 
 #: Status codes that get a dedicated branded error page when the client
