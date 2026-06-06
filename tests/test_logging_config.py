@@ -14,9 +14,8 @@ from pydantic import ValidationError
 
 from app.config import Settings
 from app.main import (
-    HEALTHZ_PATH,
+    _AccessLogDebugFilter,
     _configure_logging,
-    _HealthCheckAccessLogFilter,
 )
 
 
@@ -103,46 +102,38 @@ def test_configure_logging_sets_root_level(monkeypatch: pytest.MonkeyPatch) -> N
         root.setLevel(original_level)
 
 
-def test_healthcheck_filter_suppresses_probe_when_debug_off() -> None:
-    """With DEBUG off, the probe record is relabelled DEBUG and dropped."""
-    log_filter = _HealthCheckAccessLogFilter(debug_enabled=False)
-    record = _access_record(HEALTHZ_PATH)
+@pytest.mark.parametrize("path", ["/healthz", "/login", "/bets?sent=1"])
+def test_access_filter_suppresses_requests_when_debug_off(path: str) -> None:
+    """With DEBUG off, every access record is relabelled DEBUG and dropped."""
+    log_filter = _AccessLogDebugFilter(debug_enabled=False)
+    record = _access_record(path)
 
     assert log_filter.filter(record) is False
     assert record.levelname == "DEBUG"
     assert record.levelno == logging.DEBUG
 
 
-def test_healthcheck_filter_keeps_probe_when_debug_on() -> None:
-    """With DEBUG on, the probe record survives but is still labelled DEBUG."""
-    log_filter = _HealthCheckAccessLogFilter(debug_enabled=True)
-    record = _access_record(HEALTHZ_PATH + "?ignored=1")
+@pytest.mark.parametrize("path", ["/healthz", "/login", "/bets?sent=1"])
+def test_access_filter_keeps_requests_when_debug_on(path: str) -> None:
+    """With DEBUG on, the record survives but is still labelled DEBUG."""
+    log_filter = _AccessLogDebugFilter(debug_enabled=True)
+    record = _access_record(path)
 
     assert log_filter.filter(record) is True
     assert record.levelname == "DEBUG"
 
 
-def test_healthcheck_filter_passes_other_requests_untouched() -> None:
-    """Regular access lines are never demoted, regardless of DEBUG state."""
-    log_filter = _HealthCheckAccessLogFilter(debug_enabled=False)
-    record = _access_record("/login")
-
-    assert log_filter.filter(record) is True
-    assert record.levelname == "INFO"
-
-
 def test_configure_logging_installs_single_access_filter() -> None:
-    """``_configure_logging`` wires exactly one health-check filter, idempotently."""
+    """``_configure_logging`` wires exactly one access filter, idempotently."""
     access_logger = logging.getLogger("uvicorn.access")
     original_filters = list(access_logger.filters)
     try:
         _configure_logging(Settings(_env_file=None, log_level="INFO"))  # type: ignore[arg-type]
         _configure_logging(Settings(_env_file=None, log_level="INFO"))  # type: ignore[arg-type]
 
-        installed = [f for f in access_logger.filters if isinstance(f, _HealthCheckAccessLogFilter)]
+        installed = [f for f in access_logger.filters if isinstance(f, _AccessLogDebugFilter)]
         assert len(installed) == 1
 
-        probe = _access_record(HEALTHZ_PATH)
-        assert access_logger.filter(probe) is False
+        assert access_logger.filter(_access_record("/login")) is False
     finally:
         access_logger.filters = original_filters

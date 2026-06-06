@@ -37,24 +37,20 @@ LOGGER = logging.getLogger(__name__)
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 
-#: Path of the liveness probe. The container healthcheck (and Caddy, and any
-#: external monitor) polls it every few seconds, forever, so its access-log
-#: line is pure noise on the INFO log. See :class:`_HealthCheckAccessLogFilter`.
-HEALTHZ_PATH = "/healthz"
 
+class _AccessLogDebugFilter(logging.Filter):
+    """Relabel every ``uvicorn.access`` request line as DEBUG.
 
-class _HealthCheckAccessLogFilter(logging.Filter):
-    """Demote ``uvicorn.access`` lines for the health probe to DEBUG.
+    uvicorn logs one INFO line per request through the ``uvicorn.access``
+    logger (``GET /...``, ``POST /...``, the ``/healthz`` probe firing
+    several times a minute, every static asset, ...). That access log is
+    operationally noisy and drowns the genuine application INFO messages.
 
-    uvicorn logs every request through the ``uvicorn.access`` logger as
-    ``'%s - "%s %s HTTP/%s" %d'`` with ``record.args`` of
-    ``(client_addr, method, path, http_version, status_code)``. The probe
-    fires several times a minute, drowning the INFO log in identical
-    ``GET /healthz 200`` lines.
-
-    Rather than dropping those records outright we relabel them DEBUG, so
-    they stay reachable when an operator turns ``LOG_LEVEL=DEBUG`` to chase
-    a problem, and suppress them whenever DEBUG output is off (the default).
+    We relabel those records DEBUG rather than dropping them, so they stay
+    reachable when an operator turns ``LOG_LEVEL=DEBUG`` to chase a
+    problem, and suppress them whenever DEBUG output is off (the default).
+    Since the filter is attached only to ``uvicorn.access`` it never
+    touches the startup banner or application logs.
     """
 
     def __init__(self, *, debug_enabled: bool) -> None:
@@ -62,19 +58,13 @@ class _HealthCheckAccessLogFilter(logging.Filter):
         self._debug_enabled = debug_enabled
 
     def filter(self, record: logging.LogRecord) -> bool:
-        args = record.args
-        if not (isinstance(args, tuple) and len(args) >= 3):
-            return True
-        path = args[2]
-        if not (isinstance(path, str) and path.split("?", 1)[0] == HEALTHZ_PATH):
-            return True
         record.levelno = logging.DEBUG
         record.levelname = "DEBUG"
         return self._debug_enabled
 
 
 def _install_access_log_filter(settings: Settings) -> None:
-    """Attach (idempotently) the health-check filter to ``uvicorn.access``.
+    """Attach (idempotently) the access-log demotion filter to ``uvicorn.access``.
 
     Called from :func:`_configure_logging`. We strip any filter we added on
     a previous call first so repeated ``create_app()`` invocations (notably
@@ -82,10 +72,10 @@ def _install_access_log_filter(settings: Settings) -> None:
     """
     access_logger = logging.getLogger("uvicorn.access")
     access_logger.filters = [
-        f for f in access_logger.filters if not isinstance(f, _HealthCheckAccessLogFilter)
+        f for f in access_logger.filters if not isinstance(f, _AccessLogDebugFilter)
     ]
     debug_enabled = getattr(logging, settings.log_level) <= logging.DEBUG
-    access_logger.addFilter(_HealthCheckAccessLogFilter(debug_enabled=debug_enabled))
+    access_logger.addFilter(_AccessLogDebugFilter(debug_enabled=debug_enabled))
 
 
 def _configure_logging(settings: Settings) -> None:
