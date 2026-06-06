@@ -45,6 +45,7 @@ from fastapi.templating import Jinja2Templates
 from jinja2 import pass_context
 from jinja2.runtime import Context
 
+from app import __version__
 from app.config import get_settings
 from app.i18n import DEFAULT_LANGUAGE, gettext, resolve_language
 from app.services.scoring import bet_css_class
@@ -334,6 +335,7 @@ templates.env.globals.update(
         "_": _t,
         "site_title": _site_title,
         "tz_label": _tz_label_now,
+        "app_version": __version__,
         "DEFAULT_LANGUAGE": DEFAULT_LANGUAGE,
     }
 )

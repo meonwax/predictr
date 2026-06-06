@@ -1,0 +1,32 @@
+---
+description: When and how to bump the project version
+alwaysApply: true
+---
+
+# Versioning
+
+The single source of truth for the version is the `version` field in
+`pyproject.toml` (re-exported as `app.__version__`). The footer renders
+it, so every bump is visible to users.
+
+## When to bump
+
+Bump the version whenever you make a significant change: a new feature,
+a user-facing behaviour change, a bug fix, or a notable refactor. Skip
+the bump only for trivial edits (typos, comments, formatting, internal
+docs).
+
+Do the bump in the same change that introduces the work, so the deployed
+version always reflects what is running.
+
+## How to bump
+
+While the version carries a `-beta.N` suffix (currently
+`6.0.0-beta.N`), only increment the beta number:
+
+- `6.0.0-beta.1` -> `6.0.0-beta.2`
+
+After the `6.0.0` release (suffix dropped), follow semantic versioning:
+
+- Patch (`6.0.0` -> `6.0.1`) for bug fixes and small changes.
+- Minor (`6.0.0` -> `6.1.0`) for new, backward-compatible features.
