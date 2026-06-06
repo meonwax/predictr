@@ -56,5 +56,14 @@ USER predictr
 
 EXPOSE 8000
 
+# --forwarded-allow-ips="*" lets uvicorn honour the X-Forwarded-Proto /
+# X-Forwarded-For headers from the reverse proxy. uvicorn enables
+# --proxy-headers by default but only trusts them from 127.0.0.1; inside the
+# container the host's Caddy arrives via the Docker bridge gateway, so without
+# this the forwarded scheme is dropped, every request looks like plain HTTP,
+# and url_for() emits http:// asset URLs that browsers flag as mixed content
+# on the HTTPS page. Trusting "*" is safe because the app port is published on
+# loopback only (APP_BIND defaults to 127.0.0.1:8000), so the host's Caddy is
+# the sole client that can reach it.
 ENTRYPOINT ["/app/docker/entrypoint.sh"]
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--forwarded-allow-ips", "*"]
