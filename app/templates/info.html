@@ -15,18 +15,26 @@
       {{ _('info.subtitle') }}
     </p>
   </div>
-  <div class="small text-body-secondary text-md-end">
-    <div>
-      <span class="badge text-bg-success me-1">{{ site_info.points_result }}</span>
-      {{ _('info.legend.result') }}
+  {#-
+    Points legend. Each row is a right-anchored flex pair: the label
+    sits on the left, the badge on the right. ``justify-content-md-end``
+    keeps the rows hugging the right edge on tablet+, and
+    ``min-width: 2.25rem`` on the badges normalises their width to a
+    single digit so the three of them form a clean vertical column
+    regardless of value.
+  -#}
+  <div class="small text-body-secondary" style="min-width: 12rem;">
+    <div class="d-flex justify-content-between justify-content-md-end align-items-center gap-2">
+      <span>{{ _('info.legend.result') }}</span>
+      <span class="badge text-bg-success text-center" style="min-width: 2.25rem;">{{ site_info.points_result }}</span>
     </div>
-    <div>
-      <span class="badge text-bg-info me-1">{{ site_info.points_tendency_spread }}</span>
-      {{ _('info.legend.spread') }}
+    <div class="d-flex justify-content-between justify-content-md-end align-items-center gap-2">
+      <span>{{ _('info.legend.spread') }}</span>
+      <span class="badge text-bg-info text-center" style="min-width: 2.25rem;">{{ site_info.points_tendency_spread }}</span>
     </div>
-    <div>
-      <span class="badge text-bg-warning me-1">{{ site_info.points_tendency }}</span>
-      {{ _('info.legend.tendency') }}
+    <div class="d-flex justify-content-between justify-content-md-end align-items-center gap-2">
+      <span>{{ _('info.legend.tendency') }}</span>
+      <span class="badge text-bg-warning text-center" style="min-width: 2.25rem;">{{ site_info.points_tendency }}</span>
     </div>
   </div>
 </div>

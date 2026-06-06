@@ -2,7 +2,7 @@
 
 {% set active_nav = 'bets' %}
 
-{% block title %}{{ _('bets.title') }} | {{ _('brand.name') }}{% endblock %}
+{% block title %}{{ _('bets.title') }} | {{ site_title() }}{% endblock %}
 
 {% block content %}
 <div class="d-flex flex-wrap justify-content-between align-items-end mb-3 gap-2">
@@ -15,15 +15,26 @@
       {{ _('bets.subtitle') }}
     </p>
   </div>
-  <div class="small text-body-secondary text-md-end">
-    <div>
-      <span class="badge text-bg-success me-1">5</span> {{ _('bets.legend.result') }}
+  {#-
+    Points legend. Each row is a right-anchored flex pair: the label
+    sits on the left, the badge on the right. ``justify-content-md-end``
+    keeps the rows hugging the right edge on tablet+, and
+    ``min-width: 2.25rem`` on the badges normalises their width to a
+    single digit so the three of them form a clean vertical column
+    regardless of value.
+  -#}
+  <div class="small text-body-secondary" style="min-width: 12rem;">
+    <div class="d-flex justify-content-between justify-content-md-end align-items-center gap-2">
+      <span>{{ _('bets.legend.result') }}</span>
+      <span class="badge text-bg-success text-center" style="min-width: 2.25rem;">5</span>
     </div>
-    <div>
-      <span class="badge text-bg-info me-1">3</span> {{ _('bets.legend.spread') }}
+    <div class="d-flex justify-content-between justify-content-md-end align-items-center gap-2">
+      <span>{{ _('bets.legend.spread') }}</span>
+      <span class="badge text-bg-info text-center" style="min-width: 2.25rem;">3</span>
     </div>
-    <div>
-      <span class="badge text-bg-warning me-1">2</span> {{ _('bets.legend.tendency') }}
+    <div class="d-flex justify-content-between justify-content-md-end align-items-center gap-2">
+      <span>{{ _('bets.legend.tendency') }}</span>
+      <span class="badge text-bg-warning text-center" style="min-width: 2.25rem;">2</span>
     </div>
   </div>
 </div>
