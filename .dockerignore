@@ -5,6 +5,7 @@
 .vscode
 *.iml
 .cursor
+.editorconfig
 
 # Python build / test artefacts
 __pycache__
@@ -38,6 +39,7 @@ plan
 .env.*
 *.log
 *.sqlite3
+backups
 
 # Docker meta
 Dockerfile
