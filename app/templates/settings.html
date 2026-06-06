@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "_avatar.html" import avatar %}
 
-{% block title %}{{ _('settings.page_title') }} | {{ _('brand.name') }}{% endblock %}
+{% block title %}{{ _('settings.page_title') }} | {{ site_title() }}{% endblock %}
 
 {% macro alert(level, text) %}
   <div class="alert alert-{{ level }}" role="alert">{{ text }}</div>

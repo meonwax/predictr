@@ -19,6 +19,7 @@ from app.db import get_session_factory
 from app.models import User
 from app.security import read_session_token
 from app.services.mail import MailBackend, get_mail_backend
+from app.services.site_info import get_site_title
 
 # ---------------------------------------------------------------------------
 # DB session
@@ -136,3 +137,21 @@ def require_admin(user: CurrentUser) -> User:
 
 
 RequiredAdmin = Annotated[User, Depends(require_admin)]
+
+
+# ---------------------------------------------------------------------------
+# Site title (shared chrome)
+# ---------------------------------------------------------------------------
+
+
+def provide_site_title(request: Request, db: DbSession) -> None:
+    """Resolve the configured site title and stash it on ``request.state``.
+
+    Wired as a router-level dependency on every page-rendering router so the
+    shared chrome (``<title>``, navbar brand, footer) can read the
+    database-configured title without each handler threading it through its
+    template context. The Jinja ``site_title()`` global reads
+    ``request.state.site_title`` and falls back to the brand name when it is
+    absent (e.g. on a 404 where no route dependency ran).
+    """
+    request.state.site_title = get_site_title(db)

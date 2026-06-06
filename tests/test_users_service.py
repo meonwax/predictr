@@ -241,6 +241,38 @@ def test_request_reset_renders_english_for_en_users(
     assert "expires in 24 hours" in sent.body
 
 
+def test_request_reset_uses_configured_site_title(
+    fresh_db: Session,
+    settings: Settings,
+    mailer: InMemoryMailBackend,
+) -> None:
+    """The reset email white-labels to the database-configured site title."""
+    from app.models import Config
+
+    config = fresh_db.query(Config).order_by(Config.id).first()
+    assert config is not None
+    original = config.title
+    config.title = "Office Cup 2026"
+    fresh_db.commit()
+    try:
+        user = register_user(
+            fresh_db,
+            RegistrationData(
+                name="Dora",
+                email="dora@example.com",
+                password="hunter22",
+                preferred_language="en",
+            ),
+        )
+        request_password_reset(fresh_db, email=user.email, settings=settings, mailer=mailer)
+        sent = mailer.sent[0]
+        assert sent.subject == "Office Cup 2026: password reset"
+        assert "Office Cup 2026" in sent.body
+    finally:
+        config.title = original
+        fresh_db.commit()
+
+
 def test_request_reset_for_unknown_user_is_silent_noop(
     fresh_db: Session,
     settings: Settings,

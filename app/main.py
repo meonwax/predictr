@@ -11,13 +11,14 @@ import logging
 import time
 from pathlib import Path
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app import __version__
 from app.config import Settings, get_settings
+from app.dependencies import provide_site_title
 from app.middleware import LanguageMiddleware
 from app.routes import admin as admin_routes
 from app.routes import auth as auth_routes
@@ -136,18 +137,23 @@ def create_app() -> FastAPI:
         """Liveness probe used by Docker Compose, Caddy, and monitoring."""
         return {"status": "ok"}
 
-    app.include_router(home_routes.router)
-    app.include_router(auth_routes.router)
-    app.include_router(games_routes.router)
-    app.include_router(info_routes.router)
-    app.include_router(bets_routes.router)
-    app.include_router(ladder_routes.router)
+    # Page-rendering routers resolve the database-configured site title into
+    # ``request.state`` so the shared chrome (``<title>``, navbar, footer) can
+    # show it. Non-page routers (language redirects, avatar bytes, health) are
+    # excluded to avoid a needless query on those hot paths.
+    page_chrome = [Depends(provide_site_title)]
+    app.include_router(home_routes.router, dependencies=page_chrome)
+    app.include_router(auth_routes.router, dependencies=page_chrome)
+    app.include_router(games_routes.router, dependencies=page_chrome)
+    app.include_router(info_routes.router, dependencies=page_chrome)
+    app.include_router(bets_routes.router, dependencies=page_chrome)
+    app.include_router(ladder_routes.router, dependencies=page_chrome)
     app.include_router(language_routes.router)
-    app.include_router(questions_routes.router)
-    app.include_router(shouts_routes.router)
-    app.include_router(settings_routes.router)
+    app.include_router(questions_routes.router, dependencies=page_chrome)
+    app.include_router(shouts_routes.router, dependencies=page_chrome)
+    app.include_router(settings_routes.router, dependencies=page_chrome)
     app.include_router(settings_routes.avatars_router)
-    app.include_router(admin_routes.router)
+    app.include_router(admin_routes.router, dependencies=page_chrome)
 
     @app.exception_handler(StarletteHTTPException)
     async def _http_exception_handler(

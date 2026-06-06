@@ -260,6 +260,18 @@ def _pick_rules_source(
     return DEFAULT_RULES_MARKDOWN_DE if language == "de" else DEFAULT_RULES_MARKDOWN
 
 
+def get_site_title(db: Session) -> str:
+    """Return the configured site title, or :data:`DEFAULT_TITLE` if unset.
+
+    A focused, language-agnostic read used by the shared chrome (the
+    ``<title>`` tag, navbar brand, and footer) on every page. Reads the
+    singleton ``config`` row by ``id ASC LIMIT 1`` so an empty table or
+    a stray second row never crashes the request.
+    """
+    title = db.scalars(select(Config.title).order_by(Config.id).limit(1)).first()
+    return title or DEFAULT_TITLE
+
+
 def get_site_info(db: Session, user: User | None = None) -> SiteInfo:
     """Return the singleton site info, falling back to defaults if absent.
 
@@ -328,5 +340,6 @@ __all__ = [
     "DEFAULT_POINTS_TENDENCY",
     "SiteInfo",
     "get_site_info",
+    "get_site_title",
     "render_rules_markdown",
 ]

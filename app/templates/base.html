@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="color-scheme" content="light dark">
-  <title>{% block title %}{{ _('brand.name') }}{% endblock %}</title>
+  <title>{% block title %}{{ site_title() }}{% endblock %}</title>
 
   <link rel="icon" type="image/png" sizes="256x256"
         href="{{ url_for('static', path='img/favicon.png') }}">
@@ -20,7 +20,7 @@
     <div class="container">
       <a class="navbar-brand fw-semibold" href="{{ url_for('home:index') }}">
         <i class="bi bi-trophy-fill text-warning me-1"></i>
-        {{ _('brand.name') }}
+        {{ site_title() }}
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav"
               aria-controls="main-nav" aria-expanded="false" aria-label="{{ _('nav.toggle') }}">
@@ -152,7 +152,7 @@
 
   <footer class="container py-4 mt-5 text-body-secondary small border-top">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
-      <span>{{ _('brand.name') }} | {{ _('brand.tagline') }}</span>
+      <span>{{ site_title() }} | {{ _('brand.tagline') }}</span>
       <div class="d-flex flex-wrap align-items-center gap-3">
         {%- set active_lang = current_user | language -%}
         <form method="post" action="/language" class="d-inline-flex align-items-center gap-1 m-0"

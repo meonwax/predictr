@@ -15,7 +15,7 @@ from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session
 
 from app.config import Settings
-from app.i18n import EN, SUPPORTED_LANGUAGES, gettext, resolve_language
+from app.i18n import SUPPORTED_LANGUAGES, gettext, resolve_language
 from app.models import PasswordResetToken, User
 from app.security import (
     hash_password,
@@ -23,6 +23,7 @@ from app.security import (
     verify_password,
 )
 from app.services.mail import MailBackend, MailMessage
+from app.services.site_info import get_site_title
 from app.timezones import is_supported as _is_supported_tz
 
 LOGGER = logging.getLogger(__name__)
@@ -258,7 +259,7 @@ def request_password_reset(
 
     reset_url = _build_reset_url(settings, token_value)
     language = resolve_language(user.preferred_language, default=settings.default_language)
-    brand = EN["brand.name"]
+    brand = get_site_title(db)
     placeholders: dict[str, object] = {
         "name": user.name,
         "url": reset_url,

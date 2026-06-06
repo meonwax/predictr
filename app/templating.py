@@ -282,6 +282,23 @@ def _team_name(ctx: Context, fifa_code: str | None) -> str:
 
 
 @pass_context
+def _site_title(ctx: Context) -> str:
+    """Return the database-configured site title for the shared chrome.
+
+    Read from ``request.state.site_title``, populated per-request by the
+    ``provide_site_title`` dependency on every page-rendering router. When
+    that value is absent - most notably on a 404 error page, where no route
+    dependency ran - we fall back to the translated brand name so the
+    ``<title>``, navbar, and footer never render blank.
+    """
+    request = ctx.get("request")
+    title = getattr(getattr(request, "state", None), "site_title", None)
+    if isinstance(title, str) and title:
+        return title
+    return gettext("brand.name", _language_from_context(ctx))
+
+
+@pass_context
 def _tz_label_now(ctx: Context, dt: datetime | None = None) -> str:
     """Return the abbreviation (``CEST``, ``UTC``) of the active timezone.
 
@@ -315,6 +332,7 @@ templates.env.globals.update(
         "group_label": _group_label,
         "bet_css_class": bet_css_class,
         "_": _t,
+        "site_title": _site_title,
         "tz_label": _tz_label_now,
         "DEFAULT_LANGUAGE": DEFAULT_LANGUAGE,
     }
