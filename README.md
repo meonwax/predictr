@@ -131,37 +131,77 @@ The production deployment target is a VPS with Docker Compose + a host-level
 Caddy in front for TLS and the public hostname. The compose stack listens on
 loopback (port `8000`) and Caddy proxies to it.
 
-### Bootstrap the host
+### Production secrets (`.env.prod`)
 
-1. Install Docker Engine + the compose plugin.
-2. Clone this repo and create a `.env` next to `docker-compose.yml`. See
-   `.env.example` for the variables; at minimum set:
-   * `POSTGRES_PASSWORD` - strong, unique
-   * `SESSION_SECRET` - long random string (e.g. `openssl rand -hex 48`)
-   * `MAIL_*` - your real SMTP relay
-   * `SECURE_COOKIES` (optional) - defaults to `true` in the production
-     compose file; only override if you are deliberately running the prod
-     stack on plain HTTP (which you should not)
-   * `LOG_LEVEL` (optional) - defaults to `INFO`; flip to `DEBUG`
-     temporarily when diagnosing a live issue, then revert
-3. Build and start:
+Production secrets live in a dedicated `.env.prod` file, kept separate from
+the dev `.env` so a plain `docker compose up` (which auto-merges the dev
+override) can never load them by accident. `.env.prod` is gitignored; never
+commit it.
+
+Compose only auto-loads a file literally named `.env`, so the prod file is
+always passed explicitly with `--env-file .env.prod`, paired with the
+explicit `-f docker-compose.yml` that opts out of the dev override.
+
+Copy `.env.example` as a starting point and set, at minimum:
+
+* `POSTGRES_PASSWORD` - strong, unique. The fallback when this is unset is
+  the literal `predictr`, the same weak value used in dev, so this MUST be
+  set before the first start. It is baked into the `postgres_data` volume on
+  first boot; changing it later means recreating the volume (or running
+  `ALTER ROLE` inside the database).
+* `SESSION_SECRET` - long random string (e.g. `openssl rand -hex 48`)
+* `MAIL_*` - your real SMTP relay
+* `SECURE_COOKIES` (optional) - defaults to `true` in the production
+  compose file; only override if you are deliberately running the prod
+  stack on plain HTTP (which you should not)
+* `LOG_LEVEL` (optional) - defaults to `INFO`; flip to `DEBUG`
+  temporarily when diagnosing a live issue, then revert
+
+### Deploy over SSH (remote Docker context)
+
+The stack is deployed from a workstation against the VPS Docker daemon over
+SSH, using a Docker context. Variable interpolation (`${POSTGRES_PASSWORD}`
+and friends) happens locally where the Compose CLI runs, so `.env.prod`
+stays on the workstation and the substituted values are shipped to the
+remote daemon.
+
+1. Install Docker Engine + the compose plugin on the VPS, and make sure the
+   deploy user can reach the daemon over SSH.
+2. Create the context once (pointing at the VPS):
 
    ```sh
-   docker compose -f docker-compose.yml up -d --build
+   docker context create predictr-prod --docker "host=ssh://user@vps"
    ```
 
-   (Note the explicit `-f docker-compose.yml` - that opts out of the dev
-   override file.)
+3. Build and start against the remote daemon:
+
+   ```sh
+   docker --context predictr-prod compose \
+     -f docker-compose.yml --env-file .env.prod up -d --build
+   ```
+
+   (The explicit `-f docker-compose.yml` opts out of the dev override;
+   `--env-file .env.prod` loads the prod secrets.)
+
+> **Bind-mount caveat.** The `postgres-backup` sidecar bind-mounts
+> `${BACKUP_DIR:-./backups}` for its dump output, and the *remote* daemon
+> reads that path from the *VPS* filesystem, not your workstation. Set
+> `BACKUP_DIR` to an absolute path that exists on the VPS; the default
+> relative `./backups` would resolve to a path on the workstation that the
+> daemon cannot see. The backup loop script itself is baked into the
+> `predictr-backup` image (see `docker/backup.Dockerfile`) and the build
+> context is shipped over SSH, so no repo checkout is needed on the VPS.
 
 4. Migrations are applied automatically on container start. Seed data is
    **not** auto-loaded in prod; do it once manually:
 
    ```sh
-   docker compose -f docker-compose.yml exec app \
+   docker --context predictr-prod compose \
+     -f docker-compose.yml --env-file .env.prod exec app \
      python -m app.seed --if-empty seeds/wc2026.sql
    ```
 
-5. Point your Caddy to `http://127.0.0.1:8000` and you're done.
+5. Point your Caddy (on the VPS) to `http://127.0.0.1:8000` and you're done.
 
 ### Bootstrap an admin
 
@@ -169,7 +209,8 @@ The `/admin` UI is role-gated. Register the first admin through the normal
 sign-up form, then promote them with the operational CLI:
 
 ```sh
-docker compose -f docker-compose.yml exec app \
+docker --context predictr-prod compose \
+  -f docker-compose.yml --env-file .env.prod exec app \
   python -m app.cli promote-admin you@example.com
 ```
 
@@ -185,9 +226,14 @@ python -m app.cli demote-admin you@example.com
 
 ### Upgrades
 
+Pull the new code on the workstation, then rebuild and restart against the
+remote daemon. The build context (including `docker/backup.sh`) is shipped
+over SSH, so the images are built from your local checkout:
+
 ```sh
 git pull
-docker compose -f docker-compose.yml up -d --build
+docker --context predictr-prod compose \
+  -f docker-compose.yml --env-file .env.prod up -d --build
 ```
 
 Migrations run as part of the entrypoint; the persistent `postgres_data`
@@ -199,7 +245,7 @@ The base compose file ships a `postgres-backup` sidecar that runs `pg_dump`
 once a day and writes one compressed dump file per run to the host
 directory bound at `${BACKUP_DIR:-./backups}`.
 
-Schedule and configuration (all via `.env`):
+Schedule and configuration (all via `.env.prod`):
 
 * `BACKUP_HOUR_UTC` (default `4`): UTC hour to run the backup at. The
   default `04:00 UTC` equals `06:00 CEST` during the WC 2026 tournament
@@ -230,8 +276,10 @@ every morning).
 
 ```sh
 # Drop+recreate the existing schema before restoring so you don't end
-# up with a half-imported state.
-docker compose -f docker-compose.yml exec -T postgres \
+# up with a half-imported state. The dump file path is read on the
+# workstation; the stream is piped to pg_restore on the remote daemon.
+docker --context predictr-prod compose \
+  -f docker-compose.yml --env-file .env.prod exec -T postgres \
   pg_restore -U predictr -d predictr --clean --if-exists \
   < ./backups/predictr-2026-06-15T04-00-00Z.pgdump
 ```

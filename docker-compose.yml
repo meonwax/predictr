@@ -76,8 +76,11 @@ services:
       start_period: 10s
     restart: unless-stopped
 
-  # Daily Postgres backup sidecar. Reuses the postgres:16-alpine image so
-  # pg_dump is already in it; no custom build, no extra layer to pull.
+  # Daily Postgres backup sidecar. Built from docker/backup.Dockerfile: the
+  # official postgres:16-alpine image (so pg_dump matches the server
+  # version) with our backup loop script baked in. Baking it in means the
+  # daemon host does not need a repo checkout to bind-mount the script from,
+  # which keeps remote-over-SSH deploys simple.
   # The script runs in a sleep-loop and writes one `predictr-<UTC>.pgdump`
   # per day at $BACKUP_HOUR_UTC (default 04:00 UTC = 06:00 CEST during the
   # WC tournament window). Output lands in $BACKUP_DIR on the host, where
@@ -87,7 +90,10 @@ services:
   # the total dump count is naturally bounded. See README for the restore
   # recipe.
   postgres-backup:
-    image: postgres:16-alpine
+    build:
+      context: .
+      dockerfile: docker/backup.Dockerfile
+    image: predictr-backup:local
     depends_on:
       postgres:
         condition: service_healthy
@@ -99,9 +105,7 @@ services:
       SCHEDULE_HOUR_UTC: ${BACKUP_HOUR_UTC:-4}
       BACKUP_ON_STARTUP: ${BACKUP_ON_STARTUP:-0}
     volumes:
-      - ./docker/backup.sh:/usr/local/bin/backup.sh:ro
       - ${BACKUP_DIR:-./backups}:/backups
-    entrypoint: ["/bin/sh", "/usr/local/bin/backup.sh"]
     restart: unless-stopped
 
   # Web UI for direct Postgres access (~5 MB PHP image, stateless).
