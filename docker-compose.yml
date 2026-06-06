@@ -46,10 +46,21 @@ services:
       MAIL_PASSWORD: ${MAIL_PASSWORD:-}
       MAIL_USE_TLS: ${MAIL_USE_TLS:-false}
       MAIL_SENDER: ${MAIL_SENDER:-noreply@predictr.local}
+      # Optional override for the public origin used in outbound-mail links
+      # (e.g. password-reset links). Leave empty to derive it from each
+      # request, which already carries the right scheme and host via Caddy's
+      # forwarded headers. Set it only to pin a canonical origin.
+      BASE_URL: ${BASE_URL:-}
       RUN_MIGRATIONS: ${RUN_MIGRATIONS:-1}
       AUTO_SEED: ${AUTO_SEED:-0}
     ports:
       - "${APP_BIND:-127.0.0.1:8000}:8000"
+    # Resolve host.docker.internal to the Docker host gateway so the app can
+    # reach an MTA (or any other service) running on the host itself. On
+    # Docker Desktop this alias exists implicitly; on Linux it must be wired
+    # up explicitly via the special host-gateway value.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=2).status == 200 else 1)"]

@@ -170,6 +170,57 @@ def test_request_reset_for_known_user_sends_mail_and_creates_token(
     assert tokens[0].val in sent.body
 
 
+def test_request_reset_uses_request_origin_when_base_url_unset(
+    fresh_db: Session,
+    mailer: InMemoryMailBackend,
+) -> None:
+    """With no BASE_URL override, the link is built from the passed origin."""
+    settings = Settings(
+        session_secret="test-secret",
+        base_url="",
+        mail_sender="noreply@test.example",
+        password_reset_ttl_hours=24,
+    )
+    register_user(
+        fresh_db,
+        RegistrationData(name="A", email="a@example.com", password="hunter22"),
+    )
+    issued = request_password_reset(
+        fresh_db,
+        email="a@example.com",
+        settings=settings,
+        mailer=mailer,
+        base_url="https://tipp.example.org/",
+    )
+    assert issued is True
+    sent = mailer.sent[0]
+    assert "https://tipp.example.org/password/reset/" in sent.body
+    assert "localhost" not in sent.body
+
+
+def test_request_reset_base_url_override_wins_over_request_origin(
+    fresh_db: Session,
+    settings: Settings,
+    mailer: InMemoryMailBackend,
+) -> None:
+    """A configured BASE_URL takes precedence over the request origin."""
+    register_user(
+        fresh_db,
+        RegistrationData(name="A", email="a@example.com", password="hunter22"),
+    )
+    issued = request_password_reset(
+        fresh_db,
+        email="a@example.com",
+        settings=settings,
+        mailer=mailer,
+        base_url="https://request-host.example",
+    )
+    assert issued is True
+    sent = mailer.sent[0]
+    assert f"{settings.base_url}/password/reset/" in sent.body
+    assert "request-host.example" not in sent.body
+
+
 def test_request_reset_localises_email_to_user_preferred_language(
     fresh_db: Session,
     settings: Settings,

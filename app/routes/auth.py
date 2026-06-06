@@ -274,7 +274,13 @@ def lostpwd_submit(
 
     # Intentionally always returns the same response so an attacker can't
     # enumerate which email addresses are registered.
-    request_password_reset(db, email=normalised_email, settings=settings, mailer=mailer)
+    request_password_reset(
+        db,
+        email=normalised_email,
+        settings=settings,
+        mailer=mailer,
+        base_url=str(request.base_url),
+    )
     return RedirectResponse(url="/lostpwd?sent=1", status_code=303)
 
 

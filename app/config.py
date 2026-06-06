@@ -107,10 +107,15 @@ class Settings(BaseSettings):
         description="How long a password reset token stays valid, in hours.",
     )
     base_url: str = Field(
-        default="http://localhost:8000",
+        default="",
         description=(
-            "Public base URL of the application. Used to render absolute "
-            "links in outbound emails (e.g. password reset)."
+            "Optional override for the public base URL used to render "
+            "absolute links in outbound emails (e.g. password reset). When "
+            "empty (the default), the origin is derived from the incoming "
+            "request, which already carries the correct scheme and host "
+            "thanks to the reverse proxy's forwarded headers. Set this only "
+            "to force a canonical origin regardless of the host the user "
+            "reached the app through."
         ),
     )
 

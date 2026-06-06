@@ -220,8 +220,8 @@ def register_user(db: Session, data: RegistrationData) -> User:
 # ---------------------------------------------------------------------------
 
 
-def _build_reset_url(settings: Settings, token: str) -> str:
-    base = settings.base_url.rstrip("/")
+def _build_reset_url(base_url: str, token: str) -> str:
+    base = base_url.rstrip("/")
     return f"{base}/password/reset/{token}"
 
 
@@ -231,6 +231,7 @@ def request_password_reset(
     email: str,
     settings: Settings,
     mailer: MailBackend,
+    base_url: str | None = None,
 ) -> bool:
     """Create a password-reset token for *email* and email the link.
 
@@ -238,6 +239,10 @@ def request_password_reset(
     user). Callers should *not* surface this to the client - the public route
     must answer identically regardless to avoid leaking which addresses are
     registered.
+
+    ``base_url`` is the origin to build the reset link against, normally the
+    incoming request's origin. The configured ``settings.base_url`` override
+    wins when set; otherwise this value is used.
     """
     user = find_user_by_email(db, email)
     if user is None:
@@ -257,7 +262,7 @@ def request_password_reset(
     )
     db.commit()
 
-    reset_url = _build_reset_url(settings, token_value)
+    reset_url = _build_reset_url(settings.base_url or base_url or "", token_value)
     language = resolve_language(user.preferred_language, default=settings.default_language)
     brand = get_site_title(db)
     placeholders: dict[str, object] = {
