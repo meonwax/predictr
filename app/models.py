@@ -133,6 +133,12 @@ class User(Base):
     # nullable so newly-registered users inherit ``Settings.default_timezone``
     # the same way they inherit ``Settings.default_language``.
     preferred_timezone: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    # When true the user is hidden from the ladder/scoreboard while still
+    # being able to play normally (place bets, answer questions). Intended
+    # for non-competing accounts; toggled directly in the database.
+    excluded_from_ladder: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, server_default="false"
+    )
 
     avatar: Mapped[Avatar | None] = relationship()
     bets: Mapped[list[Bet]] = relationship(back_populates="user")

@@ -77,6 +77,24 @@ def test_ladder_with_no_users_is_empty(fresh_db: Session) -> None:
     assert compute_ladder(fresh_db) == []
 
 
+def test_ladder_omits_excluded_users(fresh_db: Session) -> None:
+    """A user flagged ``excluded_from_ladder`` never appears, even with points."""
+    alice = _make_user(fresh_db, name="Alice", email="alice@example.com")
+    ghost = _make_user(fresh_db, name="Ghost", email="ghost@example.com")
+
+    before = GAME_OPENER_KICKOFF - timedelta(days=1)
+    # The excluded user even has a perfect bet - they still must not show up.
+    upsert_bet(fresh_db, ghost, game_id=GAME_OPENER_ID, score_home=2, score_away=1, now=before)
+    _record_result(fresh_db, GAME_OPENER_ID, 2, 1)
+
+    ghost.excluded_from_ladder = True
+    fresh_db.commit()
+
+    after = GAME_OPENER_KICKOFF + timedelta(hours=2)
+    ladder = compute_ladder(fresh_db, now=after)
+    assert [e.user.id for e in ladder] == [alice.id]
+
+
 def test_ladder_with_no_bets_lists_users_at_zero(fresh_db: Session) -> None:
     a = _make_user(fresh_db, name="Alice", email="alice@example.com")
     b = _make_user(fresh_db, name="Bob", email="bob@example.com")

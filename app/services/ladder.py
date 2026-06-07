@@ -81,10 +81,16 @@ def compute_ladder(
     Users with no bets and no answers still appear in the ladder - they
     just rank last. That lets people confirm they signed up correctly
     even before placing their first bet.
+
+    Users flagged ``excluded_from_ladder`` are omitted entirely: they
+    still play (and their bets/answers stay in the database) but they
+    never show up on the scoreboard.
     """
     now = now or datetime.now(UTC)
 
-    users = db.scalars(select(User).order_by(User.id)).all()
+    users = db.scalars(
+        select(User).where(User.excluded_from_ladder.is_(False)).order_by(User.id)
+    ).all()
     by_user: dict[int, LadderEntry] = {u.id: LadderEntry(rank=0, user=u) for u in users}
 
     # ---- Bets contribution ------------------------------------------------
