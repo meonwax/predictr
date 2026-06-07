@@ -179,12 +179,13 @@
   </header>
   {% if upcoming %}
     <div class="table-responsive">
-      <table class="table table-hover align-middle mb-0">
+      <table class="table table-hover align-middle mb-0 home-upcoming-table">
         <tbody>
           {% for game in upcoming %}
             <tr>
-              <td class="ps-3 small text-body-secondary text-nowrap" style="width: 1%;">
-                {{ game.kickoff_time | kickoff }}
+              <td class="ps-3 small text-body-secondary" style="width: 1%;">
+                <span class="text-nowrap d-none d-md-inline">{{ game.kickoff_time | kickoff }}</span>
+                <span class="d-md-none kickoff-compact">{{ game.kickoff_time | kickoff_compact }}</span>
               </td>
               <td class="text-end">
                 {% with team_id=game.team_home_id, placeholder=game.placeholder_home, align='end' %}
@@ -192,7 +193,8 @@
                 {% endwith %}
               </td>
               <td class="text-center text-body-secondary small" style="width: 1%;">
-                {{ _('games.placeholder.vs') }}
+                <span class="d-none d-md-inline">{{ _('games.placeholder.vs') }}</span>
+                <span class="d-md-none">{{ _('games.placeholder.vs_short') }}</span>
               </td>
               <td>
                 {% with team_id=game.team_away_id, placeholder=game.placeholder_away, align='start' %}

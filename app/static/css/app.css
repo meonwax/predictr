@@ -169,12 +169,22 @@
     width: 2.4rem;
   }
 
+  /* The compact kickoff ("Mi 11. Jun, 21:00") can break at every space,
+   * so in a squeezed column it collapses into three or four lines. A
+   * min-width wide enough for two words per line caps it at two lines:
+   * the date on the first, the time on the second. */
+  .kickoff-compact {
+    display: inline-block;
+    min-width: 5.5rem;
+  }
+
   /* /questions gets the same compact treatment: tighter padding, a
    * wrapping (rather than forced-wide) answer column, and a smaller
    * inline answer input, so the row fits a phone without scrolling. The
    * deadline, correct-answer, and "worth" columns are hidden or trimmed
    * via utilities in the template. */
-  .questions-table {
+  .questions-table,
+  .home-upcoming-table {
     --bs-table-cell-padding-x: 0.4rem;
   }
   .questions-table .col-answer {

@@ -851,7 +851,7 @@ wheels = [
 
 [[package]]
 name = "predictr"
-version = "6.0.0b10"
+version = "6.0.0b11"
 source = { editable = "." }
 dependencies = [
     { name = "alembic" },

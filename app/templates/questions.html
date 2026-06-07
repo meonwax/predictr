@@ -42,7 +42,7 @@
             <td class="ps-3">{{ q.question }}</td>
             <td>
               <span class="small text-nowrap d-none d-md-inline">{{ q.deadline | kickoff }}</span>
-              <span class="small d-md-none">{{ q.deadline | kickoff_compact }}</span>
+              <span class="small d-md-none kickoff-compact">{{ q.deadline | kickoff_compact }}</span>
             </td>
 
             {# Answer cell - separate partial, HTMX-swappable. #}
