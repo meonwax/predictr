@@ -48,23 +48,26 @@
           </colgroup>
           <thead class="small text-uppercase text-body-secondary">
             <tr>
-              <th scope="col" class="ps-3">#</th>
+              <th scope="col" class="ps-3 d-none d-md-table-cell">#</th>
               <th scope="col">{{ _('games.col.kickoff') }}</th>
               <th scope="col" class="text-end">{{ _('games.col.home') }}</th>
               <th scope="col" class="text-center">{{ _('games.col.score') }}</th>
               <th scope="col">{{ _('games.col.away') }}</th>
-              <th scope="col" class="pe-3">{{ _('games.col.venue') }}</th>
+              <th scope="col" class="pe-3 d-none d-md-table-cell">{{ _('games.col.venue') }}</th>
             </tr>
           </thead>
           <tbody>
             {% for game in section.games %}
               <tr>
-                <th scope="row" class="ps-3 text-body-secondary fw-normal">
+                <th scope="row" class="ps-3 text-body-secondary fw-normal d-none d-md-table-cell">
                   {{ game.id }}
                 </th>
                 <td>
-                  <span class="small text-nowrap">
+                  <span class="small text-nowrap d-none d-md-inline">
                     {{ game.kickoff_time | kickoff }}
+                  </span>
+                  <span class="small d-md-none">
+                    {{ game.kickoff_time | kickoff_compact }}
                   </span>
                 </td>
                 <td class="text-end">
@@ -78,7 +81,8 @@
                       {{ game.score_home }} : {{ game.score_away }}
                     </span>
                   {% else %}
-                    <span class="text-body-secondary">{{ _('games.placeholder.vs') }}</span>
+                    <span class="text-body-secondary d-none d-md-inline">{{ _('games.placeholder.vs') }}</span>
+                    <span class="text-body-secondary d-md-none">{{ _('games.placeholder.vs_short') }}</span>
                   {% endif %}
                 </td>
                 <td>
@@ -86,7 +90,7 @@
                     {% include '_team_cell.html' %}
                   {% endwith %}
                 </td>
-                <td class="pe-3">
+                <td class="pe-3 d-none d-md-table-cell">
                   <span class="d-block text-truncate"
                         title="{{ game.venue.stadium.split(',')[0] }}">
                     <i class="bi bi-geo-alt text-body-secondary me-1"></i>{{ game.venue.stadium.split(',')[0] }}

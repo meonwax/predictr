@@ -17,6 +17,10 @@
                   Order: flag, name. ``justify-content-start`` pushes the
                   group toward the score on the left edge of the cell.
 
+  On phones (below the md breakpoint) the spelled-out country name is
+  swapped for the uppercased FIFA code so the row fits without a
+  horizontal scroll; the flag stays put in both cases.
+
   Params:
     team_id      FIFA 3-letter code, or None
     placeholder  Short bracket-slot label (e.g. "1A", "W74"), or None
@@ -24,6 +28,7 @@
 -#}
 {% set iso = team_iso(team_id) %}
 {% set name = team_name(team_id) %}
+{% set code = team_id.upper() if team_id else none %}
 {% set align = align | default('start') %}
 {% set placeholder = placeholder | default(none) %}
 {%- macro _flag() -%}
@@ -41,7 +46,10 @@
 {%- macro _name() -%}
   <span class="team-name {% if not iso %}text-body-secondary fst-italic{% endif %}">
     {%- if name -%}
-      {{ name }}
+      {#- Full country name on tablet+; the 3-letter FIFA code on phones,
+          where the spelled-out names would overflow the row. -#}
+      <span class="d-none d-md-inline">{{ name }}</span>
+      <span class="d-md-none">{{ code or name }}</span>
     {%- elif placeholder -%}
       {{ placeholder }}
     {%- else -%}

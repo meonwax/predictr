@@ -185,6 +185,35 @@ def _format_kickoff(ctx: Context, dt: datetime | None) -> str:
 
 
 @pass_context
+def _format_kickoff_compact(ctx: Context, dt: datetime | None) -> str:
+    """Render a compact kickoff for narrow viewports.
+
+    A trimmed cousin of :func:`_format_kickoff`: it keeps the weekday,
+    day, month, and time but drops the year and the timezone label. Both
+    of those are constant across the tournament (the year) or shown in
+    the footer (the zone), so on a phone they only cost horizontal space.
+    The comma between date and time gives the browser a clean break point
+    so the value wraps onto two lines in a narrow column rather than
+    forcing a horizontal scroll. Examples: ``Thu 11 Jun, 15:00`` (EN),
+    ``Mi 11. Jun, 21:00`` (DE).
+    """
+    if dt is None:
+        return ""
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=UTC)
+    zone = _timezone_from_context(ctx)
+    local = dt.astimezone(zone)
+    language = _language_from_context(ctx)
+    day = gettext(f"date.day.{local.weekday()}", language)
+    month = gettext(f"date.month.{local.month}", language)
+    if language == "de":
+        date_part = f"{day} {local.day}. {month}"
+    else:
+        date_part = f"{day} {local.day:02d} {month}"
+    return f"{date_part}, {local.hour:02d}:{local.minute:02d}"
+
+
+@pass_context
 def _format_short_date(ctx: Context, dt: datetime | None) -> str:
     """Render a date-only label in the user's locale.
 
@@ -319,6 +348,7 @@ def _tz_label_now(ctx: Context, dt: datetime | None = None) -> str:
 
 # Filters: usable as `{{ value | filter_name }}` in templates.
 templates.env.filters["kickoff"] = _format_kickoff
+templates.env.filters["kickoff_compact"] = _format_kickoff_compact
 templates.env.filters["short_date"] = _format_short_date
 templates.env.filters["group_label"] = _group_label
 templates.env.filters["datetime_local"] = _datetime_local

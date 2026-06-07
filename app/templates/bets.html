@@ -72,7 +72,7 @@
           </colgroup>
           <thead class="small text-uppercase text-body-secondary">
             <tr>
-              <th scope="col" class="ps-3">#</th>
+              <th scope="col" class="ps-3 d-none d-md-table-cell">#</th>
               <th scope="col">{{ _('games.col.kickoff') }}</th>
               <th scope="col" class="text-end">{{ _('games.col.home') }}</th>
               <th scope="col" class="text-center">{{ _('games.col.result') }}</th>
@@ -90,12 +90,15 @@
             {% for entry in entries %}
               {% set game = entry.game %}
               <tr>
-                <th scope="row" class="ps-3 text-body-secondary fw-normal">
+                <th scope="row" class="ps-3 text-body-secondary fw-normal d-none d-md-table-cell">
                   {{ game.id }}
                 </th>
                 <td>
-                  <span class="small text-nowrap">
+                  <span class="small text-nowrap d-none d-md-inline">
                     {{ game.kickoff_time | kickoff }}
+                  </span>
+                  <span class="small d-md-none">
+                    {{ game.kickoff_time | kickoff_compact }}
                   </span>
                 </td>
                 <td class="text-end">
@@ -112,7 +115,8 @@
                       <div class="small text-body-secondary mt-1">({{ game.notes }})</div>
                     {% endif %}
                   {% else %}
-                    <span class="text-body-secondary">{{ _('games.placeholder.vs') }}</span>
+                    <span class="text-body-secondary d-none d-md-inline">{{ _('games.placeholder.vs') }}</span>
+                    <span class="text-body-secondary d-md-none">{{ _('games.placeholder.vs_short') }}</span>
                   {% endif %}
                 </td>
                 <td>

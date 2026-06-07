@@ -134,10 +134,15 @@ def test_games_page_renders_flag_images_for_known_teams(client: TestClient) -> N
 
 
 def test_games_page_shows_no_resolved_scores_yet(client: TestClient) -> None:
-    """All 104 games are pre-tournament: the 'vs' placeholder should appear in each row."""
+    """All 104 games are pre-tournament: the 'vs' placeholder should appear in each row.
+
+    The separator renders twice per row: a full-word form for tablet+ and
+    a short form for phones, toggled by Bootstrap display utilities. We
+    count the phone variant, which is emitted once per match.
+    """
     body = client.get("/games").text
     # 12 group-stage groups have 6 matches each = 72; plus 32 knockout rows.
-    assert body.count(">vs<") == 104
+    assert body.count('d-md-none">vs<') == 104
 
 
 def test_games_page_links_to_static_bootstrap_css(client: TestClient) -> None:

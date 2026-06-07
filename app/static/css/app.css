@@ -98,10 +98,12 @@
 /* The two team columns carry no explicit width, so a fixed layout splits
  * the remaining space equally between home and away. */
 
-/* Compact score inputs: two small number boxes joined by ':' */
+/* Compact score inputs: two small number boxes joined by ':'. Scores run
+ * 0-99 (see MIN_SCORE/MAX_SCORE), so the box only ever holds two digits
+ * and can stay narrow. */
 .bet-form .bet-score,
 .admin-score {
-  width: 3.25rem;
+  width: 2.75rem;
   padding-inline: 0.4rem;
   font-variant-numeric: tabular-nums;
   -moz-appearance: textfield;
@@ -112,6 +114,50 @@
 .admin-score::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/* Compact fixtures on phones (below Bootstrap's md breakpoint, 768px).
+ *
+ * The desktop tables force a min-width (48rem/56rem) and scroll
+ * horizontally on a phone, which is awkward. Below md we drop that
+ * floor and let the table size to the viewport instead. The templates
+ * collapse spelled-out team names to FIFA codes, trim the kickoff to
+ * "weekday day month, time", and hide the # and venue columns (via
+ * d-none/d-md-table-cell), so what is left fits a narrow screen without
+ * a horizontal scroll.
+ *
+ * table-layout switches to auto so the now-tiny content drives the
+ * column widths, and the fixed <colgroup> widths are reset to auto for
+ * the same reason. Cross-group alignment is intentionally relaxed here:
+ * each group is its own card on a phone, so any drift between cards is
+ * not noticeable. Cell padding tightens a touch to claw back more room.
+ *
+ * The header row is dropped entirely on phones: with codes + flags, a
+ * score, and the bet form, the columns read for themselves, and the
+ * reclaimed vertical/horizontal room matters more than the labels.
+ */
+@media (max-width: 767.98px) {
+  .fixtures-table,
+  .fixtures-table--bets {
+    table-layout: auto;
+    min-width: 0;
+    --bs-table-cell-padding-x: 0.4rem;
+  }
+  .fixtures-table thead {
+    display: none;
+  }
+  .fixtures-table .col-num,
+  .fixtures-table .col-kickoff,
+  .fixtures-table .col-score,
+  .fixtures-table .col-venue,
+  .fixtures-table .col-bet,
+  .fixtures-table .col-points,
+  .fixtures-table .col-others {
+    width: auto;
+  }
+  .bet-form .bet-score {
+    width: 2.4rem;
+  }
 }
 
 /* "saved" badge: fade out after a few seconds without a JS hook. */
