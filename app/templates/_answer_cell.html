@@ -30,8 +30,7 @@
              value="{{ ans.answer if ans else '' }}"
              maxlength="{{ max_answer_len }}"
              aria-label="{{ _('questions.aria.answer', id=q.id) }}"
-             class="form-control form-control-sm flex-grow-1"
-             style="min-width: 8rem;">
+             class="form-control form-control-sm flex-grow-1 answer-input">
       <button type="submit"
               class="btn btn-sm btn-outline-primary"
               aria-label="{{ _('questions.aria.save_answer', id=q.id) }}">

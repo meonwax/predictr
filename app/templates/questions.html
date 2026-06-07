@@ -19,14 +19,14 @@
 
 <div class="card shadow-sm">
   <div class="table-responsive">
-    <table class="table table-hover align-middle mb-0">
+    <table class="table table-hover align-middle mb-0 questions-table">
       <thead class="small text-uppercase text-body-secondary">
         <tr>
           <th scope="col" class="ps-3">{{ _('questions.col.question') }}</th>
           <th scope="col">{{ _('questions.col.deadline') }}</th>
-          <th scope="col" style="min-width: 12rem;">{{ _('questions.col.your_answer') }}</th>
+          <th scope="col" class="col-answer">{{ _('questions.col.your_answer') }}</th>
           <th scope="col" class="d-none d-md-table-cell">{{ _('questions.col.correct_answer') }}</th>
-          <th scope="col" class="text-center" style="width: 5rem;">{{ _('questions.col.worth') }}</th>
+          <th scope="col" class="text-center d-none d-md-table-cell" style="width: 5rem;">{{ _('questions.col.worth') }}</th>
           <th scope="col" class="text-center" style="width: 5rem;">{{ _('questions.col.points_short') }}</th>
           <th scope="col" class="text-center pe-3" style="width: 3rem;"
               title="{{ _('questions.col.others_title') }}">
@@ -41,7 +41,8 @@
           <tr>
             <td class="ps-3">{{ q.question }}</td>
             <td>
-              <span class="small text-nowrap">{{ q.deadline | kickoff }}</span>
+              <span class="small text-nowrap d-none d-md-inline">{{ q.deadline | kickoff }}</span>
+              <span class="small d-md-none">{{ q.deadline | kickoff_compact }}</span>
             </td>
 
             {# Answer cell - separate partial, HTMX-swappable. #}
@@ -57,7 +58,7 @@
                 <span class="text-body-secondary">{{ _('common.dash') }}</span>
               {% endif %}
             </td>
-            <td class="text-center text-body-secondary">{{ q.points }}</td>
+            <td class="text-center text-body-secondary d-none d-md-table-cell">{{ q.points }}</td>
             <td class="text-center">
               {% if not entry.can_answer and entry.answer and entry.correct_answer_display %}
                 <span class="fw-semibold">{{ entry.points_earned }}</span>

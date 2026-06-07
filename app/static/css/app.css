@@ -98,6 +98,16 @@
 /* The two team columns carry no explicit width, so a fixed layout splits
  * the remaining space equally between home and away. */
 
+/* Special-questions table (/questions). The answer column and its inline
+ * text input need enough room on desktop; the phone media query below
+ * relaxes both so the row can fit a narrow screen. */
+.questions-table .col-answer {
+  min-width: 12rem;
+}
+.answer-form .answer-input {
+  min-width: 8rem;
+}
+
 /* Compact score inputs: two small number boxes joined by ':'. Scores run
  * 0-99 (see MIN_SCORE/MAX_SCORE), so the box only ever holds two digits
  * and can stay narrow. */
@@ -157,6 +167,21 @@
   }
   .bet-form .bet-score {
     width: 2.4rem;
+  }
+
+  /* /questions gets the same compact treatment: tighter padding, a
+   * wrapping (rather than forced-wide) answer column, and a smaller
+   * inline answer input, so the row fits a phone without scrolling. The
+   * deadline, correct-answer, and "worth" columns are hidden or trimmed
+   * via utilities in the template. */
+  .questions-table {
+    --bs-table-cell-padding-x: 0.4rem;
+  }
+  .questions-table .col-answer {
+    min-width: 7rem;
+  }
+  .answer-form .answer-input {
+    min-width: 5rem;
   }
 }
 
