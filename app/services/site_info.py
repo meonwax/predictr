@@ -45,6 +45,7 @@ LOGGER = logging.getLogger(__name__)
 DEFAULT_TITLE: str = "Predictr"
 DEFAULT_OWNER: str = "Predictr"
 DEFAULT_ADMIN_EMAIL: str = "admin@example.com"
+DEFAULT_SHOW_IMPORTANT_MESSAGE: bool = False
 DEFAULT_POINTS_RESULT: int = 5
 DEFAULT_POINTS_TENDENCY_SPREAD: int = 3
 DEFAULT_POINTS_TENDENCY: int = 2
@@ -165,6 +166,7 @@ class SiteInfo:
     title: str
     owner: str
     admin_email: str
+    show_important_message: bool
     rules_html: str
     points_result: int
     points_tendency_spread: int
@@ -302,6 +304,7 @@ def get_site_info(db: Session, user: User | None = None) -> SiteInfo:
             title=DEFAULT_TITLE,
             owner=DEFAULT_OWNER,
             admin_email=DEFAULT_ADMIN_EMAIL,
+            show_important_message=DEFAULT_SHOW_IMPORTANT_MESSAGE,
             rules_html=rules_html,
             points_result=DEFAULT_POINTS_RESULT,
             points_tendency_spread=DEFAULT_POINTS_TENDENCY_SPREAD,
@@ -321,6 +324,7 @@ def get_site_info(db: Session, user: User | None = None) -> SiteInfo:
         title=config.title,
         owner=config.owner,
         admin_email=config.admin_email,
+        show_important_message=config.show_important_message,
         rules_html=rules_html,
         points_result=config.points_result,
         points_tendency_spread=config.points_tendency_spread,
@@ -334,6 +338,7 @@ __all__ = [
     "DEFAULT_TITLE",
     "DEFAULT_OWNER",
     "DEFAULT_ADMIN_EMAIL",
+    "DEFAULT_SHOW_IMPORTANT_MESSAGE",
     "SUPPORTED_LANGUAGES",
     "DEFAULT_POINTS_RESULT",
     "DEFAULT_POINTS_TENDENCY_SPREAD",
