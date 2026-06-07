@@ -55,6 +55,49 @@
   padding-bottom: 0.55rem;
 }
 
+/* Fixtures tables (/games and /bets).
+ *
+ * Each group renders its own <table>, so with the default auto layout the
+ * browser sizes every group's columns independently from that group's
+ * content. That makes the columns drift out of alignment from one group to
+ * the next. A fixed layout plus a shared <colgroup> pins every column to
+ * the same width, so all groups line up identically down the whole page.
+ *
+ * The min-width keeps the columns legible on narrow viewports; the
+ * surrounding .table-responsive wrapper turns the overflow into a
+ * horizontal scroll rather than crushing the cells.
+ */
+.fixtures-table {
+  table-layout: fixed;
+  min-width: 48rem;
+}
+.fixtures-table--bets {
+  min-width: 56rem;
+}
+.fixtures-table .col-num {
+  width: 3.5rem;
+}
+.fixtures-table .col-kickoff {
+  width: 9rem;
+}
+.fixtures-table .col-score {
+  width: 6rem;
+}
+.fixtures-table .col-venue {
+  width: 12rem;
+}
+.fixtures-table .col-bet {
+  width: 8.5rem;
+}
+.fixtures-table .col-points {
+  width: 5rem;
+}
+.fixtures-table .col-others {
+  width: 4.5rem;
+}
+/* The two team columns carry no explicit width, so a fixed layout splits
+ * the remaining space equally between home and away. */
+
 /* Compact score inputs: two small number boxes joined by ':' */
 .bet-form .bet-score,
 .admin-score {

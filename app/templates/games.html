@@ -37,7 +37,15 @@
 
     {% if section.games %}
       <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
+        <table class="table table-hover align-middle mb-0 fixtures-table">
+          <colgroup>
+            <col class="col-num">
+            <col class="col-kickoff">
+            <col class="col-team">
+            <col class="col-score">
+            <col class="col-team">
+            <col class="col-venue">
+          </colgroup>
           <thead class="small text-uppercase text-body-secondary">
             <tr>
               <th scope="col" class="ps-3">#</th>
@@ -79,10 +87,12 @@
                   {% endwith %}
                 </td>
                 <td class="pe-3">
-                  <span class="d-block text-nowrap">
+                  <span class="d-block text-truncate"
+                        title="{{ game.venue.stadium.split(',')[0] }}">
                     <i class="bi bi-geo-alt text-body-secondary me-1"></i>{{ game.venue.stadium.split(',')[0] }}
                   </span>
-                  <span class="d-block small text-body-secondary text-nowrap">
+                  <span class="d-block small text-body-secondary text-truncate"
+                        title="{{ game.venue.stadium.split(',')[1:] | join(',') | trim }}">
                     {{ game.venue.stadium.split(',')[1:] | join(',') | trim }}
                   </span>
                 </td>
