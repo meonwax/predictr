@@ -125,16 +125,6 @@
             </td>
             <td class="text-center text-body-secondary d-none d-md-table-cell pe-3">
               {{ entry.breakdown.scored }}
-              {% if entry.breakdown.pending or entry.breakdown.upcoming %}
-                <div class="small">
-                  {% if entry.breakdown.pending %}
-                    <span title="{{ _('ladder.pending_title') }}">{{ entry.breakdown.pending }}⌛</span>
-                  {% endif %}
-                  {% if entry.breakdown.upcoming %}
-                    <span title="{{ _('ladder.upcoming_title') }}">+{{ entry.breakdown.upcoming }}</span>
-                  {% endif %}
-                </div>
-              {% endif %}
             </td>
           </tr>
         {% else %}
