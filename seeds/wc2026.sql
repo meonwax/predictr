@@ -113,7 +113,7 @@ INSERT INTO game (id, kickoff_time, group_id, venue_id, team_home_id, team_away_
   (  4, '2026-06-13 01:00:00', 'd',  7, 'usa', 'par'),  -- USA v Paraguay,           SoFi Stadium,            21:00 ET (Jun 12)
 
   (  5, '2026-06-14 01:00:00', 'c',  2, 'hai', 'sco'),  -- Haiti v Scotland,         Gillette Stadium,        21:00 ET (Jun 13)
-  (  6, '2026-06-13 04:00:00', 'd', 16, 'aus', 'tur'),  -- Australia v Türkiye,      BC Place,                00:00 ET (Jun 13)
+  (  6, '2026-06-14 04:00:00', 'd', 16, 'aus', 'tur'),  -- Australia v Türkiye,      BC Place,                00:00 ET (Jun 14) / 21:00 PT (Jun 13)
   (  7, '2026-06-13 22:00:00', 'c', 11, 'bra', 'mar'),  -- Brazil v Morocco,         MetLife Stadium,         18:00 ET
   (  8, '2026-06-13 19:00:00', 'b', 13, 'qat', 'sui'),  -- Qatar v Switzerland,      Levi''s Stadium,         15:00 ET
 
