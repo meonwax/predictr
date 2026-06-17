@@ -31,7 +31,7 @@ from app.dependencies import (
     MailerDep,
     SettingsDep,
 )
-from app.security import make_session_token
+from app.security import make_session_token, safe_redirect_path
 from app.services.users import (
     EmailAlreadyRegistered,
     InvalidResetToken,
@@ -109,7 +109,7 @@ def login_form(
     next: str = "/",
 ) -> object:
     if user is not None:
-        return RedirectResponse(url=next or "/", status_code=303)
+        return RedirectResponse(url=safe_redirect_path(next), status_code=303)
     return templates.TemplateResponse(
         request,
         "auth/login.html",
@@ -149,7 +149,7 @@ def login_submit(
         )
 
     touch_last_login(db, user)
-    destination = next or "/"
+    destination = safe_redirect_path(next)
     response = RedirectResponse(url=destination, status_code=303)
     _set_session_cookie(response, user_id=user.id, settings=settings, remember_me=remember_me)
     return response

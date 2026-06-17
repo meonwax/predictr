@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import secrets
 from typing import Final
+from urllib.parse import urlsplit
 
 import bcrypt
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
@@ -36,6 +37,38 @@ SALT_SESSION: Final[str] = "predictr.session.v1"
 # Cost factor (work) used for new bcrypt hashes. 12 is the de-facto default
 # in 2026; tune if hash time becomes noticeable in profiling.
 _BCRYPT_ROUNDS: Final[int] = 12
+
+
+# ---------------------------------------------------------------------------
+# Redirect-target sanitisation
+# ---------------------------------------------------------------------------
+
+
+def safe_redirect_path(raw: str, *, fallback: str = "/") -> str:
+    """Return a safe in-app redirect target derived from *raw*.
+
+    Only relative paths that stay on this site are allowed. Absolute URLs
+    (anything carrying a scheme or host) and protocol-relative ``//host``
+    values collapse to *fallback*. This is the guard against open-redirect
+    phishing through an attacker-controlled ``next`` parameter: without it a
+    crafted ``?next=https://evil.example`` would bounce the visitor off-site
+    after a login or language switch.
+    """
+    if not raw:
+        return fallback
+    parsed = urlsplit(raw)
+    if parsed.scheme or parsed.netloc:
+        return fallback
+    if not parsed.path.startswith("/"):
+        return fallback
+    if parsed.path.startswith("//"):
+        return fallback
+    path = parsed.path
+    if parsed.query:
+        path = f"{path}?{parsed.query}"
+    if parsed.fragment:
+        path = f"{path}#{parsed.fragment}"
+    return path
 
 
 # ---------------------------------------------------------------------------
@@ -114,6 +147,7 @@ def make_password_reset_token() -> str:
 
 __all__ = [
     "SALT_SESSION",
+    "safe_redirect_path",
     "hash_password",
     "verify_password",
     "make_session_token",

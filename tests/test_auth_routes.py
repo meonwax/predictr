@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
 
+import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker
@@ -178,6 +179,32 @@ def test_login_redirects_to_next_param(auth_client: TestClient) -> None:
     )
     assert response.status_code == 303
     assert response.headers["location"] == "/games"
+
+
+@pytest.mark.parametrize(
+    "raw_next",
+    [
+        "https://evil.example/x",
+        "//evil.example/x",
+        "javascript:alert(1)",
+        "ftp://elsewhere/",
+        "no-leading-slash",
+    ],
+)
+def test_login_sanitises_off_site_next(auth_client: TestClient, raw_next: str) -> None:
+    """A tampered ``next`` must never redirect off-site after login."""
+    _register(auth_client)
+    response = auth_client.post(
+        "/login",
+        data={
+            "email": "alice@example.com",
+            "password": "hunter222",
+            "next": raw_next,
+        },
+        follow_redirects=False,
+    )
+    assert response.status_code == 303
+    assert response.headers["location"] == "/"
 
 
 def test_remember_me_sets_max_age_on_cookie(auth_client: TestClient) -> None:

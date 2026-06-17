@@ -1,6 +1,6 @@
 [project]
 name = "predictr"
-version = "6.0.4"
+version = "6.0.5"
 description = "A football prediction game"
 readme = "README.md"
 license = "MIT"

@@ -1036,7 +1036,10 @@ def gettext(key: str, language: str = DEFAULT_LANGUAGE, /, **kwargs: object) -> 
     try:
         return template.format(**kwargs)
     except (KeyError, IndexError, ValueError):
-        LOGGER.warning("Bad format args for %r (%s): %r", key, language, kwargs)
+        # Log only the placeholder names, never their values: the values can
+        # carry user-supplied data and this branch is purely a developer
+        # signal that a call site passed the wrong keys.
+        LOGGER.warning("Bad format args for %r (%s): keys=%s", key, language, sorted(kwargs))
         return template
 
 

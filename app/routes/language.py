@@ -26,7 +26,6 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 from typing import Annotated
-from urllib.parse import urlsplit
 
 from fastapi import APIRouter, Form, Response, status
 from fastapi.responses import RedirectResponse
@@ -34,6 +33,7 @@ from fastapi.responses import RedirectResponse
 from app.dependencies import CurrentUser, DbSession, SettingsDep
 from app.i18n import SUPPORTED_LANGUAGES
 from app.middleware import LANGUAGE_COOKIE_NAME, TIMEZONE_COOKIE_NAME
+from app.security import safe_redirect_path
 from app.timezones import is_supported as _is_supported_tz
 
 router = APIRouter(tags=["language"])
@@ -42,30 +42,6 @@ router = APIRouter(tags=["language"])
 #: choices eventually defer to the site default, and long enough that the
 #: switch survives normal browsing.
 _COOKIE_MAX_AGE: int = 365 * 24 * 60 * 60
-
-
-def _safe_next(raw: str) -> str:
-    """Return a safe in-app redirect target.
-
-    Accepts only paths starting with ``/`` and not ``//`` (which would be
-    a protocol-relative URL allowing the attacker to redirect to a
-    different host). Anything else collapses to ``"/"``.
-    """
-    if not raw:
-        return "/"
-    parsed = urlsplit(raw)
-    if parsed.scheme or parsed.netloc:
-        return "/"
-    if not parsed.path.startswith("/"):
-        return "/"
-    if parsed.path.startswith("//"):
-        return "/"
-    path = parsed.path
-    if parsed.query:
-        path = f"{path}?{parsed.query}"
-    if parsed.fragment:
-        path = f"{path}#{parsed.fragment}"
-    return path
 
 
 @router.post("/language", include_in_schema=False)
@@ -86,7 +62,7 @@ def set_language(
     the choice on the user row so the next sign-in on a different
     browser inherits it.
     """
-    target = _safe_next(next)
+    target = safe_redirect_path(next)
     response = RedirectResponse(url=target, status_code=status.HTTP_303_SEE_OTHER)
 
     requested = (language or "").strip().lower()
