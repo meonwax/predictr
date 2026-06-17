@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator
+from datetime import UTC, datetime, timedelta
+
 import pytest
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -13,10 +16,36 @@ from app.dev_seed import (
     DEV_USERS,
     run_dev_seed,
 )
-from app.models import Bet, Shout, User
+from app.models import Bet, Game, Shout, User
 from app.security import verify_password
 
 pytestmark = pytest.mark.usefixtures("clean_user_tables")
+
+
+@pytest.fixture()
+def dev_bet_games_open(db_session: Session) -> Iterator[None]:
+    """Relocate every game referenced by ``DEV_BETS`` into the future.
+
+    ``_ensure_bet`` skips games whose kickoff has already passed, so once
+    the seed's fixed early-tournament kickoffs are behind us the bet count
+    would otherwise drop to zero. We restore the original kickoffs on
+    teardown to keep the shared seeded engine pristine for other tests.
+    """
+    game_ids = {game_id for by_game in DEV_BETS.values() for game_id in by_game}
+    originals: dict[int, datetime] = {}
+    future = datetime.now(UTC) + timedelta(days=7)
+    for game_id in game_ids:
+        game = db_session.get(Game, game_id)
+        assert game is not None, game_id
+        originals[game_id] = game.kickoff_time
+        game.kickoff_time = future
+    db_session.commit()
+    yield
+    for game_id, original in originals.items():
+        game = db_session.get(Game, game_id)
+        assert game is not None, game_id
+        game.kickoff_time = original
+    db_session.commit()
 
 
 def test_run_dev_seed_creates_every_user(db_session: Session) -> None:
@@ -79,7 +108,10 @@ def test_shouts_are_ordered_so_first_DEV_SHOUTS_entry_is_oldest(db_session: Sess
     assert actual_messages == expected_messages
 
 
-def test_seed_creates_expected_number_of_bets(db_session: Session) -> None:
+def test_seed_creates_expected_number_of_bets(
+    db_session: Session,
+    dev_bet_games_open: None,
+) -> None:
     report = run_dev_seed(db_session)
     expected = sum(len(by_game) for by_game in DEV_BETS.values())
     assert report.bets_created == expected
@@ -88,7 +120,10 @@ def test_seed_creates_expected_number_of_bets(db_session: Session) -> None:
     assert len(bets) == expected
 
 
-def test_bet_values_match_DEV_BETS(db_session: Session) -> None:
+def test_bet_values_match_DEV_BETS(
+    db_session: Session,
+    dev_bet_games_open: None,
+) -> None:
     run_dev_seed(db_session)
     user_ids = {
         spec.email: db_session.scalar(select(User.id).where(User.email == spec.email))

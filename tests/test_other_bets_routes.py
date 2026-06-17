@@ -43,16 +43,27 @@ def db(seeded_engine) -> Iterator[Session]:
 
 @pytest.fixture(autouse=True)
 def _restore_opener(seeded_engine) -> Iterator[None]:
-    """Reset the opener game's kickoff + result after each test."""
+    """Open the opener (future kickoff, no result) before each test and
+    restore the seed's original kickoff afterwards.
+
+    The seed's fixed 2026-06-11 kickoff is in the past once the tournament
+    is under way, which would otherwise reject any bet placed through the
+    route and flip the locked/unlocked branches these tests assert on.
+    """
+
+    def _write(kickoff: datetime) -> None:
+        Session_ = sessionmaker(bind=seeded_engine, expire_on_commit=False, future=True)
+        with Session_() as s:
+            g = s.get(Game, GAME_OPENER_ID)
+            if g is not None:
+                g.kickoff_time = kickoff
+                g.score_home = None
+                g.score_away = None
+                s.commit()
+
+    _write(datetime.now(UTC) + timedelta(days=7))
     yield
-    Session_ = sessionmaker(bind=seeded_engine, expire_on_commit=False, future=True)
-    with Session_() as s:
-        g = s.get(Game, GAME_OPENER_ID)
-        if g is not None:
-            g.kickoff_time = datetime(2026, 6, 11, 19, 0, tzinfo=UTC)
-            g.score_home = None
-            g.score_away = None
-            s.commit()
+    _write(datetime(2026, 6, 11, 19, 0, tzinfo=UTC))
 
 
 def _move_kickoff_to_past(db: Session) -> None:

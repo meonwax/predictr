@@ -265,9 +265,11 @@ def test_ladder_combines_bet_and_answer_points(fresh_db: Session) -> None:
     before = GAME_OPENER_KICKOFF - timedelta(days=1)
     upsert_bet(fresh_db, alice, game_id=GAME_OPENER_ID, score_home=2, score_away=1, now=before)
     _record_result(fresh_db, GAME_OPENER_ID, 2, 1)
-    # Question: 10 pts
-    past = datetime.now(UTC) - timedelta(hours=1)
-    q = _make_question(fresh_db, deadline=past, points=10)
+    # Question: 10 pts. The deadline is tied to the simulated "after" clock
+    # below, not the real wall clock, so the answer is scored deterministically
+    # regardless of the real-world date.
+    q_deadline = GAME_OPENER_KICKOFF + timedelta(hours=1)
+    q = _make_question(fresh_db, deadline=q_deadline, points=10)
     fresh_db.add(Answer(user_id=alice.id, question_id=q.id, answer="Mbappe"))
     fresh_db.commit()
 

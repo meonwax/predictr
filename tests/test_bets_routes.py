@@ -71,6 +71,24 @@ def move_opener_kickoff_to_past(db: Session) -> Iterator[None]:
     db.commit()
 
 
+# The opener's seeded kickoff (2026-06-11) is in the past once the
+# tournament is under way, which would reject any bet placed through the
+# route. Tests that need the opener open relocate its kickoff into the
+# future relative to "now" and restore the seed value on teardown.
+@pytest.fixture()
+def move_opener_kickoff_to_future(db: Session) -> Iterator[None]:
+    game = db.get(Game, GAME_OPENER_ID)
+    assert game is not None
+    original = game.kickoff_time
+    game.kickoff_time = datetime.now(UTC) + timedelta(days=7)
+    db.commit()
+    yield
+    game = db.get(Game, GAME_OPENER_ID)
+    assert game is not None
+    game.kickoff_time = original
+    db.commit()
+
+
 # ---------------------------------------------------------------------------
 # GET /bets - access control + structure
 # ---------------------------------------------------------------------------
@@ -93,7 +111,11 @@ def test_bets_page_renders_for_logged_in_user(logged_in_client: TestClient) -> N
     assert 'href="/bets"' in r.text
 
 
-def test_bets_page_shows_existing_bet(logged_in_client: TestClient, db: Session) -> None:
+def test_bets_page_shows_existing_bet(
+    logged_in_client: TestClient,
+    db: Session,
+    move_opener_kickoff_to_future: None,
+) -> None:
     """The page pre-fills the inputs from the user's persisted bet."""
     import re
 
@@ -118,7 +140,10 @@ def test_bets_page_shows_existing_bet(logged_in_client: TestClient, db: Session)
     assert re.search(r'name="score_away"[^>]*value="1"', cell_html), cell_html
 
 
-def test_bets_page_has_no_visible_save_button(logged_in_client: TestClient) -> None:
+def test_bets_page_has_no_visible_save_button(
+    logged_in_client: TestClient,
+    move_opener_kickoff_to_future: None,
+) -> None:
     """Auto-save replaced the per-row save button; the form must not render one."""
     import re
 
@@ -135,7 +160,10 @@ def test_bets_page_has_no_visible_save_button(logged_in_client: TestClient) -> N
     assert "js/bets-autosave.js" in page
 
 
-def test_bets_page_inputs_have_mobile_keyboard_hints(logged_in_client: TestClient) -> None:
+def test_bets_page_inputs_have_mobile_keyboard_hints(
+    logged_in_client: TestClient,
+    move_opener_kickoff_to_future: None,
+) -> None:
     """Score inputs ask iOS/Android for the numeric keypad and a sensible action."""
     import re
 
@@ -158,7 +186,11 @@ def test_bets_page_inputs_have_mobile_keyboard_hints(logged_in_client: TestClien
 # ---------------------------------------------------------------------------
 
 
-def test_htmx_post_creates_bet(logged_in_client: TestClient, db: Session) -> None:
+def test_htmx_post_creates_bet(
+    logged_in_client: TestClient,
+    db: Session,
+    move_opener_kickoff_to_future: None,
+) -> None:
     r = logged_in_client.post(
         f"/bets/{GAME_OPENER_ID}",
         data={"score_home": "3", "score_away": "0"},
@@ -175,7 +207,11 @@ def test_htmx_post_creates_bet(logged_in_client: TestClient, db: Session) -> Non
     assert (bet.score_home, bet.score_away) == (3, 0)
 
 
-def test_htmx_post_updates_existing_bet(logged_in_client: TestClient, db: Session) -> None:
+def test_htmx_post_updates_existing_bet(
+    logged_in_client: TestClient,
+    db: Session,
+    move_opener_kickoff_to_future: None,
+) -> None:
     logged_in_client.post(
         f"/bets/{GAME_OPENER_ID}",
         data={"score_home": "1", "score_away": "1"},
@@ -234,6 +270,7 @@ def test_htmx_post_rejects_non_integer(
 
 def test_htmx_post_rejects_out_of_range(
     logged_in_client: TestClient,
+    move_opener_kickoff_to_future: None,
 ) -> None:
     r = logged_in_client.post(
         f"/bets/{GAME_OPENER_ID}",
@@ -274,7 +311,11 @@ def test_htmx_post_unknown_game_404s(logged_in_client: TestClient) -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_plain_post_redirects_to_bets(logged_in_client: TestClient, db: Session) -> None:
+def test_plain_post_redirects_to_bets(
+    logged_in_client: TestClient,
+    db: Session,
+    move_opener_kickoff_to_future: None,
+) -> None:
     r = logged_in_client.post(
         f"/bets/{GAME_OPENER_ID}",
         data={"score_home": "4", "score_away": "2"},

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
-from datetime import UTC
+from datetime import UTC, datetime, timedelta
 
 import pytest
 from fastapi.testclient import TestClient
@@ -103,6 +103,15 @@ def test_ladder_orders_by_points_after_results_in(
     db: Session,
 ) -> None:
     """High-scoring user appears above low-scoring user once results land."""
+    # The opener's seeded kickoff is in the past once the tournament has
+    # started, which would reject the bets below. Open it first; we restore
+    # the original timestamp in the finally block.
+    game = db.get(Game, GAME_OPENER_ID)
+    assert game is not None
+    original = game.kickoff_time
+    game.kickoff_time = datetime.now(UTC) + timedelta(days=7)
+    db.commit()
+
     # Alice places an exact-match bet.
     _register_and_login(auth_client, name="Alice", email="alice@example.com")
     auth_client.post(
@@ -123,11 +132,6 @@ def test_ladder_orders_by_points_after_results_in(
 
     # Stamp the result and pull the kickoff into the past so the ladder
     # actually counts the bet.
-    from datetime import datetime, timedelta
-
-    game = db.get(Game, GAME_OPENER_ID)
-    assert game is not None
-    original = game.kickoff_time
     game.kickoff_time = datetime.now(UTC) - timedelta(hours=2)
     game.score_home = 2
     game.score_away = 1
