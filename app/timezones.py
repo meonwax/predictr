@@ -101,6 +101,21 @@ def is_supported(name: str | None) -> bool:
     return name is not None and name in _SUPPORTED_SET
 
 
+def canonical_supported(name: str | None) -> str | None:
+    """Return the :data:`SUPPORTED_TIMEZONES` entry matching *name*, else ``None``.
+
+    Unlike :func:`is_supported`, which returns a bool, this yields the value
+    *from* the curated tuple, so callers persist or set cookies using a known
+    constant rather than the caller-supplied string.
+    """
+    if name is None:
+        return None
+    for candidate in SUPPORTED_TIMEZONES:
+        if candidate == name:
+            return candidate
+    return None
+
+
 def get_zone(name: str | None, *, default: str = DEFAULT_TIMEZONE) -> ZoneInfo:
     """Return a :class:`ZoneInfo` for *name*, falling back to *default*.
 
@@ -143,5 +158,6 @@ __all__ = [
     "SUPPORTED_TIMEZONES",
     "get_zone",
     "is_supported",
+    "canonical_supported",
     "resolve_timezone",
 ]

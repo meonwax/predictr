@@ -31,10 +31,10 @@ from fastapi import APIRouter, Form, Response, status
 from fastapi.responses import RedirectResponse
 
 from app.dependencies import CurrentUser, DbSession, SettingsDep
-from app.i18n import SUPPORTED_LANGUAGES
+from app.i18n import canonical_language
 from app.middleware import LANGUAGE_COOKIE_NAME, TIMEZONE_COOKIE_NAME
 from app.security import safe_redirect_path
-from app.timezones import is_supported as _is_supported_tz
+from app.timezones import canonical_supported
 
 router = APIRouter(tags=["language"])
 
@@ -65,21 +65,23 @@ def set_language(
     target = safe_redirect_path(next)
     response = RedirectResponse(url=target, status_code=status.HTTP_303_SEE_OTHER)
 
-    requested = (language or "").strip().lower()
-    if requested not in SUPPORTED_LANGUAGES:
+    # Re-source the value from SUPPORTED_LANGUAGES so the cookie/DB write
+    # stores a known constant, never a copy of the raw form input.
+    language_code = canonical_language(language)
+    if language_code is None:
         return response
 
     response.set_cookie(
         key=LANGUAGE_COOKIE_NAME,
-        value=requested,
+        value=language_code,
         max_age=_COOKIE_MAX_AGE,
         path="/",
         samesite="lax",
         httponly=False,
         secure=settings.secure_cookies,
     )
-    if user is not None and user.preferred_language != requested:
-        user.preferred_language = requested
+    if user is not None and user.preferred_language != language_code:
+        user.preferred_language = language_code
         user.last_modified_date = datetime.now(UTC)
         db.commit()
     return response
@@ -101,13 +103,15 @@ def set_timezone(
     """
     response = Response(status_code=status.HTTP_204_NO_CONTENT)
 
-    requested = (timezone_name or "").strip()
-    if not _is_supported_tz(requested):
+    # Re-source the value from SUPPORTED_TIMEZONES so the cookie/DB write
+    # stores a known constant, never a copy of the raw form input.
+    canonical_tz = canonical_supported((timezone_name or "").strip())
+    if canonical_tz is None:
         return response
 
     response.set_cookie(
         key=TIMEZONE_COOKIE_NAME,
-        value=requested,
+        value=canonical_tz,
         max_age=_COOKIE_MAX_AGE,
         path="/",
         samesite="lax",
@@ -116,13 +120,13 @@ def set_timezone(
     )
     if (
         user is not None
-        and user.preferred_timezone != requested
+        and user.preferred_timezone != canonical_tz
         and user.preferred_timezone is None
     ):
         # Don't overwrite an explicit user preference with a browser
         # auto-detect - once the user has chosen a timezone in
         # settings, we respect that across browsers.
-        user.preferred_timezone = requested
+        user.preferred_timezone = canonical_tz
         user.last_modified_date = datetime.now(UTC)
         db.commit()
     return response

@@ -53,22 +53,23 @@ def safe_redirect_path(raw: str, *, fallback: str = "/") -> str:
     phishing through an attacker-controlled ``next`` parameter: without it a
     crafted ``?next=https://evil.example`` would bounce the visitor off-site
     after a login or language switch.
+
+    A safe target must begin with a single ``/`` (so it is rooted on this
+    host) and must not begin with ``//`` (which a browser reads as a
+    protocol-relative URL to another host). We validate *raw* directly and
+    return it unchanged when it passes, rather than re-assembling it from
+    parsed components, so the same-site guarantee is easy to see.
     """
     if not raw:
         return fallback
+    if not raw.startswith("/") or raw.startswith("//"):
+        return fallback
+    # Defence in depth: reject anything urlsplit still reads as carrying a
+    # scheme or host (e.g. "/\\evil.example" style oddities).
     parsed = urlsplit(raw)
     if parsed.scheme or parsed.netloc:
         return fallback
-    if not parsed.path.startswith("/"):
-        return fallback
-    if parsed.path.startswith("//"):
-        return fallback
-    path = parsed.path
-    if parsed.query:
-        path = f"{path}?{parsed.query}"
-    if parsed.fragment:
-        path = f"{path}#{parsed.fragment}"
-    return path
+    return raw
 
 
 # ---------------------------------------------------------------------------

@@ -955,6 +955,23 @@ def resolve_language(user_language: str | None, *, default: str = DEFAULT_LANGUA
     return default
 
 
+def canonical_language(code: str | None) -> str | None:
+    """Return the :data:`SUPPORTED_LANGUAGES` entry matching *code*, else ``None``.
+
+    Normalises case and whitespace like :func:`resolve_language`, but yields
+    the value *from* the supported tuple rather than echoing the caller's
+    input back. Sinks that persist or set cookies can then store a known
+    constant instead of a copy of attacker-influenced input.
+    """
+    if code is None:
+        return None
+    normalised = code.strip().lower()
+    for supported in SUPPORTED_LANGUAGES:
+        if supported == normalised:
+            return supported
+    return None
+
+
 def parse_accept_language(header: str | None) -> list[str]:
     """Parse an HTTP ``Accept-Language`` header into a ranked code list.
 
@@ -1036,10 +1053,12 @@ def gettext(key: str, language: str = DEFAULT_LANGUAGE, /, **kwargs: object) -> 
     try:
         return template.format(**kwargs)
     except (KeyError, IndexError, ValueError):
-        # Log only the placeholder names, never their values: the values can
-        # carry user-supplied data and this branch is purely a developer
-        # signal that a call site passed the wrong keys.
-        LOGGER.warning("Bad format args for %r (%s): keys=%s", key, language, sorted(kwargs))
+        # Log only how many args were supplied, never the keys or values:
+        # the values can carry user-supplied data, and this branch is just a
+        # developer signal that a call site passed the wrong placeholders.
+        LOGGER.warning(
+            "Bad format args for %r (%s): %d arg(s) supplied", key, language, len(kwargs)
+        )
         return template
 
 
@@ -1052,4 +1071,5 @@ __all__ = [
     "gettext",
     "parse_accept_language",
     "resolve_language",
+    "canonical_language",
 ]
